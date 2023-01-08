@@ -14,6 +14,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin corpse.gdat
+/importer:gDatImporter
+/processor:gDatProcessor
+/build:corpse.gdat
+
 #begin File.fx
 /importer:EffectImporter
 /processor:EffectProcessor

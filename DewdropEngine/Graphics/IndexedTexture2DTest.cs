@@ -9,7 +9,7 @@ using System.Numerics;
 
 namespace DewdropEngine.Graphics
 {
-    public class IndexedTexture2D
+    public class IndexedTexture2DTest
     {
 
         #region Properties
@@ -29,7 +29,7 @@ namespace DewdropEngine.Graphics
             }
         }
 
-        public uint CurrentPalette
+        public int CurrentPalette
         {
             get
             {
@@ -49,7 +49,7 @@ namespace DewdropEngine.Graphics
             }
         }
 
-        public uint PaletteCount
+        public int PaletteCount
         {
             get
             {
@@ -57,7 +57,7 @@ namespace DewdropEngine.Graphics
             }
         }
 
-        public uint PaletteSize
+        public int PaletteSize
         {
             get
             {
@@ -73,64 +73,32 @@ namespace DewdropEngine.Graphics
         private Texture2D paletteTex;
         private Texture2D imageTex;
 
-        private uint currentPal;
-        private uint totalPals;
-        private uint palSize;
+        private int currentPal;
+        private int totalPals;
+        private int palSize;
 
-        private bool disposed;
-
-        /// <summary>
-        /// Gets a color from an integer
-        /// </summary>
-        /// <param name="color">The integer to get the color from.</param>
-        /// <returns>Returns the color from the integer</returns>
-        public static Color FromInt(int color) => FromInt((uint)color);
-
-        /// <summary>
-        /// Gets a color from an unsigned integer
-        /// </summary>
-        /// <param name="color">The unsigned integer to get the color from.</param>
-        /// <returns>Returns the color from the unsigned integer</returns>
-        public static Color FromInt(uint color)
+        public IndexedTexture2DTest
+            (
+            int imageWidth,
+            int imageHeight,
+            int paletteSize,
+            int totalPalettes,
+            Color[] image,
+            Color[] palette,
+            Dictionary<int, SpriteDefinition> definitions, 
+            SpriteDefinition defaultDefinition
+            )
         {
-            // inherited from carbine
-            // i don't know how this code works, and frankly, i don't want to know. 
-            byte alpha = (byte)(color >> 24);
-            return new Color((byte)(color >> 16), (byte)(color >> 8), (byte)color, alpha);
-        }
 
-        private Color[] totalColors;
-        private Color[] uncoloredPixels;
-
-        public unsafe IndexedTexture2D(uint width, int[][] palettes, byte[] image, Dictionary<int, SpriteDefinition> definitions, SpriteDefinition defaultDefinition)
-        {
-            this.totalPals = (uint)palettes.Length;
-            this.palSize = (uint)palettes[0].Length; ;
-            uint height = (uint)(image.Length / width);
-
-            // Console.WriteLine(BitConverter.ToString(image));
-
-            totalColors = new Color[this.palSize * this.totalPals];
-            uncoloredPixels = new Color[width * height];
-
-            for (int i = 0; i < totalColors.Length; i++)
-            {
-                totalColors[i] = FromInt(palettes[i / (int)this.palSize][i % (int)this.palSize]);
-            }
-
-            for (int i = 0; i < uncoloredPixels.Length; i++)
-            {
-                uncoloredPixels[i].A = byte.MaxValue;
-                uncoloredPixels[i].R = image[i];
-                uncoloredPixels[i].G = image[i];
-                uncoloredPixels[i].B = image[i];
-            }
+            this.palSize = paletteSize;
+            this.totalPals = totalPalettes;
 
             this.paletteTex = new Texture2D(Game1.instance.GraphicsDevice, (int)this.palSize, (int)this.totalPals);
-            this.imageTex = new Texture2D(Game1.instance.GraphicsDevice, (int)width, (int)height);
+            this.imageTex = new Texture2D(Game1.instance.GraphicsDevice, (int)imageWidth, (int)imageHeight);
 
-            this.paletteTex.SetData(totalColors);
-            this.imageTex.SetData(uncoloredPixels);
+            this.paletteTex.SetData(palette);
+            this.imageTex.SetData(image);
+
             this.definitions = definitions;
             this.defaultDefinition = defaultDefinition;
         }
