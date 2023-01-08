@@ -1,14 +1,11 @@
-﻿using DewdropEngine;
-using DewdropEngine.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace DewdropEngine.Graphics
 {
@@ -108,9 +105,11 @@ namespace DewdropEngine.Graphics
         public unsafe IndexedTexture2D(uint width, int[][] palettes, byte[] image, Dictionary<int, SpriteDefinition> definitions, SpriteDefinition defaultDefinition)
         {
             this.totalPals = (uint)palettes.Length;
-            this.palSize = (uint)palettes[0].Length;;
-            uint height = (uint)(image.Length/width);
-            
+            this.palSize = (uint)palettes[0].Length; ;
+            uint height = (uint)(image.Length / width);
+
+           // Console.WriteLine(BitConverter.ToString(image));
+
             totalColors = new Color[this.palSize * this.totalPals];
             uncoloredPixels = new Color[width * height];
 
@@ -137,7 +136,8 @@ namespace DewdropEngine.Graphics
         }
 
 
-        public SpriteDefinition GetRandomSpriteDefinition() { 
+        public SpriteDefinition GetRandomSpriteDefinition()
+        {
             return this.GetSpriteDefinition(definitions.ElementAt(new Random().Next(0, definitions.Count)).Key);
 
         }
