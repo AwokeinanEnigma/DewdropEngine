@@ -3,14 +3,14 @@ using System.Runtime.InteropServices;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.ImGui.Data;
-using MonoGame.ImGui.Exceptions;
-using MonoGame.ImGui.Utilities;
+using Dewdrop.ImGui.Data;
+using Dewdrop.ImGui.Exceptions;
+using Dewdrop.ImGui.Utilities;
 
-namespace MonoGame.ImGui;
+namespace Dewdrop.ImGui;
 
 // taken from:
-// https://github.com/dovker/Monogame.ImGui
+// https://github.com/dovker/Dewdrop.ImGui
 
 /// <summary>
 ///     Responsible for rendering the ImGui elements to the screen.

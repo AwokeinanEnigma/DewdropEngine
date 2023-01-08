@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.ImGui.Utilities; 
+namespace Dewdrop.ImGui.Utilities; 
 
 /// <summary>
 ///     Responsible for generating the default rasterizer state of the renderer.

@@ -1,4 +1,4 @@
-﻿namespace MonoGame.ImGui; 
+﻿namespace Dewdrop.ImGui; 
 
 public static class DrawText {
     public static void Perform(string text) {

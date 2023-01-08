@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MonoGame.ImGui.Exceptions; 
+namespace Dewdrop.ImGui.Exceptions; 
 
 public class MissingLoadedTextureKeyException : InvalidOperationException {
     private readonly IntPtr _textureId;

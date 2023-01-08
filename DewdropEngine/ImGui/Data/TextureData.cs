@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MonoGame.ImGui.Data; 
+namespace Dewdrop.ImGui.Data; 
 
 /// <summary>
 ///     Contains the GUIRenderer's texture data element.

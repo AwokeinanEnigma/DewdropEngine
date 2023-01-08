@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace MonoGame.ImGui.Data; 
+namespace Dewdrop.ImGui.Data; 
 
 /// <summary>
 ///     Contains information regarding the vertex buffer used by the GUIRenderer.
