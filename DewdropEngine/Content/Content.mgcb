@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\..\GraphicNBTImporter\GraphicNBTImporter\bin\Release\net6.0\GraphicNBTImporter.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -24,6 +25,11 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:genericSpriteShader.fx
+
+#begin greenhairedgirl_b.gdat
+/importer:gDatImporter
+/processor:gDatProcessor
+/build:greenhairedgirl_b.gdat
 
 #begin john lemon.png
 /importer:TextureImporter
