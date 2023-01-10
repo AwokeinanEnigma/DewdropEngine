@@ -43,7 +43,7 @@ namespace Dewdrop.PipelineReaders
             Color[] decompressedPalettes = new Color[paletteColorCount];
             for (int i = 0; i < paletteColorCount; i++)
             {
-                decompressedPalettes[i] = ColorHelper.FromInt((uint)input.ReadInt32()); //8: output.Write(paletteColor);
+                decompressedPalettes[i] = ColorHelper.CreateFromInteger((uint)input.ReadInt32()); //8: output.Write(paletteColor);
             }
             //Console.WriteLine($"pal: {paletteColorCount}");
 

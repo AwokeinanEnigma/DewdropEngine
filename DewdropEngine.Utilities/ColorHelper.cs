@@ -14,7 +14,7 @@ namespace Dewdrop.Utilities
             try
             {
                 int color = int.Parse(hexString, NumberStyles.HexNumber);
-                result = ColorHelper.FromInt(color);
+                result = CreateFromInteger(color);
             }
             catch (Exception)
             {
@@ -28,14 +28,14 @@ namespace Dewdrop.Utilities
         /// </summary>
         /// <param name="color">The integer to get the color from.</param>
         /// <returns>Returns the color from the integer</returns>
-        public static Color FromInt(int color) => ColorHelper.FromInt((uint)color);
+        public static Color CreateFromInteger(int color) => ColorHelper.CreateFromInteger((uint)color);
 
         /// <summary>
         /// Gets a color from an unsigned integer
         /// </summary>
         /// <param name="color">The unsigned integer to get the color from.</param>
         /// <returns>Returns the color from the unsigned integer</returns>
-        public static Color FromInt(uint color)
+        public static Color CreateFromInteger(uint color)
         {
             // inherited from carbine
             // i don't know how this code works, and frankly, i don't want to know. 

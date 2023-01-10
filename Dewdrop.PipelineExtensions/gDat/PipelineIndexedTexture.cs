@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dewdrop.Utilities;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Dewdrop.PipelineExtensions.GDat
@@ -14,26 +15,6 @@ namespace Dewdrop.PipelineExtensions.GDat
 
         public Color[] image;
         public Color[] palette;
-
-        /// <summary>
-        /// Gets a color from an integer
-        /// </summary>
-        /// <param name="color">The integer to get the color from.</param>
-        /// <returns>Returns the color from the integer</returns>
-        public static Color FromInt(int color) => FromInt((uint)color);
-
-        /// <summary>
-        /// Gets a color from an unsigned integer
-        /// </summary>
-        /// <param name="color">The unsigned integer to get the color from.</param>
-        /// <returns>Returns the color from the unsigned integer</returns>
-        public static Color FromInt(uint color)
-        {
-            // inherited from carbine
-            // i don't know how this code works, and frankly, i don't want to know. 
-            byte alpha = (byte)(color >> 24);
-            return new Color((byte)(color >> 16), (byte)(color >> 8), (byte)color, alpha);
-        }
 
         public int height;
         public int width;
@@ -52,7 +33,7 @@ namespace Dewdrop.PipelineExtensions.GDat
 
             for (int i = 0; i < palette.Length; i++)
             {
-                palette[i] = FromInt(palettes[i / palSize][i % palSize]);
+                palette[i] = ColorHelper.CreateFromInteger(palettes[i / palSize][i % palSize]);
             }
 
             for (int i = 0; i < this.image.Length; i++)
