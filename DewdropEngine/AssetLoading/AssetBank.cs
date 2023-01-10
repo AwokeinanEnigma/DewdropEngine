@@ -28,7 +28,7 @@ namespace Dewdrop.AssetLoading
         /// <param name="type"></param>
         /// <param name="directory"></param>
         /// <param name="searchOption"></param>
-        private void LoadAssets(string directory, SearchOption searchOption)
+        private void LoadAssets(string directory, SearchOption searchOption = SearchOption.AllDirectories)
         {
             Logger.LogDebug($"Loading from: {directory}");
             Stopwatch stopwatch = new Stopwatch();

@@ -65,7 +65,7 @@ namespace Dewdrop
             Stopwatch watch = new Stopwatch();
 
 
-            sprites = new AssetBank<IndexedTexture>("IndexedTextures", System.IO.SearchOption.AllDirectories);
+            sprites = new AssetBank<IndexedTexture>("IndexedTextures", SearchOption.AllDirectories);
             watch.Restart();
             textureTest = sprites.GetAssetByName("greenhairedgirl_b");
             watch.Stop();
