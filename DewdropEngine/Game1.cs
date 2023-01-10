@@ -9,6 +9,7 @@ using Dewdrop.Utilities;
 using Dewdrop.ImGui;
 using Microsoft.Xna.Framework.Content;
 using Dewdrop.AssetLoading;
+using System.IO;
 
 namespace Dewdrop
 {
@@ -65,10 +66,9 @@ namespace Dewdrop
             Stopwatch watch = new Stopwatch();
 
 
-            sprites = new AssetBank<IndexedTexture>("IndexedTextures", SearchOption.AllDirectories);
-            watch.Restart();
+            sprites = new AssetBank<IndexedTexture>("IndexedTextures");
             textureTest = sprites.GetAssetByName("greenhairedgirl_b");
-            watch.Stop();
+            
             Logger.Log($"Loaded .gdat from xnb in {watch.ElapsedMilliseconds}ms");
 
 

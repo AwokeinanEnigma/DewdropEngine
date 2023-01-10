@@ -9,28 +9,27 @@ namespace Dewdrop.AssetLoading
     {
         internal class AssetLoadException : Exception
         {
-            public AssetLoadException(string name, string type) : base($"\"{name}\" was not found in {type}'s asset bank")
+            public AssetLoadException(string name, string type) : base($"\"{name}\" was not found in the {type} asset bank.")
             {
             }
         }
 
         private Dictionary<string, T> _assets;
 
-        public AssetBank(string directory, SearchOption option)
+        /// <summary>
+        /// Creates a new asset bank.
+        /// </summary>
+        /// <param name="directory">The directory to load assets from.</param>
+        /// <param name="option">Determines if the asset bank will load assets from subdirectories.</param>
+        public AssetBank(string directory, SearchOption searchOption = SearchOption.AllDirectories)
         {
             _assets = new Dictionary<string, T>();
-            LoadAssets(directory, option);
+            LoadAssets(directory, searchOption);
         }
 
-        /// <summary>
-        /// Load all assets of type in the specified directory
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="directory"></param>
-        /// <param name="searchOption"></param>
-        private void LoadAssets(string directory, SearchOption searchOption = SearchOption.AllDirectories)
+        private void LoadAssets(string directory, SearchOption searchOption)
         {
-            Logger.LogDebug($"Loading from: {directory}");
+            Logger.LogDebug($"Loading {typeof(T).Name} assets.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -61,7 +60,7 @@ namespace Dewdrop.AssetLoading
             T asset = default;
             if (!_assets.TryGetValue(name, out asset))
             {
-                Logger.LogError($"Couldn't load asset '{name}'", new AssetLoadException("name", asset.ToString()));
+                Logger.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
             }
             return asset;
         }
