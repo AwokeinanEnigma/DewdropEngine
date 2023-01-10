@@ -20,8 +20,8 @@
 /processorParam:DebugMode=Auto
 /build:genericSpriteShader.fx
 
-#begin greenhairedgirl_b.gdat
+#begin IndexedTextures/greenhairedgirl_b.gdat
 /importer:GDatImporter
 /processor:GDatProcessor
-/build:greenhairedgirl_b.gdat
+/build:IndexedTextures/greenhairedgirl_b.gdat
 

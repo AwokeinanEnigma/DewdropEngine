@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Dewdrop.Utilities;
 using Dewdrop.ImGui;
 using Microsoft.Xna.Framework.Content;
+using Dewdrop.AssetLoading;
 
 namespace Dewdrop
 {
@@ -31,7 +32,8 @@ namespace Dewdrop
         public static Game1 instance { get; private set; }
         private Effect _effect;
         public ImGuiRenderer GuiRenderer; //This is the ImGuiRenderer
-        
+
+        private AssetBank<IndexedTexture> sprites;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,16 +64,13 @@ namespace Dewdrop
             _effect = Content.Load<Effect>("genericSpriteShader");
             Stopwatch watch = new Stopwatch();
 
-            watch.Restart();
-            pal = Content.Load<IndexedTexture>("greenhairedgirl_b");
-            watch.Stop();
-            Logger.Log($"Loaded straight from .gdat file in {watch.ElapsedMilliseconds}ms");
 
+            sprites = new AssetBank<IndexedTexture>("IndexedTextures", System.IO.SearchOption.AllDirectories);
             watch.Restart();
-            textureTest = Content.Load<IndexedTexture>("greenhairedgirl_b");
+            textureTest = sprites.GetAssetByName("greenhairedgirl_b");
             watch.Stop();
-
             Logger.Log($"Loaded .gdat from xnb in {watch.ElapsedMilliseconds}ms");
+
 
             // TODO: use this.Content to load your game content here
 
