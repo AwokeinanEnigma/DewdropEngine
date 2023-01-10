@@ -10,15 +10,9 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\GraphicNBTImporter\GraphicNBTImporter\bin\Release\net6.0\GraphicNBTImporter.dll
+/reference:..\..\Dewdrop.PipelineExtensions\bin\Release\net6.0\DewdropEngine.PipelineExtensions.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin File.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:File.fx
 
 #begin genericSpriteShader.fx
 /importer:EffectImporter
@@ -26,26 +20,8 @@
 /processorParam:DebugMode=Auto
 /build:genericSpriteShader.fx
 
-#begin greenhairedgirl_b.gdat
-/importer:gDatImporter
-/processor:gDatProcessor
-/build:greenhairedgirl_b.gdat
-
-#begin john lemon.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:john lemon.png
-
-#begin text.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:text.fx
+#begin IndexedTextures/greenhairedgirl_b.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:IndexedTextures/greenhairedgirl_b.gdat
 

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Dewdrop.Graphics
+namespace Dewdrop.PipelineExtensions.GDat
 {
-    public class SpriteDefinition
+    public class PipelineSpriteDefinition
     {
         /// <summary>
-        /// Contains options for different modes of animation.
+        /// Has options for different modes of animation.
         /// </summary>
         public enum AnimationMode
         {
@@ -92,35 +92,20 @@ namespace Dewdrop.Graphics
         /// <param name="flipY"></param>
         /// <param name="mode"></param>
         /// <param name="data">Extra data</param>
-        public SpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float[] speeds, bool flipX, bool flipY, int mode, int[] data)
+        public PipelineSpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float[] speeds, bool flipX, bool flipY, int mode, int[] data)
         {
-            this.Name = name;
-            this.Coords = coords;
-            this.Bounds = bounds;
-            this.Origin = origin;
-            this.Frames = frames;
-            this.Speeds = speeds;
-            this.FlipX = flipX;
-            this.FlipY = flipY;
-            this.Mode = (AnimationMode)mode;
-            this.Data = data;
-        }
-
-        /// <summary>
-        /// Creates a new sprite definition by copying a pre-existing sprite definition.
-        /// </summary>
-        public SpriteDefinition(SpriteDefinition spr)
-        {
-            this.Name = spr.Name;
-            this.Coords = spr.Coords;
-            this.Bounds = spr.Bounds;
-            this.Origin = spr.Origin;
-            this.Frames = spr.Frames;
-            this.Speeds = spr.Speeds;
-            this.FlipX = spr.FlipX;
-            this.FlipY = spr.FlipY;
-            this.Mode = spr.Mode;
-            this.Data = spr.Data;
+            Name = name;
+            Coords = coords;
+            Bounds = bounds;
+            Origin = origin;
+            Frames = frames;
+            Speeds = speeds;
+            FlipX = flipX;
+            FlipY = flipY;
+            Mode = (AnimationMode)mode;
+            Data = data;
         }
     }
+
+
 }
