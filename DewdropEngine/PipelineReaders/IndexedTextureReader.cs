@@ -1,37 +1,19 @@
-﻿using DewdropEngine.Graphics;
+﻿using Dewdrop.Graphics;
+using Dewdrop.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dewdrop.PipelineReaders
 {
     /// <summary>
     /// Provides a reader of raw sprite sheet content from the content pipeline.
     /// </summary>
-    public class IndexedTexture2DTestReader : ContentTypeReader<IndexedTexture2DTest>
+    public class IndexedTexture2DReader : ContentTypeReader<IndexedTexture>
     {
         /// <inheritdoc />s
-        /// 
-        /// <summary>
-        /// Gets a color from an unsigned integer
-        /// </summary>
-        /// <param name="color">The unsigned integer to get the color from.</param>
-        /// <returns>Returns the color from the unsigned integer</returns>
-        public Color FromInt(uint color)
-        {
-            // inherited from carbine
-            // i don't know how this code works, and frankly, i don't want to know. 
-            byte alpha = (byte)(color >> 24);
-            return new Color((byte)(color >> 16), (byte)(color >> 8), (byte)color, alpha);
-        }
-
-        protected override IndexedTexture2DTest Read(ContentReader input, IndexedTexture2DTest existingInstance)
+        protected override IndexedTexture Read(ContentReader input, IndexedTexture existingInstance)
         {
             int imageWidth = input.ReadInt32(); //1: output.Write(value.Asset.width);;
             int imageHeight = input.ReadInt32(); //2: output.Write(value.Asset.height);
@@ -43,28 +25,31 @@ namespace Dewdrop.PipelineReaders
 
             // Decompress the single integer back into an array of Microsoft.XNA.Framework.Color
             byte[] image = input.ReadBytes(colorCount);
+            //byte[] image = Decompress(preImg);
             Color[] coloredImage = new Color[imageWidth * imageHeight];
+            // Use a local variable for the color value
+            byte color = 0;
+
+            // Use a for loop instead of a foreach loop
             for (int i = 0; i < image.Length; i++)
             {
-                coloredImage[i].A = byte.MaxValue;
-                coloredImage[i].R = image[i];
-                coloredImage[i].G = image[i];
-                coloredImage[i].B = image[i];
+                color = image[i];
+                coloredImage[i] = new Color(color, color, color, byte.MaxValue);
             }
-            Console.WriteLine($"img: {colorCount}");
+            //Console.WriteLine($"img: {colorCount}");
 
             int paletteColorCount = input.ReadInt32(); //7: output.Write(value.Asset.palette.Length);
 
             Color[] decompressedPalettes = new Color[paletteColorCount];
             for (int i = 0; i < paletteColorCount; i++)
             {
-                decompressedPalettes[i] = FromInt((uint)input.ReadInt32()); //8: output.Write(paletteColor);
+                decompressedPalettes[i] = ColorHelper.FromInt((uint)input.ReadInt32()); //8: output.Write(paletteColor);
             }
-            Console.WriteLine($"pal: {paletteColorCount}");
+            //Console.WriteLine($"pal: {paletteColorCount}");
 
             int spriteDefinitionCount = input.ReadInt32(); //9: output.Write(value.Asset.definitions.Count);
             string defaultSpriteDefinitionName = input.ReadString(); //10: output.Write(value.Asset.defaultDefinition.Name);
-            Console.WriteLine($"dname:{defaultSpriteDefinitionName}");
+           // Console.WriteLine($"dname:{defaultSpriteDefinitionName}");
 
             Dictionary<int, SpriteDefinition> spriteDefinitions = new Dictionary<int, SpriteDefinition>();
             SpriteDefinition defaultSpriteDefinition = null;
@@ -100,7 +85,8 @@ namespace Dewdrop.PipelineReaders
                 spriteDefinitions.Add(name.GetHashCode(), newDefinition);
 
             }
-            return new IndexedTexture2DTest(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
+            return new IndexedTexture(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
+            //return null;
         }
     }
 }

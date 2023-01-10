@@ -1,30 +1,37 @@
-﻿using fNbt;
+﻿using Dewdrop.Utilities.fNbt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using DewdropEngine.Graphics;
-using System.IO;
+using Dewdrop.Graphics;
 using System;
 using System.Diagnostics;
-using System.Collections.Generic;
+using Dewdrop.Utilities;
+using Dewdrop.ImGui;
 using Microsoft.Xna.Framework.Content;
-using System.Net.Mime;
 
-namespace DewdropEngine 
+namespace Dewdrop
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D johnLemon;
-        private IndexedTexture2D texture;
+        private IndexedTexture texture;
 
-        private IndexedTexture2DTest textureTest;
-        public GraphicsDeviceManager GraphicsDeviceManager { 
+        private IndexedTexture textureTest;
+        public GraphicsDeviceManager GraphicsDeviceManager
+        {
             get => _graphics;
         }
+        public ContentManager ContentManager
+        {
+            get => Content;
+        }
+
         public static Game1 instance { get; private set; }
         private Effect _effect;
+        public ImGuiRenderer GuiRenderer; //This is the ImGuiRenderer
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -38,29 +45,33 @@ namespace DewdropEngine
             _graphics.ApplyChanges();
         }
 
-        public Texture2D pal;
-        public Texture2D img;
+        public IndexedTexture pal;
+        public IndexedTexture[] test;
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
             base.Initialize();
+         
+            GuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+            Logger.Initialize();
         }
         protected override void LoadContent()
         {
-            long tickas = DateTime.Now.Ticks;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _effect = Content.Load<Effect>("genericSpriteShader");
-                johnLemon = Content.Load<Texture2D>("john lemon"); 
-            Console.WriteLine($"in {(DateTime.Now.Ticks - tickas) / 10000L}ms");
+            Stopwatch watch = new Stopwatch();
 
+            watch.Restart();
+            pal = Content.Load<IndexedTexture>("greenhairedgirl_b");
+            watch.Stop();
+            Logger.Log($"Loaded straight from .gdat file in {watch.ElapsedMilliseconds}ms");
 
-            long ticks = DateTime.Now.Ticks;
-            NbtFile nbtFile = new NbtFile("C:\\Users\\Tom\\Documents\\VoyageCarpeOmnia\\VoyageCO\\bin\\Release\\Data\\Graphics\\greenhairedgirl.dat");
-            this.texture = NBTImageLoader.LoadFromNbtTag(nbtFile.RootTag);
+            watch.Restart();
+            textureTest = Content.Load<IndexedTexture>("greenhairedgirl_b");
+            watch.Stop();
 
-            textureTest = Content.Load<IndexedTexture2DTest>("greenhairedgirl_b");
-            Console.WriteLine($"in {(DateTime.Now.Ticks - ticks) / 10000L}ms");
+            Logger.Log($"Loaded .gdat from xnb in {watch.ElapsedMilliseconds}ms");
 
             // TODO: use this.Content to load your game content here
 
@@ -81,8 +92,9 @@ namespace DewdropEngine
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
             // TODO: Add your drawing code here
-            _effect.Parameters["img"].SetValue(textureTest.Image);
+            _effect.Parameters["img"].SetValue(textureTest.Texture);
             _effect.Parameters["pal"].SetValue(textureTest.Palette);
 
             _effect.Parameters["palIndex"].SetValue(0);
@@ -93,7 +105,7 @@ namespace DewdropEngine
             SpriteDefinition def = textureTest.GetDefaultSpriteDefinition();
             _spriteBatch.Begin(effect: _effect);
             _spriteBatch.Draw(
-                textureTest.Image, 
+                textureTest.Texture, 
                 Vector2.Zero, 
                 new Rectangle((int)def.Coords.X, (int)def.Coords.Y, (int)def.Bounds.X, (int)def.Bounds.Y),
                 Color.White
@@ -101,6 +113,13 @@ namespace DewdropEngine
             _spriteBatch.End();
 
             base.Draw(gameTime);
+
+            GuiRenderer.BeginLayout(gameTime);
+
+            ImGuiNET.ImGui.Text("i already do");
+            //Insert Your ImGui code
+
+            GuiRenderer.EndLayout();
         }
     }
 }

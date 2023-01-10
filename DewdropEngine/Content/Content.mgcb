@@ -10,20 +10,9 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\GraphicNBTImporter\GraphicNBTImporter\bin\Release\net6.0\GraphicNBTImporter.dll
+/reference:..\..\Dewdrop.PipelineExtensions\bin\Release\net6.0\DewdropEngine.PipelineExtensions.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin corpse.gdat
-/importer:gDatImporter
-/processor:gDatProcessor
-/build:corpse.gdat
-
-#begin File.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:File.fx
 
 #begin genericSpriteShader.fx
 /importer:EffectImporter
@@ -32,25 +21,7 @@
 /build:genericSpriteShader.fx
 
 #begin greenhairedgirl_b.gdat
-/importer:gDatImporter
-/processor:gDatProcessor
+/importer:GDatImporter
+/processor:GDatProcessor
 /build:greenhairedgirl_b.gdat
-
-#begin john lemon.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:john lemon.png
-
-#begin text.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:text.fx
 

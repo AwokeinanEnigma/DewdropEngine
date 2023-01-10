@@ -7,67 +7,67 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
-namespace DewdropEngine.Graphics
+namespace Dewdrop.Graphics
 {
-    public class IndexedTexture2DTest
+    public class IndexedTexture
     {
-
         #region Properties
-        public Texture2D Image
+        /// <summary>
+        /// The texture of the image. 
+        /// </summary>
+        public Texture2D Texture
         {
-            get
-            {
-                return this.imageTex;
-            }
+            get => this.imageTex;
         }
 
+        /// <summary>
+        /// The texture of the palette. This is used by the GSS to apply color to the texture.
+        /// </summary>
         public Texture2D Palette
         {
-            get
-            {
-                return this.paletteTex;
-            }
+            get => this.paletteTex;
         }
 
+        /// <summary>
+        /// The current palette.
+        /// </summary>
         public int CurrentPalette
         {
-            get
-            {
-                return this.currentPal;
-            }
+            get => this.currentPal;
             set
             {
                 this.currentPal = Math.Min(this.totalPals, value);
             }
         }
 
+        /// <summary>
+        /// This float instance represents the current palette divided by the total amount of palettes.
+        /// This is used by the GSS.
+        /// </summary>
         public float CurrentPaletteFloat
         {
-            get
-            {
-                return (float)this.currentPal / (float)this.totalPals;
-            }
+            get => (float)this.currentPal / (float)this.totalPals;
         }
 
+        /// <summary>
+        /// Represents how many palettes this instance contains.
+        /// </summary>
         public int PaletteCount
         {
-            get
-            {
-                return this.totalPals;
-            }
+            get => this.totalPals;
         }
 
+        /// <summary>
+        /// Represents how many colors are in the current palette.
+        /// </summary>
         public int PaletteSize
         {
-            get
-            {
-                return this.palSize;
-            }
+            get => this.palSize;
         }
+
         #endregion
 
         private SpriteDefinition defaultDefinition;
-
         private Dictionary<int, SpriteDefinition> definitions;
 
         private Texture2D paletteTex;
@@ -77,7 +77,18 @@ namespace DewdropEngine.Graphics
         private int totalPals;
         private int palSize;
 
-        public IndexedTexture2DTest
+        /// <summary>
+        /// Creates a new IndexedTexture
+        /// </summary>
+        /// <param name="imageWidth">The width of the image.</param>
+        /// <param name="imageHeight">The height of the image.</param>
+        /// <param name="paletteSize">The size of the current palette</param>
+        /// <param name="totalPalettes">Represents how many palettes this IndexedTexture contains.</param>
+        /// <param name="image">The image, represented by an array of colors.</param>
+        /// <param name="palette">The palette, represented by an array of colors.</param>
+        /// <param name="definitions">The sprite definitions this instance has.</param>
+        /// <param name="defaultDefinition">The default sprite definition this instance should use.</param>
+        public IndexedTexture
             (
             int imageWidth,
             int imageHeight,
@@ -89,6 +100,7 @@ namespace DewdropEngine.Graphics
             SpriteDefinition defaultDefinition
             )
         {
+            
 
             this.palSize = paletteSize;
             this.totalPals = totalPalettes;
@@ -104,12 +116,21 @@ namespace DewdropEngine.Graphics
         }
 
 
+        /// <summary>
+        /// Returns a random sprite definition 
+        /// </summary>
+        /// <returns>A randomly chosen sprite definition</returns>
         public SpriteDefinition GetRandomSpriteDefinition()
         {
             return this.GetSpriteDefinition(definitions.ElementAt(new Random().Next(0, definitions.Count)).Key);
 
         }
 
+        /// <summary>
+        /// Gets a sprite definition by name.
+        /// </summary>
+        /// <param name="name">The name of the sprite definition you.</param>
+        /// <returns>The sprite definition</returns>
         public SpriteDefinition GetSpriteDefinition(string name)
         {
 
