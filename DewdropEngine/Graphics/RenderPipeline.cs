@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using SFML.Graphics;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System;
+using System.IO;
 
 namespace Dewdrop.Graphics
 {
@@ -33,7 +32,7 @@ namespace Dewdrop.Graphics
             //
             // but if they are not
             // then subtract their ids to see which one is greater.
-            public int Compare(Renderable? x, Renderable? y)
+            public int Compare(Renderable x, Renderable y)
             {
                 return x.Depth != y.Depth ? x.Depth - y.Depth : this.pipeline.renderableIds[y] - this.pipeline.renderableIds[x];
             }
@@ -43,7 +42,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// The render target that this render pipeline is targeting.
         /// </summary>
-        public RenderTarget Target
+        public SpriteBatch Target
         {
             get
             {
@@ -75,9 +74,9 @@ namespace Dewdrop.Graphics
         // how many renderables this pipeline is rendering rendering 
         private int renderableCount;
 
-        private FloatRect viewRect;
+        //private FloatRect viewRect;
 
-        private FloatRect renderableRect;
+        //private FloatRect renderableRect;
         #endregion 
 
         /// <summary>
@@ -99,8 +98,8 @@ namespace Dewdrop.Graphics
 
             this.depthCompare = new RenderableComparer(this);
 
-            this.viewRect = new FloatRect();
-            this.renderableRect = new FloatRect();
+            //this.viewRect = new FloatRect();
+            //this.renderableRect = new FloatRect();
         }
 
         /// <summary>
@@ -237,12 +236,12 @@ namespace Dewdrop.Graphics
                 this.renderables.Sort(depthCompare);
                 this.needToSort = false;
             }
-            View view = this.target.GetView();
+            //View view = this.target.GetView();
 
-            this.viewRect.Left = view.Center.X - view.Size.X / 2f;
-            this.viewRect.Top = view.Center.Y - view.Size.Y / 2f;
-            this.viewRect.Width = view.Size.X;
-            this.viewRect.Height = view.Size.Y;
+            //this.viewRect.Left = view.Center.X - view.Size.X / 2f;
+            //this.viewRect.Top = view.Center.Y - view.Size.Y / 2f;
+            //this.viewRect.Width = view.Size.X;
+            //this.viewRect.Height = view.Size.Y;
 
             int count = this.renderables.Count;
             // go through each renderable
@@ -254,7 +253,8 @@ namespace Dewdrop.Graphics
                 // if the renderable is visible, allow it to draw
                 if (renderable.Visible)
                 {
-                    // fancy code to determine if a renderable is in the view of the game
+                    /* fancy code to determine if a renderable is in the view of the game
+                    only works on sfml lmao!
                     this.renderableRect.Left = renderable.Position.x - renderable.Origin.x;
                     this.renderableRect.Top = renderable.Position.y - renderable.Origin.y;
                     this.renderableRect.Width = renderable.Size.x;
@@ -262,9 +262,10 @@ namespace Dewdrop.Graphics
 
                     // if it's in the view of the game, allow that shit to draw baby!
                     if (this.renderableRect.Intersects(this.viewRect))
-                    {
+                    {*/
+
                         renderable.Draw(this.target);
-                    }
+                    //}
                 }
             }
         }

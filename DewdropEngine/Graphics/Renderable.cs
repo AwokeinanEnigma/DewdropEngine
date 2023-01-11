@@ -19,23 +19,36 @@ namespace Dewdrop.Graphics
             }
         }
 
-        public int Depth
+        public virtual int Depth
         {
            get => _depth; 
            set => _depth = value;
         }
 
-        public Vector2 Position { 
+        public virtual Vector2 Position { 
             get => _position;
             set => _position = value;
         }
 
+        public virtual Vector2 Size {
+            get => _size;
+            set => _size = value;
+        }
 
-        private int _depth;
-        private bool _visible;
-        private Vector2 _position;
+        public virtual Color Color {
+            get => _color;
+            set => _color = value;
+        }
 
-        private bool hasDisposed;
+        public string name;
+
+        protected int _depth;
+        protected bool _visible;
+        protected Vector2 _position;
+        protected Vector2 _size;
+        protected Color _color;
+
+        protected bool hasDisposed;
 
         public abstract void Draw(SpriteBatch batch);
 

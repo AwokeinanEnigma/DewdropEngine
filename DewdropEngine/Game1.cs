@@ -18,9 +18,9 @@ namespace Dewdrop
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D johnLemon;
-        private IndexedTexture texture;
+        private SpriteTexture texture;
 
-        private IndexedTexture textureTest;
+        private SpriteTexture textureTest;
         public GraphicsDeviceManager GraphicsDeviceManager
         {
             get => _graphics;
@@ -31,10 +31,10 @@ namespace Dewdrop
         }
 
         public static Game1 instance { get; private set; }
-        private Effect _effect;
+        public Effect _effect;
         public ImGuiRenderer GuiRenderer; //This is the ImGuiRenderer
-
-        private AssetBank<IndexedTexture> sprites;
+        public RenderTarget2D renderTarget;
+        public AssetBank<SpriteTexture> sprites;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -48,9 +48,12 @@ namespace Dewdrop
             _graphics.ApplyChanges();
         }
 
-        public IndexedTexture pal;
-        public IndexedTexture[] test;
-
+        public SpriteTexture pal;
+        public SpriteTexture[] test;
+        private RenderPipeline pipeline;
+        private Sprite iCG;
+        private Sprite floyd;
+        private Sprite zack;
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -64,11 +67,19 @@ namespace Dewdrop
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _effect = Content.Load<Effect>("genericSpriteShader");
             Stopwatch watch = new Stopwatch();
+            GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            pipeline = new RenderPipeline(_spriteBatch);
+
+            sprites = new AssetBank<SpriteTexture>("IndexedTextures");
+           iCG = new Sprite(sprites.GetAssetByName("greenhairedgirl_b"), _effect, "walk south", 10, 0, new Vector2(160, 90), "zack");
+            floyd = new Sprite(sprites.GetAssetByName("floyd"), _effect, "walk south", 20, 0, new Vector2(160, 90), "zack");
+            zack = new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(160, 90), "zack");
+
+           pipeline.Add(iCG);
+            pipeline.Add(floyd);
+            pipeline.Add(zack);
 
 
-            sprites = new AssetBank<IndexedTexture>("IndexedTextures");
-            textureTest = sprites.GetAssetByName("greenhairedgirl_b");
-            
             Logger.Log($"Loaded .gdat from xnb in {watch.ElapsedMilliseconds}ms");
 
 
@@ -82,6 +93,57 @@ namespace Dewdrop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                iCG.Save();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                iCG.Palette = 0;
+                return;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                iCG.Palette = 1;
+                return;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                iCG.Palette = 2;
+                return;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            {
+                iCG.Palette = 3;
+                return;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D5))
+            {
+                iCG.Palette = 4;
+                return;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D6))
+            {
+                iCG.Palette = 5;
+                return;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D7))
+            {
+                iCG.Palette = 6;
+                return;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D8))
+            {
+                iCG.Palette = 7;
+                return;
+            }
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -93,23 +155,8 @@ namespace Dewdrop
 
 
             // TODO: Add your drawing code here
-            _effect.Parameters["img"].SetValue(textureTest.Texture);
-            _effect.Parameters["pal"].SetValue(textureTest.Palette);
+            pipeline.Draw();
 
-            _effect.Parameters["palIndex"].SetValue(0);
-            _effect.Parameters["palSize"].SetValue(textureTest.PaletteSize);
-            _effect.Parameters["blend"].SetValue(Color.BlueViolet.ToVector4());
-            _effect.Parameters["blendMode"].SetValue(1);
-
-            SpriteDefinition def = textureTest.GetDefaultSpriteDefinition();
-            _spriteBatch.Begin(effect: _effect);
-            _spriteBatch.Draw(
-                textureTest.Texture, 
-                Vector2.Zero, 
-                new Rectangle((int)def.Coords.X, (int)def.Coords.Y, (int)def.Bounds.X, (int)def.Bounds.Y),
-                Color.White
-                );
-            _spriteBatch.End();
 
             base.Draw(gameTime);
 

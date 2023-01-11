@@ -56,7 +56,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// The speeds of the animations within the sprite definitions
         /// </summary>
-        public float[] Speeds { get; private set; }
+        public float Speeds { get; private set; }
 
         /// <summary>
         /// Should we flip this sprite horizontally?
@@ -92,7 +92,7 @@ namespace Dewdrop.Graphics
         /// <param name="flipY"></param>
         /// <param name="mode"></param>
         /// <param name="data">Extra data</param>
-        public SpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float[] speeds, bool flipX, bool flipY, int mode, int[] data)
+        public SpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float speeds, bool flipX, bool flipY, int mode, int[] data)
         {
             this.Name = name;
             this.Coords = coords;

@@ -9,7 +9,7 @@ using System.Numerics;
 
 namespace Dewdrop.Graphics
 {
-    public class IndexedTexture
+    public class SpriteTexture
     {
         #region Properties
         /// <summary>
@@ -88,7 +88,7 @@ namespace Dewdrop.Graphics
         /// <param name="palette">The palette, represented by an array of colors.</param>
         /// <param name="definitions">The sprite definitions this instance has.</param>
         /// <param name="defaultDefinition">The default sprite definition this instance should use.</param>
-        public IndexedTexture
+        public SpriteTexture
             (
             int imageWidth,
             int imageHeight,

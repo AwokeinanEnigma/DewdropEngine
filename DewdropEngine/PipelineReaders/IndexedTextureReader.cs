@@ -10,10 +10,10 @@ namespace Dewdrop.PipelineReaders
     /// <summary>
     /// Provides a reader of raw sprite sheet content from the content pipeline.
     /// </summary>
-    public class IndexedTexture2DReader : ContentTypeReader<IndexedTexture>
+    public class IndexedTexture2DReader : ContentTypeReader<SpriteTexture>
     {
         /// <inheritdoc />s
-        protected override IndexedTexture Read(ContentReader input, IndexedTexture existingInstance)
+        protected override SpriteTexture Read(ContentReader input, SpriteTexture existingInstance)
         {
             int imageWidth = input.ReadInt32(); //1: output.Write(value.Asset.width);;
             int imageHeight = input.ReadInt32(); //2: output.Write(value.Asset.height);
@@ -77,7 +77,7 @@ namespace Dewdrop.PipelineReaders
                 int mode = input.ReadInt32(); //22: output.Write((int)def.Mode);
 
                 //hash the string!
-                SpriteDefinition newDefinition = new SpriteDefinition(name, new Vector2(coordinatesX, coordinatesY), new Vector2(boundsX, boundsY), new Vector2(originX, originY), frames, new float[1] { speed }, flipX, flipY, mode, Array.Empty<int>());
+                SpriteDefinition newDefinition = new SpriteDefinition(name, new Vector2(coordinatesX, coordinatesY), new Vector2(boundsX, boundsY), new Vector2(originX, originY), frames, speed, flipX, flipY, mode, Array.Empty<int>());
                 if (defaultSpriteDefinition == null && name == defaultSpriteDefinitionName)
                 {
                     defaultSpriteDefinition = newDefinition;
@@ -85,7 +85,7 @@ namespace Dewdrop.PipelineReaders
                 spriteDefinitions.Add(name.GetHashCode(), newDefinition);
 
             }
-            return new IndexedTexture(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
+            return new SpriteTexture(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
             //return null;
         }
     }

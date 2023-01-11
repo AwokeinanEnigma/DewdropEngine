@@ -20,8 +20,18 @@
 /processorParam:DebugMode=Auto
 /build:genericSpriteShader.fx
 
+#begin IndexedTextures/floyd.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:IndexedTextures/floyd.gdat
+
 #begin IndexedTextures/greenhairedgirl_b.gdat
 /importer:GDatImporter
 /processor:GDatProcessor
 /build:IndexedTextures/greenhairedgirl_b.gdat
+
+#begin IndexedTextures/zack.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:IndexedTextures/zack.gdat
 

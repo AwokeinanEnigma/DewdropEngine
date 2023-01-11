@@ -17,12 +17,14 @@ extern Texture2D pal;
 sampler2D imageSampler = sampler_state
 {
     Texture = <img>;
+    Filter = POINT;
 };
 
 //	This is the sampler for the second character texture
 sampler2D paletteSampler = sampler_state
 {
     Texture = <pal>;
+    Filter = POINT;
 };
 
 float palIndex;
