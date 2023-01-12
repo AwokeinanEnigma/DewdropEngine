@@ -10,7 +10,7 @@ using Dewdrop.DewGui.Utilities;
 namespace Dewdrop.DewGui;
 
 // taken from:
-// https://github.com/dovker/Dewdrop.DewGui
+//https://github.com/dovker/Monogame.ImGui
 
 /// <summary>
 ///     Responsible for rendering the ImGui elements to the screen.
