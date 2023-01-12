@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -62,6 +63,12 @@ namespace Dewdrop.Graphics
         }
 
         public void SwitchSprite(string spriteName) {
+            if (hasDisposed) { 
+                // prevent people from using disposed sprites
+
+                throw new DisposedObjectException(name);
+            }
+
             SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName.GetHashCode());
             if (newDef == this._currentDefinition) {
                 Logger.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
@@ -96,20 +103,50 @@ namespace Dewdrop.Graphics
             _shader.Parameters["palSize"].SetValue(_texture.PaletteSize);
             _shader.Parameters["blend"].SetValue(Color.White.ToVector4());
             _shader.Parameters["blendMode"].SetValue(1);
-            _shader.CurrentTechnique.Passes[0].Apply();
 
-            batch.Begin(effect: _shader);
+            if (!hasDisposed)
+            {
+                _shader.CurrentTechnique.Passes[0].Apply();
 
-            batch.Draw(
-                texture: _texture.Texture,
-                position: _position,
-                sourceRectangle: _spriteRect,
-                color: Color.White
-                );
 
-            // draw code here
+                batch.Begin(effect: _shader);
 
-            batch.End();
+
+                batch.Draw(
+                    texture: _texture.Texture,
+                    position: _position,
+                    sourceRectangle: _spriteRect,
+                    color: Color.White
+                    );
+
+                // draw code here
+
+                batch.End();
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!hasDisposed)
+            {
+                if (disposing)
+                {
+                    _currentDefinition = null;
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                _texture.Dispose();
+                _texture = null;
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                hasDisposed = true;
+            }
+        }
+
+        ~Sprite()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
         }
     }
 }

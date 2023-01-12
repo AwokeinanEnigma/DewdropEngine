@@ -9,7 +9,7 @@ using System.Numerics;
 
 namespace Dewdrop.Graphics
 {
-    public class SpriteTexture
+    public class SpriteTexture : IDisposable
     {
         #region Properties
         /// <summary>
@@ -76,6 +76,7 @@ namespace Dewdrop.Graphics
         private int currentPal;
         private int totalPals;
         private int palSize;
+        private bool disposedValue;
 
         /// <summary>
         /// Creates a new IndexedTexture
@@ -157,5 +158,42 @@ namespace Dewdrop.Graphics
             return this.defaultDefinition;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    definitions.Clear(); ;
+
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                imageTex.Dispose(); 
+                paletteTex.Dispose();
+                
+                paletteTex = null;
+                imageTex = null;
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }           
+
+        /// <summary>
+        ///  override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        /// </summary>
+        ~SpriteTexture()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+                Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

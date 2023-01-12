@@ -93,56 +93,19 @@ namespace Dewdrop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            
+
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                iCG.Save();
+                GC.Collect();
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
             {
-                iCG.Palette = 0;
+                pipeline.Remove(iCG);
+                iCG.Dispose();
                 return;
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D2))
-            {
-                iCG.Palette = 1;
-                return;
-            }
-
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D3))
-            {
-                iCG.Palette = 2;
-                return;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D4))
-            {
-                iCG.Palette = 3;
-                return;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D5))
-            {
-                iCG.Palette = 4;
-                return;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D6))
-            {
-                iCG.Palette = 5;
-                return;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D7))
-            {
-                iCG.Palette = 6;
-                return;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D8))
-            {
-                iCG.Palette = 7;
-                return;
-            }
-
 
             // TODO: Add your update logic here
 
@@ -162,7 +125,7 @@ namespace Dewdrop
 
             GuiRenderer.BeginLayout(gameTime);
 
-            ImGuiNET.ImGui.Text("i already do");
+            ImGuiNET.ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
             //Insert Your ImGui code
 
             GuiRenderer.EndLayout();
