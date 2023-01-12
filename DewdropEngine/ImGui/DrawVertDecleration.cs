@@ -1,7 +1,7 @@
 ﻿using ImGuiNET;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Dewdrop.ImGui; 
+namespace Dewdrop.DewGui; 
 
 public static class DrawVertDeclaration {
     public static readonly int Size;

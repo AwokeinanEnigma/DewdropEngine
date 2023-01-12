@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Dewdrop.ImGui.Data; 
+namespace Dewdrop.DewGui.Data; 
 
 /// <summary>
 ///     Contains information regarding the vertex buffer used by the GUIRenderer.

@@ -6,10 +6,11 @@ using Dewdrop.Graphics;
 using System;
 using System.Diagnostics;
 using Dewdrop.Utilities;
-using Dewdrop.ImGui;
+using Dewdrop.DewGui;
 using Microsoft.Xna.Framework.Content;
 using Dewdrop.AssetLoading;
 using System.IO;
+using ImGuiNET;
 
 namespace Dewdrop
 {
@@ -125,7 +126,10 @@ namespace Dewdrop
 
             GuiRenderer.BeginLayout(gameTime);
 
-            ImGuiNET.ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
+            if (ImGui.Button("cum")) {
+                Logger.Log("i call people slurs");
+            };
+            ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
             //Insert Your ImGui code
 
             GuiRenderer.EndLayout();

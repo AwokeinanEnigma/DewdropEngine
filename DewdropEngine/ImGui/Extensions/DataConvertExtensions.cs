@@ -3,7 +3,7 @@ using NumVector3 = System.Numerics.Vector3;
 using XnaVector2 = Microsoft.Xna.Framework.Vector2;
 using XnaVector3 = Microsoft.Xna.Framework.Vector3;
 
-namespace Dewdrop.ImGui.Extensions; 
+namespace Dewdrop.DewGui.Extensions; 
 
 /// <summary>
 ///     Extends different monogame data containers with numeric-based conversions.

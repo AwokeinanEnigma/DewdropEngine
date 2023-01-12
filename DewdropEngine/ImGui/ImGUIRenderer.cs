@@ -3,14 +3,14 @@ using System.Runtime.InteropServices;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Dewdrop.ImGui.Data;
-using Dewdrop.ImGui.Exceptions;
-using Dewdrop.ImGui.Utilities;
+using Dewdrop.DewGui.Data;
+using Dewdrop.DewGui.Exceptions;
+using Dewdrop.DewGui.Utilities;
 
-namespace Dewdrop.ImGui;
+namespace Dewdrop.DewGui;
 
 // taken from:
-// https://github.com/dovker/Dewdrop.ImGui
+// https://github.com/dovker/Dewdrop.DewGui
 
 /// <summary>
 ///     Responsible for rendering the ImGui elements to the screen.

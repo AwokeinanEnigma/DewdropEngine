@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Vector2 = System.Numerics.Vector2;
 
-namespace Dewdrop.ImGui.Data; 
+namespace Dewdrop.DewGui.Data; 
 
 /// <summary>
 ///     Contains the GUIRenderer's input data elements.

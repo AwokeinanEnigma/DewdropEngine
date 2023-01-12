@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Dewdrop.ImGui.Utilities; 
+namespace Dewdrop.DewGui.Utilities; 
 
 /// <summary>
 ///     Responsible for generating the default rasterizer state of the renderer.

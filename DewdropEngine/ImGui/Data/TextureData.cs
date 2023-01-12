@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Dewdrop.ImGui.Data; 
+namespace Dewdrop.DewGui.Data; 
 
 /// <summary>
 ///     Contains the GUIRenderer's texture data element.
