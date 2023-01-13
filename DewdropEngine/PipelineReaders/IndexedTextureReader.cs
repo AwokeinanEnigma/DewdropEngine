@@ -49,7 +49,7 @@ namespace Dewdrop.PipelineReaders
 
             int spriteDefinitionCount = input.ReadInt32(); //9: output.Write(value.Asset.definitions.Count);
             string defaultSpriteDefinitionName = input.ReadString(); //10: output.Write(value.Asset.defaultDefinition.Name);
-           // Console.WriteLine($"dname:{defaultSpriteDefinitionName}");
+                                                                     // Console.WriteLine($"dname:{defaultSpriteDefinitionName}");
 
             Dictionary<int, SpriteDefinition> spriteDefinitions = new Dictionary<int, SpriteDefinition>();
             SpriteDefinition defaultSpriteDefinition = null;
@@ -69,7 +69,15 @@ namespace Dewdrop.PipelineReaders
 
                 int frames = input.ReadInt32(); //18:  output.Write(def.Frames);
 
-                float speed = input.ReadSingle(); //19: output.Write(def.Speeds[0]);
+                List<float> speeds = new List<float>();
+                int numberOfSpeeds = input.ReadInt32();
+                // write animation speed
+                for (int nOS = 0; nOS < numberOfSpeeds; nOS++)
+                {
+                    speeds.Add(input.ReadSingle());
+                }
+
+                //float speed = input.ReadSingle(); //19: output.Write(def.Speeds[0]);
 
                 bool flipX = input.ReadBoolean(); //20: output.Write(def.FlipX);
                 bool flipY = input.ReadBoolean(); //21: output.Write(def.FlipY);
@@ -77,7 +85,7 @@ namespace Dewdrop.PipelineReaders
                 int mode = input.ReadInt32(); //22: output.Write((int)def.Mode);
 
                 //hash the string!
-                SpriteDefinition newDefinition = new SpriteDefinition(name, new Vector2(coordinatesX, coordinatesY), new Vector2(boundsX, boundsY), new Vector2(originX, originY), frames, speed, flipX, flipY, mode, Array.Empty<int>());
+                SpriteDefinition newDefinition = new SpriteDefinition(name, new Vector2(coordinatesX, coordinatesY), new Vector2(boundsX, boundsY), new Vector2(originX, originY), frames, speeds.ToArray(), flipX, flipY, mode, Array.Empty<int>());
                 if (defaultSpriteDefinition == null && name == defaultSpriteDefinitionName)
                 {
                     defaultSpriteDefinition = newDefinition;

@@ -1,20 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Diagnostics;
 using System.IO;
+using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
 {
-    public class Sprite : Renderable
+    public class Sprite : AnimatedRenderable
     {
         /// <summary>
         /// The current palette to use. Starts at 0.
         /// </summary>
-        public int Palette {
+        public int Palette
+        {
             get => _paletteIndex;
-            set {
-                _paletteIndex = value; 
+            set
+            {
+                _paletteIndex = value;
 
             }
         }
@@ -37,11 +38,13 @@ namespace Dewdrop.Graphics
             set => _flipY = value;
         }
 
-        public bool Disposed {
+        public bool Disposed
+        {
             get => hasDisposed;
         }
 
         private Rectangle _spriteRect;
+        private Rectangle _texReact;
         private SpriteTexture _texture;
         private Effect _shader;
 
@@ -52,6 +55,16 @@ namespace Dewdrop.Graphics
         private bool _flipX;
         private bool _flipY;
 
+        private SpriteAnimationMode _animationMMode;
+
+        private bool _animationEnabled = true;
+        private float betaFrame;
+        private static readonly int[] MODE_ONE_FRAMES = new int[] {
+            0,
+            1,
+            0,
+            2
+        };
         public Sprite(SpriteTexture texture, Effect shader, string defaultSpriteName, int depth, int palette, Vector2 position, string name = "")
         {
             _texture = texture;
@@ -60,21 +73,24 @@ namespace Dewdrop.Graphics
             _position = position;
             _visible = true;
             _paletteIndex = palette;
-            
+
             base.name = name;
-            
+
             SwitchSprite(defaultSpriteName);
         }
 
-        public void SwitchSprite(string spriteName) {
-            if (hasDisposed) { 
+        public void SwitchSprite(string spriteName)
+        {
+            if (hasDisposed)
+            {
                 // prevent people from using disposed sprites
 
                 throw new DisposedObjectException(name);
             }
 
             SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName);
-            if (newDef == this._currentDefinition) {
+            if (newDef == this._currentDefinition)
+            {
                 Logger.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
                 return;
             }
@@ -84,12 +100,23 @@ namespace Dewdrop.Graphics
 
             // create new rectangle
             _spriteRect = new Rectangle((int)_currentDefinition.Coords.X, (int)_currentDefinition.Coords.Y, (int)_currentDefinition.Bounds.X, (int)_currentDefinition.Bounds.Y);
-        
+            _size = new Vector2(_spriteRect.Width, _spriteRect.Height);
+            _texReact = _texture.Texture.Bounds;
+
+
             _flipX = _currentDefinition.FlipX;
             _flipY = _currentDefinition.FlipY;
+
+            _totalFrames = newDef.Frames;
+            _speeds = newDef.Speeds;
+            _animationMMode = newDef.Mode;
+
+            this._speedModifier = 1f;
+            this._currentFrame %= _totalFrames;
         }
 
-        public void Save() {
+        public void Save()
+        {
             Stream stream = File.Create("tex.png");
             Stream stream2 = File.Create("pal.png");
             _texture.Texture.SaveAsPng(stream, _texture.Texture.Width, _texture.Texture.Height);
@@ -98,19 +125,70 @@ namespace Dewdrop.Graphics
             stream2.Dispose();
         }
 
+        protected void UpdateAnimation()
+        {
+            //store the result of the multiplication in a variable to avoid recalculating it
+            int currentFrameIndex = (int)this._currentFrame * (int)this._size.X;
+            //calculate left position by taking the modulo of currentFrameIndex and the width of the texture
+            int frameLeftPosition = currentFrameIndex % (int)this._texture.Texture.Width;
+            //calculate top position by dividing currentFrameIndex by the width of the texture and multiplying by the height of each frame
+            int frameTopPosition = currentFrameIndex / (int)this._texture.Texture.Width * (int)this._size.Y;
+
+            //create the rectangle for the sprite using the calculated frameLeftPosition and frameTopPosition and the width and height of each frame
+            this._spriteRect = new Rectangle(frameLeftPosition, frameTopPosition, (int)this._size.X, (int)this._size.Y);
+
+            //update the frame and check if the animation has completed
+            this._speedIndex = (this._speedIndex + this.GetFrameSpeed()) % _speeds.Length;
+            if (this._currentFrame + this.GetFrameSpeed() >= _totalFrames)
+            {
+                OnAnimationCompleted();
+            }
+            this.IncrementFrame();
+        }
+
+        protected virtual void IncrementFrame()
+        {
+            float frameSpeed = GetFrameSpeed();
+
+            switch (_animationMMode)
+            {
+                case SpriteAnimationMode.Continous:
+                    this._currentFrame = (this._currentFrame + frameSpeed) % _currentFrame;
+                    break;
+
+                case SpriteAnimationMode.ZeroTwoOneThree:
+                    this.betaFrame = (this.betaFrame + frameSpeed) % 4f;
+                    this._currentFrame = MODE_ONE_FRAMES[(int)this.betaFrame];
+                    break;
+            }
+
+            _speedIndex = (int)this._currentFrame % this._speeds.Length;
+        }
+
+        protected float GetFrameSpeed()
+        {
+            return _speeds[(int)_speedIndex % _speeds.Length] * _speedModifier;
+        }
+
         public override void Draw(SpriteBatch batch)
         {
-            _texture.CurrentPalette = _paletteIndex;
-            _shader.Parameters["img"].SetValue(_texture.Texture);
-            _shader.Parameters["pal"].SetValue(_texture.Palette);
-
-            _shader.Parameters["palIndex"].SetValue(_texture.CurrentPaletteFloat);
-            _shader.Parameters["palSize"].SetValue(_texture.PaletteSize);
-            _shader.Parameters["blend"].SetValue(Color.White.ToVector4());
-            _shader.Parameters["blendMode"].SetValue(1);
-
             if (!hasDisposed)
             {
+                if (_totalFrames > 1 && _animationEnabled)
+                {
+                    UpdateAnimation();
+                }
+
+                _texture.CurrentPalette = _paletteIndex;
+                _shader.Parameters["img"].SetValue(_texture.Texture);
+                _shader.Parameters["pal"].SetValue(_texture.Palette);
+
+                _shader.Parameters["palIndex"].SetValue(_texture.CurrentPaletteFloat);
+                _shader.Parameters["palSize"].SetValue(_texture.PaletteSize);
+                _shader.Parameters["blend"].SetValue(Color.White.ToVector4());
+                _shader.Parameters["blendMode"].SetValue(1);
+
+
                 _shader.CurrentTechnique.Passes[0].Apply();
 
 
@@ -138,11 +216,11 @@ namespace Dewdrop.Graphics
                 if (disposing)
                 {
                     _currentDefinition = null;
+                    _speeds = null;
+                    _texture = null;
+
                     // TODO: dispose managed state (managed objects)
                 }
-
-                _texture.Dispose();
-                _texture = null;
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 hasDisposed = true;

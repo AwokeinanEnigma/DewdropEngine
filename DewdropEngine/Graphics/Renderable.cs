@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dewdrop.Graphics
 {
@@ -13,7 +9,8 @@ namespace Dewdrop.Graphics
         public bool Visible
         {
             get => _visible;
-            set {
+            set
+            {
                 _visible = value;
                 OnVisiblityChanged();
             }
@@ -21,21 +18,24 @@ namespace Dewdrop.Graphics
 
         public virtual int Depth
         {
-           get => _depth; 
-           set => _depth = value;
+            get => _depth;
+            set => _depth = value;
         }
 
-        public virtual Vector2 Position { 
+        public virtual Vector2 Position
+        {
             get => _position;
             set => _position = value;
         }
 
-        public virtual Vector2 Size {
+        public virtual Vector2 Size
+        {
             get => _size;
             set => _size = value;
         }
 
-        public virtual Color Color {
+        public virtual Color Color
+        {
             get => _color;
             set => _color = value;
         }
@@ -71,7 +71,7 @@ namespace Dewdrop.Graphics
 
         ~Renderable()
         {
-           // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
 

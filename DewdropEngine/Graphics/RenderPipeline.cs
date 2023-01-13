@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using System;
-using System.IO;
+using System.Collections.Generic;
 
 namespace Dewdrop.Graphics
 {
@@ -264,7 +263,7 @@ namespace Dewdrop.Graphics
                     if (this.renderableRect.Intersects(this.viewRect))
                     {*/
 
-                        renderable.Draw(this.target);
+                    renderable.Draw(this.target);
                     //}
                 }
             }

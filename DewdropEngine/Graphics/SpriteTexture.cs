@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
@@ -98,11 +95,11 @@ namespace Dewdrop.Graphics
             int totalPalettes,
             Color[] image,
             Color[] palette,
-            Dictionary<int, SpriteDefinition> definitions, 
+            Dictionary<int, SpriteDefinition> definitions,
             SpriteDefinition defaultDefinition
             )
         {
-            
+
 
             this.palSize = paletteSize;
             this.totalPals = totalPalettes;
@@ -138,7 +135,8 @@ namespace Dewdrop.Graphics
 
             int hashCode = name.GetHashCode();
             SpriteDefinition def = GetSpriteDefinition(hashCode);
-            if (def == null) {
+            if (def == null)
+            {
                 throw new SpriteDefinitionNotFoundException(name);
             }
             return def;
@@ -174,16 +172,16 @@ namespace Dewdrop.Graphics
                     // TODO: dispose managed state (managed objects)
                 }
 
-                imageTex.Dispose(); 
+                imageTex.Dispose();
                 paletteTex.Dispose();
-                
+
                 paletteTex = null;
                 imageTex = null;
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
             }
-        }           
+        }
 
         /// <summary>
         ///  override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
@@ -191,7 +189,7 @@ namespace Dewdrop.Graphics
         ~SpriteTexture()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-                Dispose(disposing: false);
+            Dispose(disposing: false);
         }
 
         public void Dispose()

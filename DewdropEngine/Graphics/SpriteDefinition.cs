@@ -5,7 +5,7 @@ namespace Dewdrop.Graphics
 {
     public class SpriteDefinition
     {
-        public class SpriteDefinitionNotFoundException : Exception        
+        public class SpriteDefinitionNotFoundException : Exception
         {
             public SpriteDefinitionNotFoundException(string name) : base($"Tried to get a sprite definition that doesn't exist! Sprite Definition: {name}") { }
         }
@@ -13,7 +13,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// Contains options for different modes of animation.
         /// </summary>
-        public enum AnimationMode
+        public enum SpriteAnimationMode
         {
 
             Invalid = -1,
@@ -62,7 +62,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// The speeds of the animations within the sprite definitions
         /// </summary>
-        public float Speeds { get; private set; }
+        public float[] Speeds { get; private set; }
 
         /// <summary>
         /// Should we flip this sprite horizontally?
@@ -77,7 +77,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// What mode this sprite definition is in
         /// </summary>
-        public AnimationMode Mode { get; private set; }
+        public SpriteAnimationMode Mode { get; private set; }
 
         /// <summary>
         /// Additional data
@@ -98,7 +98,7 @@ namespace Dewdrop.Graphics
         /// <param name="flipY"></param>
         /// <param name="mode"></param>
         /// <param name="data">Extra data</param>
-        public SpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float speeds, bool flipX, bool flipY, int mode, int[] data)
+        public SpriteDefinition(string name, Vector2 coords, Vector2 bounds, Vector2 origin, int frames, float[] speeds, bool flipX, bool flipY, int mode, int[] data)
         {
             this.Name = name;
             this.Coords = coords;
@@ -108,7 +108,7 @@ namespace Dewdrop.Graphics
             this.Speeds = speeds;
             this.FlipX = flipX;
             this.FlipY = flipY;
-            this.Mode = (AnimationMode)mode;
+            this.Mode = (SpriteAnimationMode)mode;
             this.Data = data;
         }
 

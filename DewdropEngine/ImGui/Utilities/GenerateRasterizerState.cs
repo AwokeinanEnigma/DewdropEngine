@@ -1,13 +1,16 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Dewdrop.DewGui.Utilities; 
+namespace Dewdrop.DewGui.Utilities;
 
 /// <summary>
 ///     Responsible for generating the default rasterizer state of the renderer.
 /// </summary>
-public static class GenerateRasterizerState {
-    public static RasterizerState Perform() {
-        return new RasterizerState {
+public static class GenerateRasterizerState
+{
+    public static RasterizerState Perform()
+    {
+        return new RasterizerState
+        {
             CullMode = CullMode.None,
             DepthBias = 0,
             FillMode = FillMode.Solid,

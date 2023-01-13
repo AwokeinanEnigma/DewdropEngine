@@ -71,8 +71,12 @@ namespace Dewdrop.PipelineExtensions.GDat
                 // write frames
                 output.Write(def.Frames);
 
+                output.Write(def.Speeds.Length);
                 // write animation speed
-                output.Write(def.Speeds[0]);
+                for (int i = 0; i < def.Speeds.Length; i++)
+                {
+                    output.Write(def.Speeds[i]);
+                }
 
                 // write flip bools
                 output.Write(def.FlipX);

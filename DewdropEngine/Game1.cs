@@ -1,16 +1,13 @@
-﻿using Dewdrop.Utilities.fNbt;
+﻿using Dewdrop.AssetLoading;
+using Dewdrop.DewGui;
+using Dewdrop.Graphics;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Dewdrop.Graphics;
 using System;
 using System.Diagnostics;
-using Dewdrop.Utilities;
-using Dewdrop.DewGui;
-using Microsoft.Xna.Framework.Content;
-using Dewdrop.AssetLoading;
-using System.IO;
-using ImGuiNET;
 
 namespace Dewdrop
 {
@@ -29,7 +26,7 @@ namespace Dewdrop
         public ContentManager ContentManager
         {
             get => Content;
-        }        
+        }
         // time
         public static float DeltaTime { get; private set; }
         public static float RawDeltaTime { get; private set; }
@@ -49,12 +46,12 @@ namespace Dewdrop
         public Engine()
         {
             _graphics = new GraphicsDeviceManager(this);
-           /* if (true)
-            {
-                _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-                _graphics.IsFullScreen = true;
-            }*/
+            /* if (true)
+             {
+                 _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                 _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                 _graphics.IsFullScreen = true;
+             }*/
             _graphics.ApplyChanges(); Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
@@ -90,7 +87,7 @@ namespace Dewdrop
         {
             // TODO: Add your initialization logic here
             base.Initialize();
-         
+
             GuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             Logger.Initialize();
 
@@ -103,6 +100,7 @@ namespace Dewdrop
             resizing = false;*/
             UpdateView();
         }
+
         Camera cam;
         protected override void LoadContent()
         {
@@ -121,7 +119,7 @@ namespace Dewdrop
             }
 
             sprites = new AssetBank<SpriteTexture>("IndexedTextures");
-           iCG = new Sprite(sprites.GetAssetByName("greenhairedgirl_b"), _effect, "walk south", 10, 0, new Vector2(160, 90), "zack");
+            iCG = new Sprite(sprites.GetAssetByName("greenhairedgirl_b"), _effect, "walk south", 10, 0, new Vector2(160, 90), "zack");
             floyd = new Sprite(sprites.GetAssetByName("floyd"), _effect, "walk south", 20, 0, new Vector2(160, 90), "zack");
             zack = new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(160, 90), "zack");
 
@@ -129,7 +127,10 @@ namespace Dewdrop
             pipeline.Add(floyd);
             pipeline.Add(zack);
 
+            array = new byte[] {
 
+
+            };
             Logger.Log($"Loaded .gdat from xnb in {watch.ElapsedMilliseconds}ms");
 
 
@@ -201,24 +202,10 @@ namespace Dewdrop
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D1))
-            {
-                pipeline.Remove(iCG);
-                iCG.Dispose();
-                return;
-            }
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
-
+        byte[] array;
+        public string input = "";
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -236,16 +223,24 @@ namespace Dewdrop
             {
                 GC.Collect();
             };
+            if (ImGui.InputTextWithHint("entity to remove", "removes an entity", ref input, 256))
+            {
+                Logger.Log("aaa");
+            }
             if (ImGui.Button("Dispose"))
             {
-                pipeline.Remove(iCG);
-                iCG.Dispose();
+
+                pipeline.Remove(zack);
+                zack.Dispose();
+
+                pipeline.Remove(floyd);
+                floyd.Dispose();
             };
             if (ImGui.Button("Access"))
             {
                 //iCG.SwitchSprite("heh");
 
-                pipeline.Add(new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(160 + 3, 90 + 3), "zack"));
+                pipeline.Add(new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(new Random().Next(0, 320), new Random().Next(0, 180)), "zack"));
             };
 
 
@@ -253,12 +248,12 @@ namespace Dewdrop
             {
                 if (ImGui.Button($"screen scale: {i}"))
                 {
-                  //  pipeline.Add( new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(160 + 3, 90 + 3), "zack") );
+                    //  pipeline.Add( new Sprite(sprites.GetAssetByName("zack"), _effect, "walk south", 30, 0, new Vector2(160 + 3, 90 + 3), "zack") );
                     SetWindowed(320 * i, 180 * i);
                     UpdateView();
                 }
             }
-            ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
+            ImGui.Text($"gcmb: {GC.GetTotalMemory(true)}");
             //Insert Your ImGui code
 
             GuiRenderer.EndLayout();
