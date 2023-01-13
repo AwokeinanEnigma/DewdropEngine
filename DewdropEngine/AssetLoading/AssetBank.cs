@@ -33,12 +33,12 @@ namespace Dewdrop.AssetLoading
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            if (!Directory.Exists(Game1.instance.ContentManager.RootDirectory + "\\" + directory))
+            if (!Directory.Exists(Engine.instance.ContentManager.RootDirectory + "\\" + directory))
             {
                 Logger.LogError($"Directory {directory} doesn't exist. Did you build the pipeline?", new DirectoryNotFoundException($"Invalid directory {directory}"));
             }
 
-            string[] files = Directory.GetFiles(Game1.instance.ContentManager.RootDirectory + "\\" + directory, "*", searchOption);
+            string[] files = Directory.GetFiles(Engine.instance.ContentManager.RootDirectory + "\\" + directory, "*", searchOption);
 
             foreach (string file in files)
             {
@@ -48,7 +48,7 @@ namespace Dewdrop.AssetLoading
 
                 // we just need to remove the directory name plus the slash
                 // hence the +1
-                _assets.Add(path.Substring(directory.Length + 1), Game1.instance.ContentManager.Load<T>(path));
+                _assets.Add(path.Substring(directory.Length + 1), Engine.instance.ContentManager.Load<T>(path));
             }
 
             stopwatch.Stop();

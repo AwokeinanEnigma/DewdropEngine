@@ -1,9 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Dewdrop.Graphics
 {
     public class SpriteDefinition
     {
+        public class SpriteDefinitionNotFoundException : Exception        
+        {
+            public SpriteDefinitionNotFoundException(string name) : base($"Tried to get a sprite definition that doesn't exist! Sprite Definition: {name}") { }
+        }
+
         /// <summary>
         /// Contains options for different modes of animation.
         /// </summary>

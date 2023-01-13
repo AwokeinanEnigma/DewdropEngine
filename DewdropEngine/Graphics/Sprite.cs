@@ -37,6 +37,10 @@ namespace Dewdrop.Graphics
             set => _flipY = value;
         }
 
+        public bool Disposed {
+            get => hasDisposed;
+        }
+
         private Rectangle _spriteRect;
         private SpriteTexture _texture;
         private Effect _shader;
@@ -69,11 +73,12 @@ namespace Dewdrop.Graphics
                 throw new DisposedObjectException(name);
             }
 
-            SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName.GetHashCode());
+            SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName);
             if (newDef == this._currentDefinition) {
                 Logger.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
                 return;
             }
+
 
             _currentDefinition = newDef;
 
@@ -109,8 +114,9 @@ namespace Dewdrop.Graphics
                 _shader.CurrentTechnique.Passes[0].Apply();
 
 
-                batch.Begin(effect: _shader);
+                //batch.Begin(effect: _shader);
 
+                batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, _shader, Camera.Instance.Matrix * Engine.ScreenMatrix);
 
                 batch.Draw(
                     texture: _texture.Texture,

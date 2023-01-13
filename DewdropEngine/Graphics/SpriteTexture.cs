@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
 {
@@ -106,8 +107,8 @@ namespace Dewdrop.Graphics
             this.palSize = paletteSize;
             this.totalPals = totalPalettes;
 
-            this.paletteTex = new Texture2D(Game1.instance.GraphicsDevice, (int)this.palSize, (int)this.totalPals);
-            this.imageTex = new Texture2D(Game1.instance.GraphicsDevice, (int)imageWidth, (int)imageHeight);
+            this.paletteTex = new Texture2D(Engine.instance.GraphicsDevice, (int)this.palSize, (int)this.totalPals);
+            this.imageTex = new Texture2D(Engine.instance.GraphicsDevice, (int)imageWidth, (int)imageHeight);
 
             this.paletteTex.SetData(palette);
             this.imageTex.SetData(image);
@@ -136,7 +137,11 @@ namespace Dewdrop.Graphics
         {
 
             int hashCode = name.GetHashCode();
-            return this.GetSpriteDefinition(hashCode);
+            SpriteDefinition def = GetSpriteDefinition(hashCode);
+            if (def == null) {
+                throw new SpriteDefinitionNotFoundException(name);
+            }
+            return def;
         }
 
         public SpriteDefinition GetSpriteDefinition(int hash)
