@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Dewdrop.Debugging;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -110,7 +111,7 @@ namespace Dewdrop.Graphics
             // if we don't already have this renderable in this pipeline
             if (renderables.Contains(renderable))
             {
-                Logger.LogError("Tried to add renderable that already exists in the RenderPipeline.", null);
+                DBG.LogError("Tried to add renderable that already exists in the RenderPipeline.", null);
                 return;
             }
             this.renderablesToAdd.Push(renderable);

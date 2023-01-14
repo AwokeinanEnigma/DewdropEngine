@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dewdrop.Debugging;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using static Dewdrop.Graphics.SpriteDefinition;
@@ -58,13 +59,15 @@ namespace Dewdrop.Graphics
         private SpriteAnimationMode _animationMMode;
 
         private bool _animationEnabled = true;
-        private float betaFrame;
+        private float _betaFrame;
+        
         private static readonly int[] MODE_ONE_FRAMES = new int[] {
             0,
             1,
             0,
             2
         };
+
         public Sprite(SpriteTexture texture, Effect shader, string defaultSpriteName, int depth, int palette, Vector2 position, string name = "")
         {
             _texture = texture;
@@ -79,7 +82,7 @@ namespace Dewdrop.Graphics
             SwitchSprite(defaultSpriteName);
         }
 
-        public void SwitchSprite(string spriteName)
+        public void SwitchSprite(string spriteName, bool resetAnimation = true)
         {
             if (hasDisposed)
             {
@@ -91,7 +94,7 @@ namespace Dewdrop.Graphics
             SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName);
             if (newDef == this._currentDefinition)
             {
-                Logger.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
+                DBG.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
                 return;
             }
 
@@ -111,7 +114,14 @@ namespace Dewdrop.Graphics
             _speeds = newDef.Speeds;
             _animationMMode = newDef.Mode;
 
-            this._speedModifier = 1f;
+            if (resetAnimation)
+            {
+                _currentFrame = 0f;
+                _betaFrame = 0f;
+                _speedIndex = 0f;
+                _speedModifier = 1f;
+                return;
+            }
             this._currentFrame %= _totalFrames;
         }
 
@@ -157,8 +167,8 @@ namespace Dewdrop.Graphics
                     break;
 
                 case SpriteAnimationMode.ZeroTwoOneThree:
-                    this.betaFrame = (this.betaFrame + frameSpeed) % 4f;
-                    this._currentFrame = MODE_ONE_FRAMES[(int)this.betaFrame];
+                    this._betaFrame = (this._betaFrame + frameSpeed) % 4f;
+                    this._currentFrame = MODE_ONE_FRAMES[(int)this._betaFrame];
                     break;
             }
 
@@ -224,6 +234,9 @@ namespace Dewdrop.Graphics
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 hasDisposed = true;
+            }
+            else {
+                throw new DisposedObjectException(this.name);
             }
         }
 

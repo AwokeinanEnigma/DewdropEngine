@@ -1,0 +1,37 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\Dewdrop.PipelineExtensions\bin\Release\net6.0\DewdropEngine.PipelineExtensions.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Shaders/gss.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/gss.fx;Shaders/gss.fx
+
+#begin SpriteTexture/floyd.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:SpriteTexture/floyd.gdat
+
+#begin SpriteTexture/greenhairedgirl_b.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:SpriteTexture/greenhairedgirl_b.gdat
+
+#begin SpriteTexture/zack.gdat
+/importer:GDatImporter
+/processor:GDatProcessor
+/build:SpriteTexture/zack.gdat
+

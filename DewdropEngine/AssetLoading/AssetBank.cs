@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dewdrop.Debugging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -29,13 +30,13 @@ namespace Dewdrop.AssetLoading
 
         private void LoadAssets(string directory, SearchOption searchOption)
         {
-            Logger.LogDebug($"Loading {typeof(T).Name} assets.");
+            DBG.LogDebug($"Loading {typeof(T).Name} assets.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             if (!Directory.Exists(Engine.instance.ContentManager.RootDirectory + "\\" + directory))
             {
-                Logger.LogError($"Directory {directory} doesn't exist. Did you build the pipeline?", new DirectoryNotFoundException($"Invalid directory {directory}"));
+                DBG.LogError($"Directory {directory} doesn't exist. Did you build the pipeline?", new DirectoryNotFoundException($"Invalid directory {directory}"));
             }
 
             string[] files = Directory.GetFiles(Engine.instance.ContentManager.RootDirectory + "\\" + directory, "*", searchOption);
@@ -52,7 +53,7 @@ namespace Dewdrop.AssetLoading
             }
 
             stopwatch.Stop();
-            Logger.LogInfo($"Assets loaded: {_assets.Count} <=> Time: {stopwatch.ElapsedMilliseconds}ms");
+            DBG.LogInfo($"Assets loaded: {_assets.Count} <=> Time: {stopwatch.ElapsedMilliseconds}ms");
         }
 
         public T GetAssetByName(string name)
@@ -60,7 +61,7 @@ namespace Dewdrop.AssetLoading
             T asset = default;
             if (!_assets.TryGetValue(name, out asset))
             {
-                Logger.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
+                DBG.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
             }
             return asset;
         }
