@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 
 namespace Dewdrop.Graphics
 {
@@ -40,6 +41,12 @@ namespace Dewdrop.Graphics
             set => _color = value;
         }
 
+        public virtual Rectangle RenderableRectangle
+        {
+            get => _renderableRect;
+            set => _renderableRect = value;
+        }
+
         public string name;
 
         protected int _depth;
@@ -47,6 +54,7 @@ namespace Dewdrop.Graphics
         protected Vector2 _position;
         protected Vector2 _size;
         protected Color _color;
+        protected Rectangle _renderableRect;
 
         protected bool hasDisposed;
 

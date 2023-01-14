@@ -227,6 +227,13 @@ namespace Dewdrop.Graphics
             this.renderablesToAdd.Clear();
             renderableIds.Clear();
         }
+
+
+        public bool IsInView(Renderable renderable) {
+            DBG.Log($"is in view: {(renderable.RenderableRectangle.Intersects(Camera.Instance.Viewport.Bounds))}");
+            return renderable.Visible && Camera.Instance.Viewport.Bounds.Intersects(renderable.RenderableRectangle);
+        }
+
         public void Draw()
         {
             this.DoAdditions();
@@ -251,21 +258,10 @@ namespace Dewdrop.Graphics
                 Renderable renderable = this.renderables[index];
 
                 // if the renderable is visible, allow it to draw
-                if (renderable.Visible)
+                if (IsInView(renderable))
                 {
-                    /* fancy code to determine if a renderable is in the view of the game
-                    only works on sfml lmao!
-                    this.renderableRect.Left = renderable.Position.x - renderable.Origin.x;
-                    this.renderableRect.Top = renderable.Position.y - renderable.Origin.y;
-                    this.renderableRect.Width = renderable.Size.x;
-                    this.renderableRect.Height = renderable.Size.y;
-
-                    // if it's in the view of the game, allow that shit to draw baby!
-                    if (this.renderableRect.Intersects(this.viewRect))
-                    {*/
-
                     renderable.Draw(this.target);
-                    //}
+                    
                 }
             }
         }

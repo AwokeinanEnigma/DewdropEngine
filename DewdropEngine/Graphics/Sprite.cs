@@ -1,6 +1,8 @@
 ﻿using Dewdrop.Debugging;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
 using static Dewdrop.Graphics.SpriteDefinition;
 
@@ -44,6 +46,11 @@ namespace Dewdrop.Graphics
             get => hasDisposed;
         }
 
+        public override Rectangle RenderableRectangle
+        { 
+            get => new Rectangle((int)_position.X, (int)_position.Y, _spriteRect.Width, _spriteRect.Height);         
+        }
+
         private Rectangle _spriteRect;
         private Rectangle _texReact;
         private SpriteTexture _texture;
@@ -79,7 +86,33 @@ namespace Dewdrop.Graphics
 
             base.name = name;
 
+           //Engine.RenderDebugUI += Engine_RenderDebugUI;
+
             SwitchSprite(defaultSpriteName);
+        }
+
+        private void Engine_RenderDebugUI(DewGui.ImGuiRenderer renderer)
+        {
+            ImGui.BeginGroup();
+            ImGui.BeginPopup("schmovement");
+            if (ImGui.Button("push up"))
+            {
+                _position += new Vector2(0, -3);
+            }
+            if (ImGui.Button("push down"))
+            {
+                _position += new Vector2(0, 3);
+            }
+            if (ImGui.Button("push left"))
+            {
+                _position += new Vector2(-3, 0);
+            }
+            if (ImGui.Button("push right"))
+            {
+                _position += new Vector2(3, 0);
+            }
+            ImGui.EndPopup();
+            ImGui.EndGroup();
         }
 
         public void SwitchSprite(string spriteName, bool resetAnimation = true)
@@ -177,7 +210,7 @@ namespace Dewdrop.Graphics
 
         protected float GetFrameSpeed()
         {
-            return _speeds[(int)_speedIndex % _speeds.Length] * _speedModifier;
+            return _speeds[(int)Math.Min(_speedIndex, _speeds.Length - 1)] * _speedModifier;
         }
 
         public override void Draw(SpriteBatch batch)
@@ -201,6 +234,18 @@ namespace Dewdrop.Graphics
 
                 _shader.CurrentTechnique.Passes[0].Apply();
 
+                //todo: optimize this ugly thing
+                SpriteEffects effect = SpriteEffects.None;
+                if (_flipX)
+                {
+                    effect = SpriteEffects.FlipHorizontally;
+                }
+                if (_flipY)
+                {
+                    // help
+                    effect = effect | SpriteEffects.FlipVertically;
+                }
+
 
                 //batch.Begin(effect: _shader);
 
@@ -212,6 +257,7 @@ namespace Dewdrop.Graphics
                     sourceRectangle: _spriteRect,
                     color: Color.White
                     );
+
 
                 // draw code here
 
