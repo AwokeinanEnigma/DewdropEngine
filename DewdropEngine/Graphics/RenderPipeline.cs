@@ -32,9 +32,9 @@ namespace Dewdrop.Graphics
             //
             // but if they are not
             // then subtract their ids to see which one is greater.
-            public int Compare(Renderable x, Renderable y)
+            public int Compare(Renderable a, Renderable b)
             {
-                return x.Depth != y.Depth ? x.Depth - y.Depth : this.pipeline.renderableIds[y] - this.pipeline.renderableIds[x];
+                return a.Depth != b.Depth ? a.Depth - b.Depth : this.pipeline.renderableIds[b] - this.pipeline.renderableIds[a];
             }
         }
 
@@ -229,8 +229,8 @@ namespace Dewdrop.Graphics
         }
 
 
-        public bool IsInView(Renderable renderable) {
-            DBG.Log($"is in view: {(renderable.RenderableRectangle.Intersects(Camera.Instance.Viewport.Bounds))}");
+        public bool IsRenderableInView(Renderable renderable) {
+            // if the renderable is visible and it's in the view of the camera
             return renderable.Visible && Camera.Instance.Viewport.Bounds.Intersects(renderable.RenderableRectangle);
         }
 
@@ -258,7 +258,7 @@ namespace Dewdrop.Graphics
                 Renderable renderable = this.renderables[index];
 
                 // if the renderable is visible, allow it to draw
-                if (IsInView(renderable))
+                if (IsRenderableInView(renderable))
                 {
                     renderable.Draw(this.target);
                     
