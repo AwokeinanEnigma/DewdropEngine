@@ -272,7 +272,7 @@ namespace Dewdrop.Graphics
                 if (IsRenderableInView(renderable))
                 {
                     renderable.Draw(this._target);
-
+                    
                 }
             }
         }
