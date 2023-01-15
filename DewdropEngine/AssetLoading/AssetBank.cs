@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Dewdrop.Debugging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 namespace Dewdrop.AssetLoading
 {
+    /// <summary>
+    /// An asset bank stores assets of a specific type, so you can easily fetch them later.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset you want to store.</typeparam>
     public class AssetBank<T>
     {
         internal class AssetLoadException : Exception
@@ -29,16 +34,16 @@ namespace Dewdrop.AssetLoading
 
         private void LoadAssets(string directory, SearchOption searchOption)
         {
-            Logger.LogDebug($"Loading {typeof(T).Name} assets.");
+            DBG.LogDebug($"Loading {typeof(T).Name} assets.");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            if (!Directory.Exists(Game1.instance.ContentManager.RootDirectory + "\\" + directory))
+            if (!Directory.Exists(Engine.instance.ContentManager.RootDirectory + "\\" + directory))
             {
-                Logger.LogError($"Directory {directory} doesn't exist. Did you build the pipeline?", new DirectoryNotFoundException($"Invalid directory {directory}"));
+                DBG.LogError($"Directory {directory} doesn't exist. Did you build the pipeline?", new DirectoryNotFoundException($"Invalid directory {directory}"));
             }
 
-            string[] files = Directory.GetFiles(Game1.instance.ContentManager.RootDirectory + "\\" + directory, "*", searchOption);
+            string[] files = Directory.GetFiles(Engine.instance.ContentManager.RootDirectory + "\\" + directory, "*", searchOption);
 
             foreach (string file in files)
             {
@@ -48,19 +53,24 @@ namespace Dewdrop.AssetLoading
 
                 // we just need to remove the directory name plus the slash
                 // hence the +1
-                _assets.Add(path.Substring(directory.Length + 1), Game1.instance.ContentManager.Load<T>(path));
+                _assets.Add(path.Substring(directory.Length + 1), Engine.instance.ContentManager.Load<T>(path));
             }
 
             stopwatch.Stop();
-            Logger.LogInfo($"Assets loaded: {_assets.Count} <=> Time: {stopwatch.ElapsedMilliseconds}ms");
+            DBG.LogInfo($"Assets loaded: {_assets.Count} <=> Time: {stopwatch.ElapsedMilliseconds}ms");
         }
 
+        /// <summary>
+        /// Retrieves an asset by name.
+        /// </summary>
+        /// <param name="name">The name of the asset.</param>
+        /// <returns>The asset, if found.</returns>
         public T GetAssetByName(string name)
         {
             T asset = default;
             if (!_assets.TryGetValue(name, out asset))
             {
-                Logger.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
+                DBG.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
             }
             return asset;
         }

@@ -13,15 +13,3 @@
 /reference:..\..\Dewdrop.PipelineExtensions\bin\Release\net6.0\DewdropEngine.PipelineExtensions.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin genericSpriteShader.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:genericSpriteShader.fx
-
-#begin IndexedTextures/greenhairedgirl_b.gdat
-/importer:GDatImporter
-/processor:GDatProcessor
-/build:IndexedTextures/greenhairedgirl_b.gdat
-

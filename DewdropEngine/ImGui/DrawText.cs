@@ -1,7 +1,9 @@
-﻿namespace Dewdrop.ImGui; 
+﻿namespace Dewdrop.DewGui;
 
-public static class DrawText {
-    public static void Perform(string text) {
+public static class DrawText
+{
+    public static void Perform(string text)
+    {
         ImGuiNET.ImGui.Text(text);
     }
 }

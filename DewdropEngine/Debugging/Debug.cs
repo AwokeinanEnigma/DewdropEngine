@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Dewdrop
+namespace Dewdrop.Debugging
 {
     //based on https://github.com/NoelFB/Foster/blob/master/Framework/Logging/Log.cs
     //with some minor changes
-    public static class Logger
+    public static class DBG
+
     {
         private static LogLevel Verbosity = LogLevel.Debug;
 
@@ -22,8 +23,7 @@ namespace Dewdrop
             Info,
             Debug,
             Lua,
-            Engine,
-            Trace
+            Trace,
         }
 
         private static Dictionary<LogLevel, ConsoleColor> logColors = new Dictionary<LogLevel, ConsoleColor>
@@ -35,7 +35,6 @@ namespace Dewdrop
             [LogLevel.Info] = ConsoleColor.White,
             [LogLevel.Debug] = ConsoleColor.Gray,
             [LogLevel.Lua] = ConsoleColor.Magenta,
-            [LogLevel.Engine] = ConsoleColor.Green,
             [LogLevel.Trace] = ConsoleColor.Cyan,
         };
 
@@ -51,20 +50,6 @@ namespace Dewdrop
         [CallerLineNumber] int callerLineNumber = 0)
         {
             LogInternal(LogLevel.System, message, callerFilePath, callerLineNumber);
-        }
-
-        /// <summary>
-        /// Generic logging function. Just logs as system.
-        /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
-        internal static void LogEngine(
-        object message,
-        [CallerFilePath] string callerFilePath = "",
-        [CallerLineNumber] int callerLineNumber = 0)
-        {
-            LogInternal(LogLevel.Engine, message, callerFilePath, callerLineNumber);
         }
 
         /// <summary>
@@ -192,14 +177,14 @@ namespace Dewdrop
 
         public static void DumpLogs()
         {
-            StreamWriter streamWriter = new StreamWriter("Data/Logs/logs.log");
+            StreamWriter streamWriter = new StreamWriter("logs.log");
             log.ForEach(x => streamWriter.WriteLine(x));
             streamWriter.Close();
         }
 
         public static void Initialize()
         {
-            SetVerbosity(LogLevel.Engine);
+            SetVerbosity(LogLevel.Trace);
         }
     }
 }

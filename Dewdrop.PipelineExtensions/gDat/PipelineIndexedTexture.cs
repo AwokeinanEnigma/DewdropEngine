@@ -19,7 +19,7 @@ namespace Dewdrop.PipelineExtensions.GDat
         public int height;
         public int width;
         public byte[] img;
-
+        private int[] paletteColors;
         public PipelineIndexedTexture(int cWidth, int[][] palettes, byte[] image, List<PipelineSpriteDefinition> definitions, PipelineSpriteDefinition defaultDefinition)
         {
             totalPals = palettes.Length;
@@ -31,9 +31,19 @@ namespace Dewdrop.PipelineExtensions.GDat
             palette = new Color[palSize * totalPals];
             this.image = new Color[width * height];
 
-            for (int i = 0; i < palette.Length; i++)
+            /*for (int i = 0; i < palette.Length; i++)
             {
                 palette[i] = ColorHelper.CreateFromInteger(palettes[i / palSize][i % palSize]);
+            }*/
+
+            for (uint allPalettes = 0; allPalettes < this.totalPals; allPalettes++)
+            {
+                uint num3 = 0;
+                while (num3 < palettes[allPalettes].Length)
+                {
+                    palette[allPalettes *this.palSize + num3] = ColorHelper.CreateFromInteger(palettes[allPalettes][num3]);
+                    num3++;
+                }
             }
 
             for (int i = 0; i < this.image.Length; i++)

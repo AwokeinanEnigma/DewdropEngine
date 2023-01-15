@@ -1,13 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Dewdrop.Graphics
 {
+    /// <summary>
+    /// A sprite definition contains information about a part of a spritesheet. 
+    /// </summary>
     public class SpriteDefinition
     {
+        public class SpriteDefinitionNotFoundException : Exception
+        {
+            public SpriteDefinitionNotFoundException(string name) : base($"Tried to get a sprite definition that doesn't exist! Sprite Definition: {name}") { }
+        }
+
         /// <summary>
         /// Contains options for different modes of animation.
         /// </summary>
-        public enum AnimationMode
+        public enum SpriteAnimationMode
         {
 
             Invalid = -1,
@@ -18,7 +27,7 @@ namespace Dewdrop.Graphics
             Continous = 0,
 
             /// <summary>
-            /// Makes the animation go 0-2-1-3.
+            /// Makes the animation go 0 -> 2 -> 1 -> 3.
             /// </summary>
             ZeroTwoOneThree = 1,
 
@@ -71,7 +80,7 @@ namespace Dewdrop.Graphics
         /// <summary>
         /// What mode this sprite definition is in
         /// </summary>
-        public AnimationMode Mode { get; private set; }
+        public SpriteAnimationMode Mode { get; private set; }
 
         /// <summary>
         /// Additional data
@@ -102,7 +111,7 @@ namespace Dewdrop.Graphics
             this.Speeds = speeds;
             this.FlipX = flipX;
             this.FlipY = flipY;
-            this.Mode = (AnimationMode)mode;
+            this.Mode = (SpriteAnimationMode)mode;
             this.Data = data;
         }
 

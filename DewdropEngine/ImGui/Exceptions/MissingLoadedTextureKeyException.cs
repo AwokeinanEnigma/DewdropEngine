@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace Dewdrop.ImGui.Exceptions; 
+namespace Dewdrop.DewGui.Exceptions;
 
-public class MissingLoadedTextureKeyException : InvalidOperationException {
+public class MissingLoadedTextureKeyException : InvalidOperationException
+{
     private readonly IntPtr _textureId;
 
-    public MissingLoadedTextureKeyException(IntPtr textureId) {
+    public MissingLoadedTextureKeyException(IntPtr textureId)
+    {
         _textureId = textureId;
     }
 
