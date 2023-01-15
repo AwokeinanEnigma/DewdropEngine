@@ -36,7 +36,8 @@ float palSize;
 float4 main(float2 texCoord : TEXCOORD) : COLOR
 {
     float4 index = tex2D(imageSampler, texCoord);
-    float4 baseColor = tex2D(paletteSampler, float2(((index.r * 255.0) + 0.5) / palSize, palIndex));
+    float realPalIndex = palIndex - (floor(palIndex / palSize) * palSize);
+    float4 baseColor = tex2D(paletteSampler, float2(((index.r * 255.0) + 0.5) / palSize, realPalIndex));
     float3 baseNoAlpha = baseColor.rgb;
     float3 finalColor = float3(0, 0, 0);
     //float3(

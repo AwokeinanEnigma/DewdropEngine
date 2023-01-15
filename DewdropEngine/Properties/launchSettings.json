@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "VCO": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Tom\\source\\repos\\DewdropEngine\\Voyage Carpe Omnia\\bin\\Debug\\net6.0\\Voyage Carpe Omnia.exe",
+      "workingDirectory": "C:\\Users\\Tom\\source\\repos\\DewdropEngine\\Voyage Carpe Omnia\\bin\\Debug\\net6.0",
+      "nativeDebugging": true
+    }
+  }
+}
