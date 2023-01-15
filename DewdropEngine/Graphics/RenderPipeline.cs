@@ -2,12 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Dewdrop.Graphics
 {
     /// <summary>
     /// A render pipeline sorts renderables by their depth. Renderables with a higher depth are rendered over those with a lower depth. 
-    /// Additionally (and most importantly) it allows renderables to draw onto a render target.
+    /// Additionally (and most importantly) it allows renderables to draw onto a SpriteBatch.
     /// </summary>
     public class RenderPipeline
     {
@@ -34,94 +35,96 @@ namespace Dewdrop.Graphics
             // then subtract their ids to see which one is greater.
             public int Compare(Renderable a, Renderable b)
             {
-                return a.Depth != b.Depth ? a.Depth - b.Depth : this.pipeline.renderableIds[b] - this.pipeline.renderableIds[a];
+                return a.Depth != b.Depth ? a.Depth - b.Depth : this.pipeline._renderableIds[b] - this.pipeline._renderableIds[a];
             }
         }
 
         #region Properties
         /// <summary>
-        /// The render target that this render pipeline is targeting.
+        /// The sprite batch that this render pipeline is using.
         /// </summary>
         public SpriteBatch Target
         {
             get
             {
-                return this.target;
+                return this._target;
             }
+        }
+
+        public int PipelineDepth {
+            get => _depth;
+            set => _depth = value;
         }
         #endregion
 
         #region Fields
-        // the render target to target. this what every renderable is drawing to
-        private SpriteBatch target;
+        private int _depth;
+
+        // the sprite batch to draw to. this what every renderable is drawing to
+        private SpriteBatch _target;
 
         // the renderables in this mothafuckin' pipeline!
-        private List<Renderable> renderables;
+        private List<Renderable> _renderables;
 
         // stacks to determine what renderables to add and remove
-        private Stack<Renderable> renderablesToAdd;
-        private Stack<Renderable> renderablesToRemove;
+        private Stack<Renderable> _renderablesToAdd;
+        private Stack<Renderable> _renderablesToRemove;
 
         // called through Update(), if true then we need to use RenderableComparer to sort our list of renderables
-        private bool needToSort;
+        private bool _needToSort;
 
         // compares renderables
-        private RenderableComparer depthCompare;
+        private RenderableComparer _depthComparer;
 
         // when we can't sort by depth, we sort by renderable ids. this is determined when a renderable is added
-        private Dictionary<Renderable, int> renderableIds;
+        private Dictionary<Renderable, int> _renderableIds;
 
         // how many renderables this pipeline is rendering rendering 
-        private int renderableCount;
-
-        //private FloatRect viewRect;
-
-        //private FloatRect renderableRect;
+        private int _renderableCount;
         #endregion 
 
         /// <summary>
-        /// Creates a new RenderPipeline using a render target
+        /// Creates a new RenderPipeline using a sprite batch
         /// </summary>
-        /// <param name="target">The render target to render to</param>
-        public RenderPipeline(SpriteBatch target)
+        /// <param name="target">The sprite batch to draw to</param>
+        public RenderPipeline(SpriteBatch target, int depth = 0)
         {
             // set target
-            this.target = target;
+            this._target = target;
             // create list of renderables
-            this.renderables = new List<Renderable>();
+            this._renderables = new List<Renderable>();
 
             // create stack of renderables (wowie!)
-            this.renderablesToAdd = new Stack<Renderable>();
-            this.renderablesToRemove = new Stack<Renderable>();
+            this._renderablesToAdd = new Stack<Renderable>();
+            this._renderablesToRemove = new Stack<Renderable>();
 
-            this.renderableIds = new Dictionary<Renderable, int>();
+            this._renderableIds = new Dictionary<Renderable, int>();
 
-            this.depthCompare = new RenderableComparer(this);
+            this._depthComparer = new RenderableComparer(this);
 
-            //this.viewRect = new FloatRect();
-            //this.renderableRect = new FloatRect();
+            _depth = depth;
         }
 
         /// <summary>
         /// Adds a renderable object to the stack of objects to render
         /// </summary>
         /// <param name="renderable">The renderable to add</param>
-        public void Add(Renderable renderable)
+        public virtual void Add(Renderable renderable)
         {
             // if we don't already have this renderable in this pipeline
-            if (renderables.Contains(renderable))
+            if (_renderables.Contains(renderable))
             {
                 DBG.LogError("Tried to add renderable that already exists in the RenderPipeline.", null);
                 return;
             }
-            this.renderablesToAdd.Push(renderable);
+            this._renderablesToAdd.Push(renderable);
         }
 
         /// <summary>
         /// Adds a list of renderables.
         /// </summary>
         /// <param name="renderablesToAdd">Renderables to add</param>
-        public void AddAll(List<Renderable> renderablesToAdd)
+        public virtual void AddAll(List<Renderable> renderablesToAdd)
         {
             renderablesToAdd.ForEach(x => Add(x));
         }
@@ -130,7 +133,7 @@ namespace Dewdrop.Graphics
         /// Adds a list of renderables.
         /// </summary>
         /// <param name="renderablesToAdd">Renderables to add</param>
-        public void AddAll(Renderable[] renderablesToAdd)
+        public virtual void AddAll(Renderable[] renderablesToAdd)
         {
             for (int i = 0; i < renderablesToAdd.Length; i++)
             {
@@ -142,49 +145,49 @@ namespace Dewdrop.Graphics
         /// Removes a renderable.
         /// </summary>
         /// <param name="renderable">The renderable to remove.</param>
-        public void Remove(Renderable renderable)
+        public virtual void Remove(Renderable renderable)
         {
             if (renderable != null)
             {
-                this.renderablesToRemove.Push(renderable);
+                this._renderablesToRemove.Push(renderable);
             }
         }
 
         /// <summary>
         /// Forces the render pipeline to sort again
         /// </summary>
-        public void ForceSort()
+        public virtual void ForceSort()
         {
-            this.needToSort = true;
+            this._needToSort = true;
         }
 
-        private void DoAdditions()
+        protected virtual void DoAdditions()
         {
-            while (this.renderablesToAdd.Count > 0)
+            while (this._renderablesToAdd.Count > 0)
             {
                 // remove the thing from the top of this
-                Renderable key = this.renderablesToAdd.Pop();
+                Renderable key = this._renderablesToAdd.Pop();
 
                 // add it to the list
-                this.renderables.Add(key);
+                this._renderables.Add(key);
 
                 // determine its renderable ID
-                this.renderableIds.Add(key, this.renderableCount);
+                this._renderableIds.Add(key, this._renderableCount);
 
                 // force our render pipeline to sort renderables after adding
-                this.needToSort = true;
+                this._needToSort = true;
 
-                ++this.renderableCount;
+                ++this._renderableCount;
             }
         }
 
-        private void DoRemovals()
+        protected virtual void DoRemovals()
         {
-            while (this.renderablesToRemove.Count > 0)
+            while (this._renderablesToRemove.Count > 0)
             {
-                Renderable key = this.renderablesToRemove.Pop();
-                this.renderables.Remove(key);
-                this.renderableIds.Remove(key);
+                Renderable key = this._renderablesToRemove.Pop();
+                this._renderables.Remove(key);
+                this._renderableIds.Remove(key);
 
                 // unlike DoAdditions, we don't need to force sort our renderables again
                 // this is pretty obvious, but you don't need to sort again if something was removed 
@@ -195,9 +198,9 @@ namespace Dewdrop.Graphics
         /// Executes a function for every renderable with a renderable parameter
         /// </summary>
         /// <param name="forEachFunc">The function to use on each renderable</param>
-        public void Each(Action<Renderable> forEachFunc)
+        public virtual void ForEach(Action<Renderable> forEachFunc)
         {
-            renderables.ForEach(x => forEachFunc(x));
+            _renderables.ForEach(x => forEachFunc(x));
         }
 
         public void Clear()
@@ -205,43 +208,51 @@ namespace Dewdrop.Graphics
             this.Clear(true);
         }
 
+        /// <summary>
+        /// Removes every renderable.
+        /// </summary>
+        /// <param name="dispose">If true, the dispose method of every renderable will be called.</param>
         public void Clear(bool dispose)
         {
-            this.renderablesToRemove.Clear();
+            this._renderablesToRemove.Clear();
             if (dispose)
             {
-                foreach (Renderable renderable in this.renderables)
+                foreach (Renderable renderable in this._renderables)
                 {
                     renderable.Dispose();
                 }
             }
-            this.renderables.Clear();
+            this._renderables.Clear();
 
             if (dispose)
             {
-                while (this.renderablesToAdd.Count > 0)
+                while (this._renderablesToAdd.Count > 0)
                 {
-                    this.renderablesToAdd.Pop().Dispose();
+                    this._renderablesToAdd.Pop().Dispose();
                 }
             }
-            this.renderablesToAdd.Clear();
-            renderableIds.Clear();
+            this._renderablesToAdd.Clear();
+            _renderableIds.Clear();
         }
 
-
-        public bool IsRenderableInView(Renderable renderable) {
+        /// <summary>
+        /// Determines whether or not a renderable is in view. Used to determine whether or not a renderable should be drawn.
+        /// </summary>
+        /// <param name="renderable">The renderable to check.</param>
+        /// <returns>If true, the renderable is in view. If false, it isn't.</returns>
+        public virtual bool IsRenderableInView(Renderable renderable) {
             // if the renderable is visible and it's in the view of the camera
             return renderable.Visible && Camera.Instance.Viewport.Bounds.Intersects(renderable.RenderableRectangle);
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             this.DoAdditions();
             this.DoRemovals();
-            if (this.needToSort)
+            if (this._needToSort)
             {
-                this.renderables.Sort(depthCompare);
-                this.needToSort = false;
+                this._renderables.Sort(_depthComparer);
+                this._needToSort = false;
             }
             //View view = this.target.GetView();
 
@@ -250,18 +261,18 @@ namespace Dewdrop.Graphics
             //this.viewRect.Width = view.Size.X;
             //this.viewRect.Height = view.Size.Y;
 
-            int count = this.renderables.Count;
+            int count = this._renderables.Count;
             // go through each renderable
             for (int index = 0; index < count; ++index)
             {
                 // get renderable at index
-                Renderable renderable = this.renderables[index];
+                Renderable renderable = this._renderables[index];
 
                 // if the renderable is visible, allow it to draw
                 if (IsRenderableInView(renderable))
                 {
-                    renderable.Draw(this.target);
-                    
+                    renderable.Draw(this._target);
+
                 }
             }
         }

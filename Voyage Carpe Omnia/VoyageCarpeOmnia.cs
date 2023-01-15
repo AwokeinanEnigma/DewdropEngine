@@ -10,7 +10,7 @@ namespace VCO
     public class VoyageCarpeOmnia : Engine
     {
         private SpriteBatch _spriteBatch;
-        private AssetBank<SpriteTexture> assets;
+        private AssetBank<SpriteSheetTexture> assets;
         private AssetBank<Effect> shaders;
         private RenderPipeline pipeline;
 
@@ -31,7 +31,7 @@ namespace VCO
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            assets = new AssetBank<SpriteTexture>("SpriteTexture");
+            assets = new AssetBank<SpriteSheetTexture>("SpriteTexture");
             shaders = new AssetBank<Effect>("Shaders");
 
             Camera a = new Camera(Width, Height);   

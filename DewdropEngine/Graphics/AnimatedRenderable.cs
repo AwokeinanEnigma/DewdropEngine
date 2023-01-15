@@ -1,5 +1,8 @@
 ﻿namespace Dewdrop.Graphics
 {
+    /// <summary>
+    /// This class provides fields and an animation completion event for renderables that are animated.
+    /// </summary>
     public abstract class AnimatedRenderable : Renderable
     {
         protected float[] _speeds;

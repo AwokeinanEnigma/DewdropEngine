@@ -10,10 +10,10 @@ namespace Dewdrop.PipelineReaders
     /// <summary>
     /// Provides a reader of raw sprite sheet content from the content pipeline.
     /// </summary>
-    public class IndexedTexture2DReader : ContentTypeReader<SpriteTexture>
+    public class IndexedTexture2DReader : ContentTypeReader<SpriteSheetTexture>
     {
         /// <inheritdoc />s
-        protected override SpriteTexture Read(ContentReader input, SpriteTexture existingInstance)
+        protected override SpriteSheetTexture Read(ContentReader input, SpriteSheetTexture existingInstance)
         {
             int imageWidth = input.ReadInt32(); //1: output.Write(value.Asset.width);;
             int imageHeight = input.ReadInt32(); //2: output.Write(value.Asset.height);
@@ -93,7 +93,7 @@ namespace Dewdrop.PipelineReaders
                 spriteDefinitions.Add(name.GetHashCode(), newDefinition);
 
             }
-            return new SpriteTexture(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
+            return new SpriteSheetTexture(imageWidth, imageHeight, paletteSize, totalPalettes, coloredImage, decompressedPalettes, spriteDefinitions, defaultSpriteDefinition);
             //return null;
         }
     }

@@ -160,7 +160,6 @@ namespace Dewdrop
 
         private void UpdateView(object sender, EventArgs e)
         {
-            DBG.Log("haii");
             float screenWidth = GraphicsDevice.PresentationParameters.BackBufferWidth;
             float screenHeight = GraphicsDevice.PresentationParameters.BackBufferHeight;
 

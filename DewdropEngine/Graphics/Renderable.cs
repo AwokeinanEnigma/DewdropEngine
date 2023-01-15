@@ -5,8 +5,14 @@ using System.Diagnostics;
 
 namespace Dewdrop.Graphics
 {
+    /// <summary>
+    /// A renderable is anything that can be rendered on scree, like sprites and text.
+    /// </summary>
     public abstract class Renderable : IDisposable
     {
+        /// <summary>
+        /// Provides
+        /// </summary>
         public bool Visible
         {
             get => _visible;

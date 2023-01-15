@@ -8,6 +8,9 @@ using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
 {
+    /// <summary>
+    /// A sprite is an animated renderable that reads a texture, palette, and sprite definitions from an SpriteTexture and uses a shader to apply a palette to the texture.
+    /// </summary>
     public class Sprite : AnimatedRenderable
     {
         /// <summary>
@@ -41,10 +44,14 @@ namespace Dewdrop.Graphics
             set => _flipY = value;
         }
 
+        /// <summary>
+        /// Has this sprite been disposed?
+        /// </summary>
         public bool Disposed
         {
             get => hasDisposed;
         }
+
 
         public override Rectangle RenderableRectangle
         { 
@@ -53,7 +60,7 @@ namespace Dewdrop.Graphics
 
         private Rectangle _spriteRect;
         private Rectangle _texReact;
-        private SpriteTexture _texture;
+        private SpriteSheetTexture _texture;
         private Effect _shader;
 
         private int _paletteIndex;
@@ -75,7 +82,18 @@ namespace Dewdrop.Graphics
             2
         };
 
-        public Sprite(SpriteTexture texture, Effect shader, string defaultSpriteName, int depth, int palette, Vector2 position, string name = "")
+
+        /// <summary>
+        /// Creates a new sprite
+        /// </summary>
+        /// <param name="texture">The sprite texture to pull the texture and palette from.</param>
+        /// <param name="shader">The shader to use.</param>
+        /// <param name="defaultSpriteName">The default sprite to use.</param>
+        /// <param name="depth">The depth of the sprite, used by the render pipeline.</param>
+        /// <param name="palette">The palette index to use.</param>
+        /// <param name="position">The location of the sprite on screen.</param>
+        /// <param name="name">The name of the sprite, used for debugging purposes</param>
+        public Sprite(SpriteSheetTexture texture, Effect shader, string defaultSpriteName, int depth, int palette, Vector2 position, string name = "")
         {
             _texture = texture;
             _shader = shader;
@@ -84,11 +102,13 @@ namespace Dewdrop.Graphics
             _visible = true;
             _paletteIndex = palette;
 
+            _color = Color.White;
+
             base.name = name;
 
            //Engine.RenderDebugUI += Engine_RenderDebugUI;
 
-            SwitchSprite(defaultSpriteName);
+            SetSpriteDef(defaultSpriteName);
         }
 
         private void Engine_RenderDebugUI(DewGui.ImGuiRenderer renderer)
@@ -115,7 +135,13 @@ namespace Dewdrop.Graphics
             ImGui.EndGroup();
         }
 
-        public void SwitchSprite(string spriteName, bool resetAnimation = true)
+        /// <summary>
+        /// Sets the sprite definition of the sprtite.
+        /// </summary>
+        /// <param name="spriteName">The name of the sprite definition</param>
+        /// <param name="resetAnimation">If true, this will ensure that the animation starts at the very start</param>
+        /// <exception cref="DisposedObjectException">If this method is called when this sprite is disposed, this exception will be thrown</exception>
+        public void SetSpriteDef(string spriteName, bool resetAnimation = true)
         {
             if (hasDisposed)
             {
@@ -127,7 +153,7 @@ namespace Dewdrop.Graphics
             SpriteDefinition newDef = _texture.GetSpriteDefinition(spriteName);
             if (newDef == this._currentDefinition)
             {
-                DBG.LogWarning("Tried to set an IndexedColorGraphic's sprite definition to the same definition.");
+                DBG.LogWarning("Tried to set an sprite's sprite definition to the same definition.");
                 return;
             }
 
@@ -158,6 +184,9 @@ namespace Dewdrop.Graphics
             this._currentFrame %= _totalFrames;
         }
 
+        /// <summary>
+        /// Saves the texture and palette of this sprite to .png files.
+        /// </summary>
         public void Save()
         {
             Stream stream = File.Create("tex.png");
@@ -228,7 +257,7 @@ namespace Dewdrop.Graphics
 
                 _shader.Parameters["palIndex"].SetValue(_texture.CurrentPaletteFloat);
                 _shader.Parameters["palSize"].SetValue(_texture.PaletteSize);
-                _shader.Parameters["blend"].SetValue(Color.White.ToVector4());
+                _shader.Parameters["blend"].SetValue(_color.ToVector4());
                 _shader.Parameters["blendMode"].SetValue(1);
 
 
@@ -255,7 +284,7 @@ namespace Dewdrop.Graphics
                     texture: _texture.Texture,
                     position: _position,
                     sourceRectangle: _spriteRect,
-                    color: Color.White
+                    color: Microsoft.Xna.Framework.Color.White
                     );
 
 

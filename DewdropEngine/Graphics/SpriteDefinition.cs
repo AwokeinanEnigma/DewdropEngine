@@ -3,6 +3,9 @@ using System;
 
 namespace Dewdrop.Graphics
 {
+    /// <summary>
+    /// A sprite definition contains information about a part of a spritesheet. 
+    /// </summary>
     public class SpriteDefinition
     {
         public class SpriteDefinitionNotFoundException : Exception
@@ -24,7 +27,7 @@ namespace Dewdrop.Graphics
             Continous = 0,
 
             /// <summary>
-            /// Makes the animation go 0-2-1-3.
+            /// Makes the animation go 0 -> 2 -> 1 -> 3.
             /// </summary>
             ZeroTwoOneThree = 1,
 

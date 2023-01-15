@@ -6,6 +6,10 @@ using System.IO;
 
 namespace Dewdrop.AssetLoading
 {
+    /// <summary>
+    /// An asset bank stores assets of a specific type, so you can easily fetch them later.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset you want to store.</typeparam>
     public class AssetBank<T>
     {
         internal class AssetLoadException : Exception
@@ -56,6 +60,11 @@ namespace Dewdrop.AssetLoading
             DBG.LogInfo($"Assets loaded: {_assets.Count} <=> Time: {stopwatch.ElapsedMilliseconds}ms");
         }
 
+        /// <summary>
+        /// Retrieves an asset by name.
+        /// </summary>
+        /// <param name="name">The name of the asset.</param>
+        /// <returns>The asset, if found.</returns>
         public T GetAssetByName(string name)
         {
             T asset = default;

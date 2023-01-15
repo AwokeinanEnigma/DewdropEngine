@@ -7,15 +7,18 @@ using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
 {
-    public class SpriteTexture : IDisposable
+    /// <summary>
+    /// Contains information about a spritesheet, such as its texture and palette.
+    /// </summary>
+    public class SpriteSheetTexture : IDisposable
     {
         #region Properties
         /// <summary>
-        /// The texture of the image. 
+        /// The texture of the spritesheet. 
         /// </summary>
         public Texture2D Texture
         {
-            get => this.imageTex;
+            get => this._spritesheetTex;
         }
 
         /// <summary>
@@ -23,7 +26,7 @@ namespace Dewdrop.Graphics
         /// </summary>
         public Texture2D Palette
         {
-            get => this.paletteTex;
+            get => this._paletteTex;
         }
 
         /// <summary>
@@ -31,10 +34,10 @@ namespace Dewdrop.Graphics
         /// </summary>
         public int CurrentPalette
         {
-            get => this.currentPal;
+            get => this._currentPal;
             set
             {
-                this.currentPal = Math.Min(this.totalPals, value);
+                this._currentPal = Math.Min(this._totalPals, value);
             }
         }
 
@@ -44,7 +47,7 @@ namespace Dewdrop.Graphics
         /// </summary>
         public float CurrentPaletteFloat
         {
-            get => (float)this.currentPal / (float)this.totalPals;
+            get => (float)this._currentPal / (float)this._totalPals;
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace Dewdrop.Graphics
         /// </summary>
         public int PaletteCount
         {
-            get => this.totalPals;
+            get => this._totalPals;
         }
 
         /// <summary>
@@ -60,40 +63,40 @@ namespace Dewdrop.Graphics
         /// </summary>
         public int PaletteSize
         {
-            get => this.palSize;
+            get => this._palSize;
         }
 
         #endregion
 
-        private SpriteDefinition defaultDefinition;
-        private Dictionary<int, SpriteDefinition> definitions;
+        private SpriteDefinition _defaultDefinition;
+        private Dictionary<int, SpriteDefinition> _definitions;
 
-        private Texture2D paletteTex;
-        private Texture2D imageTex;
+        private Texture2D _paletteTex;
+        private Texture2D _spritesheetTex;
 
-        private int currentPal;
-        private int totalPals;
-        private int palSize;
-        private bool disposedValue;
+        private int _currentPal;
+        private int _totalPals;
+        private int _palSize;
+        private bool _disposedValue;
 
         /// <summary>
-        /// Creates a new IndexedTexture
+        /// Creates a new SpriteSheetTexture
         /// </summary>
-        /// <param name="imageWidth">The width of the image.</param>
-        /// <param name="imageHeight">The height of the image.</param>
+        /// <param name="spritesheetWidth">The width of the spritesheet.</param>
+        /// <param name="spritesheetHeight">The height of the spritesheet.</param>
         /// <param name="paletteSize">The size of the current palette</param>
         /// <param name="totalPalettes">Represents how many palettes this IndexedTexture contains.</param>
-        /// <param name="image">The image, represented by an array of colors.</param>
+        /// <param name="spritesheet">The spritesheet, represented by an array of colors.</param>
         /// <param name="palette">The palette, represented by an array of colors.</param>
         /// <param name="definitions">The sprite definitions this instance has.</param>
         /// <param name="defaultDefinition">The default sprite definition this instance should use.</param>
-        public SpriteTexture
+        public SpriteSheetTexture
             (
-            int imageWidth,
-            int imageHeight,
+            int spritesheetWidth,
+            int spritesheetHeight,
             int paletteSize,
             int totalPalettes,
-            Color[] image,
+            Color[] spritesheet,
             Color[] palette,
             Dictionary<int, SpriteDefinition> definitions,
             SpriteDefinition defaultDefinition
@@ -101,17 +104,17 @@ namespace Dewdrop.Graphics
         {
 
 
-            this.palSize = paletteSize;
-            this.totalPals = totalPalettes;
+            this._palSize = paletteSize;
+            this._totalPals = totalPalettes;
 
-            this.paletteTex = new Texture2D(Engine.instance.GraphicsDevice, (int)this.palSize, (int)this.totalPals);
-            this.imageTex = new Texture2D(Engine.instance.GraphicsDevice, (int)imageWidth, (int)imageHeight);
+            this._paletteTex = new Texture2D(Engine.instance.GraphicsDevice, (int)this._palSize, (int)this._totalPals);
+            this._spritesheetTex = new Texture2D(Engine.instance.GraphicsDevice, (int)spritesheetWidth, (int)spritesheetHeight);
 
-            this.paletteTex.SetData(palette);
-            this.imageTex.SetData(image);
+            this._paletteTex.SetData(palette);
+            this._spritesheetTex.SetData(spritesheet);
 
-            this.definitions = definitions;
-            this.defaultDefinition = defaultDefinition;
+            this._definitions = definitions;
+            this._defaultDefinition = defaultDefinition;
         }
 
 
@@ -121,7 +124,7 @@ namespace Dewdrop.Graphics
         /// <returns>A randomly chosen sprite definition</returns>
         public SpriteDefinition GetRandomSpriteDefinition()
         {
-            return this.GetSpriteDefinition(definitions.ElementAt(new Random().Next(0, definitions.Count)).Key);
+            return this.GetSpriteDefinition(_definitions.ElementAt(new Random().Next(0, _definitions.Count)).Key);
 
         }
 
@@ -142,9 +145,14 @@ namespace Dewdrop.Graphics
             return def;
         }
 
+        /// <summary>
+        /// Gets a sprite definition by hash.
+        /// </summary>
+        /// <param name="hash">The integer hash of the name of the sprite definition.</param>
+        /// <returns>The sprite definition</returns>
         public SpriteDefinition GetSpriteDefinition(int hash)
         {
-            if (!this.definitions.TryGetValue(hash, out SpriteDefinition result))
+            if (!this._definitions.TryGetValue(hash, out SpriteDefinition result))
             {
                 result = null;
             }
@@ -153,40 +161,44 @@ namespace Dewdrop.Graphics
 
         public ICollection<SpriteDefinition> GetSpriteDefinitions()
         {
-            return this.definitions.Values;
+            return this._definitions.Values;
         }
 
+        /// <summary>
+        /// Returns the default sprite definition of the sprite sheet
+        /// </summary>
+        /// <returns>The default definition of the spritesheet</returns>
         public SpriteDefinition GetDefaultSpriteDefinition()
         {
-            return this.defaultDefinition;
+            return this._defaultDefinition;
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
-                    definitions.Clear(); ;
+                    _definitions.Clear(); ;
 
                     // TODO: dispose managed state (managed objects)
                 }
 
-                imageTex.Dispose();
-                paletteTex.Dispose();
+                _spritesheetTex.Dispose();
+                _paletteTex.Dispose();
 
-                paletteTex = null;
-                imageTex = null;
+                _paletteTex = null;
+                _spritesheetTex = null;
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 
         /// <summary>
         ///  override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
         /// </summary>
-        ~SpriteTexture()
+        ~SpriteSheetTexture()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
