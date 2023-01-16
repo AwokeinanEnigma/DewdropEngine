@@ -25,13 +25,13 @@ namespace VCO
         {
         }
 
-        public override void Focus()
+        public override void Unpause()
         {
             DBG.Log("focus");
             pipeline.ForEach(p => {
-                if (p is Sprite)
+                if (p is AnimatedRenderable)
                 {
-                    ((Sprite)p).AnimationEnabled = true;
+                    ((AnimatedRenderable)p).AnimationEnabled = true;
                 }
             });
         }

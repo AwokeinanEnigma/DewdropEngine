@@ -19,7 +19,7 @@ namespace VCO
         public AssetBank<SpriteSheetTexture> assets;
         public AssetBank<Effect> shaders;
 
-        public VoyageCarpeOmnia() : base(640, 360, false, 3)
+        public VoyageCarpeOmnia() : base(320, 180, false, 3)
         {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

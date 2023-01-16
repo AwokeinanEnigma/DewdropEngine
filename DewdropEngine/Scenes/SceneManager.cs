@@ -363,7 +363,7 @@ namespace Dewdrop.Scenes
                 // focus!
                 if (scene.hasDisplayed)
                 {
-                    scene.Focus();
+                    scene.Unpause();
                 }
                 else 
                 {

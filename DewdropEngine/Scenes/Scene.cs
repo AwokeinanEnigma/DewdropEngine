@@ -27,21 +27,51 @@ namespace Dewdrop.Scenes
         public abstract void Load();
 
         /// <summary>
-        /// If two scenes are being rendered,
+        /// If two scenes are being rendered, and this is the scene being drawn on, when that second scene drawing on top goes away, this method will be called
         /// </summary>
-        public abstract void Focus();
+        public abstract void Unpause();
 
+        /// <summary>
+        /// Called before the update.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public virtual void PreUpdate(GameTime gameTime) { }
+        
+        /// <summary>
+        /// This is the update method, which is called every frame, like every other update function. However, it's best to do things that run every frame here.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public abstract void Update(GameTime gameTime);
+        
+        /// <summary>
+        /// Called after the update method, do any cleanup you need to do here.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public virtual void PostUpdate(GameTime gameTime) { }
 
+        /// <summary>
+        /// Called before the render method, if you need to do any effects, set them up here
+        /// </summary>
         public virtual void PreRender() { }
+        
+        /// <summary>
+        /// This is the render method, draw stuff here.
+        /// </summary>
         public abstract void Render();
+
+        /// <summary>
+        /// Called after the render method, you can do any post-processing here.
+        /// </summary>
         public virtual void PostRender() { }
 
-
+        /// <summary>
+        /// This is used for the composite mode, where it'll draw multiple scenes at once. Pause game stuff here.
+        /// </summary>
         public abstract void Pause();
 
+        /// <summary>
+        /// If you need to 
+        /// </summary>
         public virtual void Unload() { }
 
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources

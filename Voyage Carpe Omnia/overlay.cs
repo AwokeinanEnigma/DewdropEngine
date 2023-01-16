@@ -12,7 +12,7 @@ namespace VCO
 {
     internal class overlay : Scene
     {
-        public override void Focus()
+        public override void Unpause()
         {
             DBG.Log("focus");
         }
