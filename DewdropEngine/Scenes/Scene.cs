@@ -70,7 +70,7 @@ namespace Dewdrop.Scenes
         public abstract void Pause();
 
         /// <summary>
-        /// If you need to 
+        /// If you need to unload content, do it here.
         /// </summary>
         public virtual void Unload() { }
 
