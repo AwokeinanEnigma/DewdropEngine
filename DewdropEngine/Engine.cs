@@ -1,5 +1,6 @@
 ﻿using Dewdrop.Debugging;
 using Dewdrop.DewGui;
+using Dewdrop.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,8 @@ namespace Dewdrop
             get => Content;
         }
 
-        
+        public static SceneManager SceneManager;
+
         /// <summary>
         /// Time since last frame. Adjusted by the time rate.
         /// </summary>
@@ -98,6 +100,7 @@ namespace Dewdrop
 
             //SetWindowed(pixelWidth, pixelHeight);
             instance = this;
+            SceneManager = new SceneManager();
         }
 
 
@@ -139,13 +142,21 @@ namespace Dewdrop
             RawDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             DeltaTime = RawDeltaTime * TimeRate;
 
+            SceneManager.Update(gameTime);
+
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            SceneManager.PreRender();
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Viewport = Viewport;
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            SceneManager.Render();
 
             base.Draw(gameTime);
 

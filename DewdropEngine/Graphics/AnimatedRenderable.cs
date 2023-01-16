@@ -11,6 +11,14 @@
         protected float _speedModifier;
         protected float _speedIndex;
 
+        public virtual bool AnimationEnabled
+        {
+            get => _animationEnabled;
+            set => _animationEnabled = value;
+        }
+        protected bool _animationEnabled = true;
+        
+
         public delegate void OnAnimationComplete(AnimatedRenderable renderable);
         public event OnAnimationComplete OnAnimationCompletedEvent;
 
