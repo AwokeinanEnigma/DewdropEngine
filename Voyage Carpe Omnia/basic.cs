@@ -18,12 +18,11 @@ namespace VCO
         public basic(SpriteBatch batch) 
         {
             pipeline = new RenderPipeline(batch);
-            VoyageCarpeOmnia.instance.OnContentLoaded += Instance_OnContentLoaded;
+            pipeline.Add(new Sprite(VoyageCarpeOmnia.instance.assets.GetAssetByName("greenhairedgirl_b"), VoyageCarpeOmnia.instance.shaders.GetAssetByName("gss"), "walk south", 100, 0, Vector2.Zero, "hehe"));
         }
 
         private void Instance_OnContentLoaded()
         {
-            pipeline.Add(new Sprite(VoyageCarpeOmnia.instance.assets.GetAssetByName("greenhairedgirl_b"), VoyageCarpeOmnia.instance.shaders.GetAssetByName("gss"), "walk south", 100, 0, Vector2.Zero, "hehe"));
         }
 
         public override void Focus()

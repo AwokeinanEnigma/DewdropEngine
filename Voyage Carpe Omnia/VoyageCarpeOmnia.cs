@@ -19,7 +19,7 @@ namespace VCO
         public AssetBank<SpriteSheetTexture> assets;
         public AssetBank<Effect> shaders;
 
-        public VoyageCarpeOmnia() : base(320, 180, false, 3)
+        public VoyageCarpeOmnia() : base(640, 360, false, 3)
         {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -30,8 +30,8 @@ namespace VCO
         {
             // TODO: Add your initialization logic here
             Engine.RenderDebugUI += Engine_RenderDebugUI;
-            SceneManager.Transition = new InstantTransition();
             Camera a = new Camera(Width, Height);
+           // a.Position = new Vector2(20, 20);
             base.Initialize();
         }
 
@@ -48,6 +48,12 @@ namespace VCO
                 SceneManager.Push(new overlay());
                 SceneManager.Transition = new InstantTransition();
             }
+            if (ImGui.Button("hehehe"))
+            {
+                SceneManager.CompositeMode = false;
+                SceneManager.Push(new basic(_spriteBatch));
+                SceneManager.Transition = new InstantTransition();
+            }
         }
 
         public event Action OnContentLoaded;
@@ -55,12 +61,14 @@ namespace VCO
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            SceneManager.Push(new basic(_spriteBatch));   
+ 
  
             assets = new AssetBank<SpriteSheetTexture>("SpriteTexture");
             shaders = new AssetBank<Effect>("Shaders");
             OnContentLoaded?.Invoke();
-            // TODO: use this.Content to load your game content here
+
+            SceneManager.Transition = new InstantTransition();
+            SceneManager.Push(new basic(_spriteBatch));     // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
