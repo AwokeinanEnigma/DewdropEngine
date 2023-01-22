@@ -72,7 +72,6 @@ namespace Dewdrop.Graphics
 
         private SpriteAnimationMode _animationMMode;
 
-        private bool _animationEnabled = true;
         private float _betaFrame;
         
         private static readonly int[] MODE_ONE_FRAMES = new int[] {

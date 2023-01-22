@@ -24,17 +24,17 @@ namespace Dewdrop.Utilities
         }
 
         /// <summary>
-        /// Gets a color from an integer
+        /// Creates a <see cref="Color"/> object from a 32-bit signed integer representation.
         /// </summary>
-        /// <param name="color">The integer to get the color from.</param>
-        /// <returns>Returns the color from the integer</returns>
-        public static Color CreateFromInteger(int color) => ColorHelper.CreateFromInteger((uint)color);
+        /// <param name="color">The 32-bit signed integer representing the color in the format of 0xAARRGGBB</param>
+        /// <returns>A new <see cref="Color"/> object created from the specified integer value.</returns>
+        public static Color CreateFromInteger(int color) => CreateFromInteger((uint)color);
 
         /// <summary>
-        /// Gets a color from an unsigned integer
+        /// Creates a <see cref="Color"/> object from a 32-bit unsigned integer representation.
         /// </summary>
-        /// <param name="color">The unsigned integer to get the color from.</param>
-        /// <returns>Returns the color from the unsigned integer</returns>
+        /// <param name="color">The 32-bit unsigned integer representing the color in the format of 0xAARRGGBB</param>
+        /// <returns>A new <see cref="Color"/> object created from the specified integer value.</returns>
         public static Color CreateFromInteger(uint color)
         {
             // inherited from carbine
@@ -43,7 +43,12 @@ namespace Dewdrop.Utilities
             return new Color((byte)(color >> 16), (byte)(color >> 8), (byte)color, alpha);
         }
 
-        public static int ToInt(Color color)
+        /// <summary>
+        /// Converts a <see cref="Color"/> object to a 32-bit signed integer representation in the format of 0xAARRGGBB.
+        /// </summary>
+        /// <param name="color">The <see cref="Color"/> object to be converted.</param>
+        /// <returns>A 32-bit signed integer representation of the specified <see cref="Color"/> object.</returns>
+        public static int ToARGB(Color color)
         {
             int argb = color.A << 24; // Shift the alpha bits over 24 places
             argb |= color.R << 16; // Or it with the red bits shifted 16 places
