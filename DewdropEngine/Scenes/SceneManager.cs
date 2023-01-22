@@ -66,14 +66,19 @@ namespace Dewdrop.Scenes
             }
 
             /// <summary>
-            /// Gets the scene from the bottom of the scene list
+            /// Retrieves the topmost <see cref="Scene"/> object in the list, without removing it.
             /// </summary>
-            /// <returns>The scene at the bottom of the scene list</returns>
+            /// <returns>The topmost <see cref="Scene"/> object in the list, or null if the list is empty.</returns>
             public Scene Peek()
             {
                 return this.Peek(0);
             }
 
+            /// <summary>
+            /// Retrieves a <see cref="Scene"/> object from a specific position in the list, without removing it.
+            /// </summary>
+            /// <param name="i">The index of the <see cref="Scene"/> object to retrieve. The index is zero-based, and it is calculated from the top of the list.</param>
+            /// <returns>The <see cref="Scene"/> object at the specified index, or null if the index is out of range.</returns>
             public Scene Peek(int i)
             {
                 //if we're outside of the list of scenes
@@ -87,9 +92,9 @@ namespace Dewdrop.Scenes
             }
 
             /// <summary>
-            /// Gets a scene from the top of the scene list
+            /// Retrieves and removes the topmost entry in the list of <see cref="Scene"/> objects.
             /// </summary>
-            /// <returns>The scene at the top of the scene list</returns>
+            /// <returns>The removed <see cref="Scene"/> object at the top of the list, or null if the list is empty.</returns>
             public Scene Pop()
             {
                 // create result
@@ -150,7 +155,7 @@ namespace Dewdrop.Scenes
         }
 
         /// <summary>
-        /// Are we not displaying a scene?
+        /// If true, the scene manager is empty, if not, it isn't.
         /// </summary>
         public bool IsEmpty
         {
@@ -158,7 +163,7 @@ namespace Dewdrop.Scenes
         }
 
         /// <summary>
-        /// Are we drawing two scenes at once?
+        /// If true, the scene manager is drawing multiple scenes at once.
         /// </summary>
         public bool CompositeMode
         {
@@ -455,7 +460,6 @@ namespace Dewdrop.Scenes
             {
                 if (this.scenes[i + 1].DrawBehind)
                 {
-                    this.scenes[i].PreRender();
                     this.scenes[i].Render();
                     this.scenes[i].PostRender();
                 }
