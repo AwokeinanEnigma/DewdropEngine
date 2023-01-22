@@ -106,9 +106,9 @@ namespace Dewdrop.Graphics
         }
 
         /// <summary>
-        /// Adds a renderable object to the stack of objects to render
+        /// Adds a renderable object to the render pipeline's list of renderables to be drawn.
         /// </summary>
-        /// <param name="renderable">The renderable to add</param>
+        /// <param name="renderable">The renderable to add.</param>
         public virtual void Add(Renderable renderable)
         {
             // if we don't already have this renderable in this pipeline
@@ -121,18 +121,18 @@ namespace Dewdrop.Graphics
         }
 
         /// <summary>
-        /// Adds a list of renderables.
+        /// Adds a list of renderables to the render pipeline's list of renderables to be drawn.
         /// </summary>
-        /// <param name="renderablesToAdd">Renderables to add</param>
+        /// <param name="renderablesToAdd">List of renderables to add.</param>
         public virtual void AddAll(List<Renderable> renderablesToAdd)
         {
             renderablesToAdd.ForEach(x => Add(x));
         }
 
         /// <summary>
-        /// Adds a list of renderables.
+        /// Adds an array of renderables to the render pipeline's list of renderables to be drawn.
         /// </summary>
-        /// <param name="renderablesToAdd">Renderables to add</param>
+        /// <param name="renderablesToAdd">Array of renderables to add.</param>
         public virtual void AddAll(Renderable[] renderablesToAdd)
         {
             for (int i = 0; i < renderablesToAdd.Length; i++)
@@ -142,7 +142,7 @@ namespace Dewdrop.Graphics
         }
 
         /// <summary>
-        /// Removes a renderable.
+        /// Removes a renderable from the render pipeline's list of renderables to be drawn.
         /// </summary>
         /// <param name="renderable">The renderable to remove.</param>
         public virtual void Remove(Renderable renderable)
@@ -195,23 +195,27 @@ namespace Dewdrop.Graphics
         }
 
         /// <summary>
-        /// Executes a function for every renderable with a renderable parameter
+        /// Executes a function for every renderable in the renderer.
         /// </summary>
-        /// <param name="forEachFunc">The function to use on each renderable</param>
+        /// <param name="forEachFunc">The function to execute for each renderable. The renderable is passed as a parameter to the function.</param>
         public virtual void ForEach(Action<Renderable> forEachFunc)
         {
             _renderables.ForEach(x => forEachFunc(x));
         }
 
+
+        /// <summary>
+        /// Removes all renderables from the renderer, disposing of them.
+        /// </summary>
         public void Clear()
         {
             this.Clear(true);
         }
 
         /// <summary>
-        /// Removes every renderable.
+        /// Removes all renderables from the renderer.
         /// </summary>
-        /// <param name="dispose">If true, the dispose method of every renderable will be called.</param>
+        /// <param name="dispose">If true, the dispose method of every renderable will be called before they are removed.</param>
         public void Clear(bool dispose)
         {
             this._renderablesToRemove.Clear();
@@ -240,7 +244,7 @@ namespace Dewdrop.Graphics
         /// </summary>
         /// <param name="renderable">The renderable to check.</param>
         /// <returns>If true, the renderable is in view. If false, it isn't.</returns>
-        public virtual bool IsRenderableInView(Renderable renderable) {
+        protected virtual bool IsRenderableInView(Renderable renderable) {
             // if the renderable is visible and it's in the view of the camera
             return renderable.Visible && Camera.Instance.Viewport.Bounds.Intersects(renderable.RenderableRectangle);
         }
@@ -254,12 +258,6 @@ namespace Dewdrop.Graphics
                 this._renderables.Sort(_depthComparer);
                 this._needToSort = false;
             }
-            //View view = this.target.GetView();
-
-            //this.viewRect.Left = view.Center.X - view.Size.X / 2f;
-            //this.viewRect.Top = view.Center.Y - view.Size.Y / 2f;
-            //this.viewRect.Width = view.Size.X;
-            //this.viewRect.Height = view.Size.Y;
 
             int count = this._renderables.Count;
             // go through each renderable

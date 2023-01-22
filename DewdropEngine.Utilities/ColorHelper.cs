@@ -4,10 +4,16 @@ using System.Globalization;
 namespace Dewdrop.Utilities
 {
     /// <summary>
-    /// Provides methods to manipulate colors
+    /// Provides methods to manipulate <see cref="Color"/> objects.
     /// </summary>
     public static class ColorHelper
     {
+
+        /// <summary>
+        /// Creates a <see cref="Color"/> object from a hex string.
+        /// </summary>
+        /// <param name="hexString">The hex string representation of the color.</param>
+        /// <returns>The <see cref="Color"/> object represented by the hex string.</returns>
         public static Color FromHexString(string hexString)
         {
             Color result;
