@@ -15,6 +15,7 @@ namespace Dewdrop.Graphics
         private Vector2 origin = Vector2.Zero;
         private float angle = 0;
 
+
         public Viewport Viewport;
 
         public static Camera Instance;
@@ -57,7 +58,6 @@ namespace Dewdrop.Graphics
                     Matrix.CreateTranslation(new Vector3(new Vector2((int)Math.Floor(origin.X), (int)Math.Floor(origin.Y)), 0));
 
             inverse = Matrix.Invert(matrix);
-
             changed = false;
         }
 
