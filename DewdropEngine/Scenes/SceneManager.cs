@@ -41,7 +41,7 @@ namespace Dewdrop.Scenes
             }
 
             /// <summary>
-            /// Creates a new scene stack.
+            /// Creates a new scene stack.  
             /// </summary>
             public SceneStack()
             {

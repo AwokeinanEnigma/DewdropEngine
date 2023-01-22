@@ -61,7 +61,6 @@ namespace VCO
         public override void Render()
         {
             pipeline.Draw();
-            DBG.Log("render");
         }
         public override void PostRender()
         {
@@ -74,7 +73,6 @@ namespace VCO
         }
         public override void Update(GameTime gameTime)
         {
-            DBG.Log("update");
         }
         public override void PostUpdate(GameTime gameTime)
         {
