@@ -1,4 +1,5 @@
 ﻿using Dewdrop.Graphics;
+
 /// <summary>
 /// This class provides fields and an animation completion event for renderables that are animated.
 /// </summary>
