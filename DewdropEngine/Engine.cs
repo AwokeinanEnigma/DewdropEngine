@@ -132,6 +132,8 @@ namespace Dewdrop
             // initialize 
             imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             ImGuiStylePtr ptr =  ImGui.GetStyle();
+
+            //autistic style charges to imgui
             ptr.ChildRounding = 100;
             ptr.FrameRounding = 100;
             ptr.WindowRounding = 10;
