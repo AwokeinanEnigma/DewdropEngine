@@ -7,7 +7,7 @@ namespace Dewdrop.Debugging
 {
     //based on https://github.com/NoelFB/Foster/blob/master/Framework/Logging/Log.cs
     //with some minor changes
-    public static class DBG
+    public static partial class DBG
 
     {
         private static LogLevel Verbosity = LogLevel.Debug;
