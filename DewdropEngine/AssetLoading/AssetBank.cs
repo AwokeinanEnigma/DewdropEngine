@@ -7,13 +7,21 @@ using System.IO;
 namespace Dewdrop.AssetLoading
 {
     /// <summary>
-    /// An asset bank stores assets of a specific type, so you can easily fetch them later.
+    /// An asset bank is a container that stores and manages assets of a specific type, T. It provides a convenient way to access and retrieve the assets later.
     /// </summary>
-    /// <typeparam name="T">The type of the asset you want to store.</typeparam>
+    /// <typeparam name="T">The type of the assets that are stored in this asset bank.</typeparam>
     public class AssetBank<T>
     {
+        /// <summary>
+        /// Represents an exception that is thrown when an asset is not found in an asset bank.
+        /// </summary>
         internal class AssetLoadException : Exception
         {
+            /// <summary>
+            /// Initializes a new instance of the AssetLoadException class with a specified error message that includes the asset name and type.
+            /// </summary>
+            /// <param name="name">The name of the asset that could not be found.</param>
+            /// <param name="type">The name of the type of the asset that could not be found.</param>
             public AssetLoadException(string name, string type) : base($"\"{name}\" was not found in the {type} asset bank.")
             {
             }
@@ -22,10 +30,10 @@ namespace Dewdrop.AssetLoading
         private Dictionary<string, T> _assets;
 
         /// <summary>
-        /// Creates a new asset bank.
+        /// Creates a new asset bank. The asset bank loads assets of type T from the specified directory and its subdirectories (if specified)
         /// </summary>
-        /// <param name="directory">The directory to load assets from.</param>
-        /// <param name="option">Determines if the asset bank will load assets from subdirectories.</param>
+        /// <param name="directory">The directory to load assets from. </param>
+        /// <param name="searchOption">Determines if the asset bank will load assets from subdirectories. It is set to SearchOption.AllDirectories by default</param>
         public AssetBank(string directory, SearchOption searchOption = SearchOption.AllDirectories)
         {
             _assets = new Dictionary<string, T>();
@@ -61,10 +69,11 @@ namespace Dewdrop.AssetLoading
         }
 
         /// <summary>
-        /// Retrieves an asset by name.
+        /// Retrieves an asset of type T by its name. 
         /// </summary>
-        /// <param name="name">The name of the asset.</param>
-        /// <returns>The asset, if found.</returns>
+        /// <param name="name">The name of the asset to be retrieved.</param>
+        /// <returns>The asset of type T, if found.</returns>
+        /// <exception cref="AssetLoadException">Thrown when the asset with the provided name is not found. The exception contains the asset name and type as arguments.</exception>
         public T GetAssetByName(string name)
         {
             T asset = default;

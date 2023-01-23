@@ -7,7 +7,7 @@ namespace Dewdrop.Debugging
 {
     //based on https://github.com/NoelFB/Foster/blob/master/Framework/Logging/Log.cs
     //with some minor changes
-    public static class DBG
+    public static partial class DBG
 
     {
         private static LogLevel Verbosity = LogLevel.Debug;
@@ -39,11 +39,11 @@ namespace Dewdrop.Debugging
         };
 
         /// <summary>
-        /// Generic logging function. Just logs as system.
+        /// Generic logging function that logs the given message as a system log.
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The message to log.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void Log(
         object message,
         [CallerFilePath] string callerFilePath = "",
@@ -53,12 +53,12 @@ namespace Dewdrop.Debugging
         }
 
         /// <summary>
-        /// Used to stop the game if a condition is false. Sends a message to the console and then throws an error.
+        /// Logs an assertion message and throws an error if the given condition is false.
         /// </summary>
-        /// <param name="condition">If this condition is false, the game will go into an error scene.</param>
-        /// <param name="message">The message to display if the condition is false. Is "Assertion failed." by default.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="condition">The condition to check. If it is false, the game will go into an error scene and the assertion message will be logged.</param>
+        /// <param name="message">The message to log if the condition is false. Default is "Assertion failed.".</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogAssertion(
         bool condition,
         string message = "Assertion failed.",
@@ -68,16 +68,17 @@ namespace Dewdrop.Debugging
             if (condition == false)
             {
                 LogInternal(LogLevel.Assert, message, callerFilePath, callerLineNumber);
+                throw new Exception("Assertion failed.");
             }
-
         }
 
         /// <summary>
-        /// Used to send error messages to the console.
+        /// Logs an error message and throws an exception, if provided.
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The error message to log.</param>
+        /// <param name="exception">The exception to throw, if any.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogError(
         object message,
         Exception exception,
@@ -93,11 +94,11 @@ namespace Dewdrop.Debugging
         }
 
         /// <summary>
-        /// Used to send warning messages to the console.
+        /// Logs a warning message to the console.
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The message to log.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogWarning(
         object message,
         [CallerFilePath] string callerFilePath = "",
@@ -109,9 +110,9 @@ namespace Dewdrop.Debugging
         /// <summary>
         /// Used to send info messages to the console.
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The message to log.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogInfo(
         object message,
         [CallerFilePath] string callerFilePath = "",
@@ -121,11 +122,11 @@ namespace Dewdrop.Debugging
         }
 
         /// <summary>
-        /// Used to send Lua info messages to the console.
+        /// Logs a message with the "Lua" level. 
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The message to log.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogLua(
         object message,
         [CallerFilePath] string callerFilePath = "",
@@ -135,11 +136,11 @@ namespace Dewdrop.Debugging
         }
 
         /// <summary>
-        /// Used to send debug messages to the console.
+        /// Logs a message with the "Debug" level. 
         /// </summary>
-        /// <param name="message">The message to display.</param>
-        /// <param name="callerFilePath">Ignore this.</param>
-        /// <param name="callerLineNumber">Ignore this.</param>
+        /// <param name="message">The message to log.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void LogDebug(
         object message,
         [CallerFilePath] string callerFilePath = "",
@@ -149,6 +150,12 @@ namespace Dewdrop.Debugging
         }
 
 
+        /// <summary>
+        /// Sets the level of verbosity for log messages.
+        /// </summary>
+        /// <param name="level">The level of verbosity to set.</param>
+        /// <param name="callerFilePath">The file path of the caller. This parameter is automatically set and used for internal purposes.</param>
+        /// <param name="callerLineNumber">The line number of the caller. This parameter is automatically set and used for internal purposes.</param>
         public static void SetVerbosity(
         LogLevel level,
         [CallerFilePath] string callerFilePath = "",

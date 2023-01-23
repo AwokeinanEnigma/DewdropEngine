@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Dewdrop.Graphics
 {
     /// <summary>
-    /// Sorts render pipelines
+    /// Sorts and renders render pipelines according to their depths.
     /// </summary>
     public class RenderPipelineSorter
     {
@@ -44,6 +44,10 @@ namespace Dewdrop.Graphics
                 return a.PipelineDepth != b.PipelineDepth ? a.PipelineDepth - b.PipelineDepth : this.pipeline._pipelineIds[b] - this.pipeline._pipelineIds[a];
             }
         }
+
+        /// <summary>
+        /// Creates a new RenderPipelineSorter.
+        /// </summary>
         public RenderPipelineSorter()
         {
             _renderPipelines = new List<RenderPipeline>();
@@ -51,7 +55,10 @@ namespace Dewdrop.Graphics
             _comparer = new PipelineComparer(this);
         }
 
-
+        /// <summary>
+        /// Adds a RenderPipeline to the sorter.
+        /// </summary>
+        /// <param name="pipeline">The RenderPipeline to add.</param>
         public void Add(RenderPipeline pipeline)
         {
             _renderPipelines.Add(pipeline);
@@ -61,28 +68,35 @@ namespace Dewdrop.Graphics
             _sort = true;
         }
 
+        /// <summary>
+        /// Removes a RenderPipeline from the sorter.
+        /// </summary>
+        /// <param name="pipeline">The RenderPipeline to remove.</param>
         public void Remove(RenderPipeline pipeline)
         {
             _renderPipelines.Remove(pipeline);
-            _pipelineIds.Remove(pipeline); 
+            _pipelineIds.Remove(pipeline);
         }
 
-        public void ForceSort() {
+        /// <summary>
+        /// Forces a sort of the RenderPipelines in the sorter.
+        /// </summary>
+        public void ForceSort()
+        {
             _sort = true;
         }
 
-        public void Render() {
+        /// <summary>
+        /// Draws all RenderPipelines in the sorter.
+        /// </summary>
+        public void Render()
+        {
             if (this._sort)
             {
                 this._renderPipelines.Sort(_comparer);
                 this._sort = false;
             }
-            //View view = this.target.GetView();
 
-            //this.viewRect.Left = view.Center.X - view.Size.X / 2f;
-            //this.viewRect.Top = view.Center.Y - view.Size.Y / 2f;
-            //this.viewRect.Width = view.Size.X;
-            //this.viewRect.Height = view.Size.Y;
 
             int count = this._pipelineIds.Count;
             for (int index = 0; index < count; ++index)
@@ -90,7 +104,7 @@ namespace Dewdrop.Graphics
                 // get renderable at index
                 RenderPipeline pipeline = this._renderPipelines[index];
                 pipeline.Draw();
-                
+
             }
 
         }

@@ -14,7 +14,7 @@ namespace Dewdrop.PipelineExtensions.GDat
         public int palSize;
 
         public Color[] image;
-        public Color[] palette;
+        public int[] palette;
 
         public int height;
         public int width;
@@ -28,7 +28,7 @@ namespace Dewdrop.PipelineExtensions.GDat
             width = cWidth;
             // Console.WriteLine(BitConverter.ToString(image));
             img = image;
-            palette = new Color[palSize * totalPals];
+            palette = new int[palSize * totalPals];
             this.image = new Color[width * height];
 
             /*for (int i = 0; i < palette.Length; i++)
@@ -41,7 +41,7 @@ namespace Dewdrop.PipelineExtensions.GDat
                 uint num3 = 0;
                 while (num3 < palettes[allPalettes].Length)
                 {
-                    palette[allPalettes *this.palSize + num3] = ColorHelper.CreateFromInteger(palettes[allPalettes][num3]);
+                    palette[allPalettes *this.palSize + num3] = palettes[allPalettes][num3];
                     num3++;
                 }
             }

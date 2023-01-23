@@ -38,9 +38,9 @@ namespace Dewdrop.PipelineExtensions.GDat
             output.Write(value.Asset.img);
 
             output.Write(value.Asset.palette.Length);
-            foreach (Color paletteColor in value.Asset.palette)
+            foreach (int paletteColor in value.Asset.palette)
             {
-                output.Write(ColorHelper.ToInt(paletteColor));
+                output.Write(paletteColor);
 
             }
 
