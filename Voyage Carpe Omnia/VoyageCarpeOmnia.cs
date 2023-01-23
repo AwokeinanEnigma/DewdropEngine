@@ -3,6 +3,7 @@ using Dewdrop.AssetLoading;
 using Dewdrop.Graphics;
 using Dewdrop.Scenes;
 using Dewdrop.Scenes.Transitions;
+using Dewdrop.StateMachines;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,7 @@ namespace VCO
 {
     public class VoyageCarpeOmnia : Engine
     {
+        private EntityStateMachine machine;
         public static VoyageCarpeOmnia instance;
         private SpriteBatch _spriteBatch;
         
@@ -24,6 +26,8 @@ namespace VCO
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             instance = this;
+
+            machine = new EntityStateMachine(null, "debug");
         }
 
         protected override void Initialize()
@@ -31,6 +35,7 @@ namespace VCO
             // TODO: Add your initialization logic here
             Engine.RenderDebugUI += Engine_RenderDebugUI;
             Camera a = new Camera(Width, Height);
+            machine.Initialize();
            // a.Position = new Vector2(20, 20);
             base.Initialize();
         }
@@ -53,6 +58,11 @@ namespace VCO
                 SceneManager.CompositeMode = false;
                 SceneManager.Push(new basic(_spriteBatch));
                 SceneManager.Transition = new InstantTransition();
+            }
+
+            if (ImGui.Button("activate state machine"))
+            {
+                machine.SetStateInterrupt(new Stupido());
             }
         }
 
@@ -77,7 +87,7 @@ namespace VCO
                 Exit();
 
             // TODO: Add your update logic here
-
+            machine.Update();
             base.Update(gameTime);
         }
 
