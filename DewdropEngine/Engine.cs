@@ -1,6 +1,7 @@
 ﻿using Dewdrop.Debugging;
 using Dewdrop.DewGui;
 using Dewdrop.Scenes;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -130,6 +131,12 @@ namespace Dewdrop
 
             // initialize 
             imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+            ImGuiStylePtr ptr =  ImGui.GetStyle();
+            ptr.ChildRounding = 100;
+            ptr.FrameRounding = 100;
+            ptr.WindowRounding = 10;
+            ptr.FrameRounding = 50;
+            //style.Colors[(int)ImGuiCol.text] = new Vector4(0.24f, 0.23f, 0.29f, 1.00f);
         }
 
         protected override void LoadContent()
@@ -163,6 +170,7 @@ namespace Dewdrop
             imGuiRenderer.BeginLayout(gameTime);
             //she was young once, girl of the bohemian kind
             RenderDebugUI?.Invoke(imGuiRenderer);
+           
             imGuiRenderer.EndLayout();
         }
 
