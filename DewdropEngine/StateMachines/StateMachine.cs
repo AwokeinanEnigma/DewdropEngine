@@ -5,12 +5,12 @@ namespace Dewdrop.StateMachines
     /// <summary>
     /// This is a finite state machine. It can only have a single state at a time.
     /// </summary>
-    public class EntityStateMachine
+    public class StateMachine
     {
-        public EntityState currentState;
-        public EntityState nextState;
+        public State currentState;
+        public State nextState;
 
-        private EntityState _initialState;
+        private State _initialState;
 
         /// <summary>
         /// The name of the state machine.
@@ -22,7 +22,7 @@ namespace Dewdrop.StateMachines
         /// </summary>
         /// <param name="currentState">The initial state of the machine. When Initialize() is called, this will be the state that it's set to.</param>
         /// <param name="machineName">The name of the machine</param>
-        public EntityStateMachine(EntityState currentState, string machineName)
+        public StateMachine(State currentState, string machineName)
         {
             _initialState = currentState;
             this.machineName = machineName;
@@ -40,7 +40,7 @@ namespace Dewdrop.StateMachines
                 return;
             }
 
-            if (currentState is EmptyState && _initialState != null && _initialState.GetType().IsSubclassOf(typeof(EntityState)))
+            if (currentState is EmptyState && _initialState != null && _initialState.GetType().IsSubclassOf(typeof(State)))
             {
                 this.SetState(_initialState);
             }
@@ -59,7 +59,7 @@ namespace Dewdrop.StateMachines
         /// Sets the next state of this state machine.
         /// </summary>
         /// <param name="state">The state to set the next state to.</param>
-        public void SetNextState(EntityState state)
+        public void SetNextState(State state)
         {
             nextState = state;
         }
@@ -68,7 +68,7 @@ namespace Dewdrop.StateMachines
         /// Sets the state of the state machine to the specified state.
         /// </summary>
         /// <param name="newState">The new state to set the state machine to.</param>
-        public void SetState(EntityState newState)
+        public void SetState(State newState)
         {
             if (newState != null)
             {
@@ -91,7 +91,7 @@ namespace Dewdrop.StateMachines
         /// Before setting the state of the state machine, this method will check EntityState.CanBeInterrupted to see if the current state can be interrupted. 
         /// </summary>
         /// <param name="newState">The new state to set the state machine to.</param>
-        public void SetStateInterrupt(EntityState newState)
+        public void SetStateInterrupt(State newState)
         {
             if (currentState.CanBeInterrupted() && newState != null)
             {

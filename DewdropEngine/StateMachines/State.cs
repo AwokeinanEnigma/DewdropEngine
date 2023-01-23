@@ -5,12 +5,12 @@ namespace Dewdrop.StateMachines
     /// <summary>
     /// An EntityState is the state part of the finite-state machine model.
     /// </summary>
-    public class EntityState
+    public class State
     {
         /// <summary>
         /// The state machine that is executing this state.
         /// </summary>
-        public EntityStateMachine stateMachine;
+        public StateMachine stateMachine;
 
 
         /// <summary>

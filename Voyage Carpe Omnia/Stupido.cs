@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VCO
 {
-    public class Stupido : EntityState
+    public class Stupido : State
     {
         public override void OnEnter()
         {

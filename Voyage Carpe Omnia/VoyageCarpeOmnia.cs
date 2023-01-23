@@ -14,7 +14,7 @@ namespace VCO
 {
     public class VoyageCarpeOmnia : Engine
     {
-        private EntityStateMachine machine;
+        private StateMachine machine;
         public static VoyageCarpeOmnia instance;
         private SpriteBatch _spriteBatch;
         
@@ -27,7 +27,7 @@ namespace VCO
             IsMouseVisible = true;
             instance = this;
 
-            machine = new EntityStateMachine(null, "debug");
+            machine = new StateMachine(null, "debug");
         }
 
         protected override void Initialize()
