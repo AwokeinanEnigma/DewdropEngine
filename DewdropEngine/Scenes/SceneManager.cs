@@ -15,6 +15,14 @@ namespace Dewdrop.Scenes
     public class SceneManager
     {
         /// <summary>
+        /// This exception is thrown when the scene manager is empty and does not have any scenes.
+        /// </summary>
+        public class EmptySceneStackException : Exception {
+
+            public EmptySceneStackException() : base($"The scene stack is empty!") { }
+        }
+
+        /// <summary>
         /// Manages the stack of scenes.
         /// </summary>
         private class SceneStack
@@ -273,7 +281,7 @@ namespace Dewdrop.Scenes
                 return result;
             }
             // if our scene list is empty, throw an exception
-            throw new Exception("Scene stack is empty!");
+           EmptySceneStackException
         }
 
         private void SetupTransition()
@@ -293,7 +301,7 @@ namespace Dewdrop.Scenes
             {
                 return this.scenes.Peek();
             }
-            throw new Exception("Scene stack is empty!");
+           EmptySceneStackException
         }
 
         /// <summary>
@@ -335,7 +343,7 @@ namespace Dewdrop.Scenes
                 }
                 return;
             }
-            throw new Exception("Scene stack is empty!");
+           EmptySceneStackException
         }
 
         private void UpdateTransition(GameTime time)

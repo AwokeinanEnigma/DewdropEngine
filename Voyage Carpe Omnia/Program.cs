@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dewdrop.Debugging;
+using System;
 
 namespace VCO
 {
@@ -13,9 +14,18 @@ namespace VCO
         [STAThread]
         static void Main()
         {
-            using (var game = new VoyageCarpeOmnia())
+            try
             {
-                game.Run();
+                using (var game = new VoyageCarpeOmnia())
+                {
+                    game.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                // avoiding the debug class because if an error occurred there then everything's screwed
+                DBG.LogError($"Error occurred either within game or engine: {ex}", null);
+                DBG.DumpLogs();
             }
         }
     }
