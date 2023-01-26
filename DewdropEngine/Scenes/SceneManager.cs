@@ -518,13 +518,11 @@ namespace Dewdrop.Scenes
                         this.CompositeRender();
                     }
                     Scene scene = this.scenes.Peek();
-                    scene.PreRender();
                     scene.Render();
                     scene.PostRender();
                 }
                 else if (this.previousScene != null)
                 {
-                    this.previousScene.PreRender();
                     this.previousScene.Render();
                     this.previousScene.PostRender();
                 }
