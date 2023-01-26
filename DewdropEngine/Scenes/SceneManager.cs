@@ -281,7 +281,7 @@ namespace Dewdrop.Scenes
                 return result;
             }
             // if our scene list is empty, throw an exception
-           EmptySceneStackException
+           throw new EmptySceneStackException();
         }
 
         private void SetupTransition()
@@ -301,7 +301,7 @@ namespace Dewdrop.Scenes
             {
                 return this.scenes.Peek();
             }
-           EmptySceneStackException
+           throw new EmptySceneStackException();
         }
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace Dewdrop.Scenes
                 }
                 return;
             }
-           EmptySceneStackException
+           throw new EmptySceneStackException();
         }
 
         private void UpdateTransition(GameTime time)
