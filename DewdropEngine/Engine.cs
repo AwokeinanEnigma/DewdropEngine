@@ -32,6 +32,7 @@ namespace Dewdrop
         /// </summary>
         public static float RawDeltaTime { get; private set; }
         
+
         public static int TimeRate;
         
         public static Engine instance { get; private set; }
@@ -62,6 +63,10 @@ namespace Dewdrop
 
 
         public delegate void RenderImGui(ImGuiRenderer renderer);
+
+        /// <summary>
+        /// Subscribe to this event to render Imgui UI
+        /// </summary>
         public static event RenderImGui RenderDebugUI;
 
         public ImGuiRenderer imGuiRenderer;

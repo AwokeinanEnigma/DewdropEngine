@@ -24,7 +24,7 @@ namespace VCO
             catch (Exception ex)
             {
                 // avoiding the debug class because if an error occurred there then everything's screwed
-                DBG.LogError($"Error occurred either within game or engine: {ex}", null);
+                DBG.LogError($"Encountered error: {ex}", null);
                 DBG.DumpLogs();
             }
         }
