@@ -56,7 +56,7 @@ namespace VCO
             if (ImGui.Button("hehehe"))
             {
                 SceneManager.CompositeMode = false;
-                SceneManager.Push(new basic(_spriteBatch));
+                SceneManager.Push(new basic(_spriteBatch), true);
                 SceneManager.Transition = new InstantTransition();
             }
 
