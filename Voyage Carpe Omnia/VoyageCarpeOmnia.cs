@@ -35,6 +35,7 @@ namespace VCO
             // TODO: Add your initialization logic here
             Engine.RenderDebugUI += Engine_RenderDebugUI;
             Camera a = new Camera(Width, Height);
+
             machine.Initialize();
            // a.Position = new Vector2(20, 20);
             base.Initialize();

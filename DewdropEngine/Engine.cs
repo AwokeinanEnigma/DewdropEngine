@@ -1,4 +1,5 @@
-﻿using Dewdrop.Debugging;
+﻿using Dewdrop.Audio;
+using Dewdrop.Debugging;
 using Dewdrop.DewGui;
 using Dewdrop.Scenes;
 using ImGuiNET;
@@ -15,12 +16,15 @@ namespace Dewdrop
     public class Engine : Game
     {
         public static GraphicsDeviceManager GraphicsManager;
+        
         public ContentManager ContentManager
         {
             get => Content;
         }
 
         public static SceneManager SceneManager;
+
+        public static AudioManager AudioManager;
 
         /// <summary>
         /// Time since last frame. Adjusted by the time rate.
@@ -135,6 +139,7 @@ namespace Dewdrop
             DBG.Initialize();
 
             // initialize 
+            AudioManager = new AudioManager();
             imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             ImGuiStylePtr ptr =  ImGui.GetStyle();
 
