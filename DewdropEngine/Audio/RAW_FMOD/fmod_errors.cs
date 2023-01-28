@@ -9,7 +9,7 @@
 /* https://fmod.com/docs/2.02/api/core-api-common.html#fmod_result                                 */
 /* =============================================================================================== */
 
-namespace Dewdrop.Audio.RAW_FMOD
+namespace Dewdrop.Audio.Raw_FMOD
 {
     public class Error
     {

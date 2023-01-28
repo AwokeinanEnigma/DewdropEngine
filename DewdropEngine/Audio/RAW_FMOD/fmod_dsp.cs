@@ -14,7 +14,7 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Dewdrop.Audio.RAW_FMOD
+namespace Dewdrop.Audio.Raw_FMOD
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct DSP_BUFFER_ARRAY
