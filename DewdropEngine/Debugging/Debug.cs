@@ -165,7 +165,7 @@ namespace Dewdrop.Debugging
             Verbosity = level;
         }
 
-        /// <summary>
+            /// <summary>
         /// This logs the message with an unique color and identifier. This bypasses verbosity completely.
         /// </summary>
         /// <param name="logIdentifier">The identifier of the message.</param>

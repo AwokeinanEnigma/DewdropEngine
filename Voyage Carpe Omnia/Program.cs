@@ -1,4 +1,6 @@
-﻿using Dewdrop.Debugging;
+﻿using Dewdrop.Audio.Raw_FMOD;
+using Dewdrop.Debugging;
+using Microsoft.Xna.Framework.Audio;
 using System;
 
 namespace VCO
@@ -14,6 +16,11 @@ namespace VCO
         [STAThread]
         static void Main()
         {
+            object a;
+            a = SoundState.Playing;
+
+            DBG.Log(a);
+
             try
             {
                 using (var game = new VoyageCarpeOmnia())

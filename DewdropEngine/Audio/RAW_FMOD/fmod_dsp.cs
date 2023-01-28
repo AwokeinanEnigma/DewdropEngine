@@ -711,7 +711,7 @@ namespace Dewdrop.Audio.Raw_FMOD
         SURROUND_SPEAKER_MODE,
         _2D_HEIGHT_BLEND,
         ATTENUATION_RANGE,
-        OVERRIDE_RANGE
+        _RANGE
     }
 
     public enum DSP_THREE_EQ_CROSSOVERSLOPE_TYPE : int
@@ -892,6 +892,6 @@ namespace Dewdrop.Audio.Raw_FMOD
         OVERALL_GAIN,
         OUTPUTGAIN,
         ATTENUATION_RANGE,
-        OVERRIDE_RANGE
+        _RANGE
     }
 }

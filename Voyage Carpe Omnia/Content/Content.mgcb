@@ -14,11 +14,17 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Battle_against_a_crack_addicted_foe.mp3
+/copy:Battle_against_a_crack_addicted_foe.mp3
+
+#begin battleIntro.mp3
+/copy:battleIntro.mp3
+
 #begin Shaders/gss.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/gss.fx;Shaders/gss.fx
+/build:Shaders/gss.fx
 
 #begin SpriteTexture/floyd.gdat
 /importer:GDatImporter
