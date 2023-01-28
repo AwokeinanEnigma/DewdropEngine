@@ -207,7 +207,7 @@ namespace Dewdrop
             }
 
             // apply View Padding
-            var aspect = ViewHeight / (float)ViewWidth;
+            float aspect = ViewHeight / (float)ViewWidth;
             ViewWidth -= ViewPadding * 2;
             ViewHeight -= (int)(aspect * ViewPadding * 2);
 
