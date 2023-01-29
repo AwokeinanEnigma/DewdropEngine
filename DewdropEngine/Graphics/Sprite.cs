@@ -279,12 +279,14 @@ namespace Dewdrop.Graphics
 
                 batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, _shader, Camera.Instance.Matrix * Engine.ScreenMatrix);
 
-                batch.Draw(
+                batch.Draw(_texture.Texture, _position, _spriteRect, Color.White, 0, Vector2.Zero, Vector2.One, effect, 0.0f);
+
+                /*batch.Draw(
                     texture: _texture.Texture,
                     position: _position,
                     sourceRectangle: _spriteRect,
                     color: Microsoft.Xna.Framework.Color.White
-                    );
+                    );*/
 
 
                 // draw code here

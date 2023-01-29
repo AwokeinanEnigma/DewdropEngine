@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Dewdrop.Debugging;
 
 namespace VCO
 {
@@ -110,6 +111,7 @@ namespace VCO
                 GC.Collect();
             };
             ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
+            ImGui.Text($"dt: {DeltaTime}");
         }
         private StreamedSound StreamedSound;
 

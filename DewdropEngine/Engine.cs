@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.ComponentModel.Design;
+using System.Runtime.Serialization;
 
 namespace Dewdrop
 {
@@ -37,7 +39,7 @@ namespace Dewdrop
         public static float RawDeltaTime { get; private set; }
 
 
-        public static int TimeRate;
+        public static float TimeRate = 1;
 
         public static Engine instance { get; private set; }
 
@@ -103,7 +105,10 @@ namespace Dewdrop
             GraphicsManager.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
             GraphicsManager.PreferredBackBufferWidth = Width * screenScale;
             GraphicsManager.PreferredBackBufferHeight = Height * screenScale;
+            GraphicsManager.SynchronizeWithVerticalRetrace = true;
             GraphicsManager.ApplyChanges();
+
+            IsFixedTimeStep = false;
 
             Window.AllowUserResizing = allowResizing;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -155,13 +160,32 @@ namespace Dewdrop
         {
         }
 
+        protected float _sixty_fps = 1.0f / 60.0f;
+        protected float _technically_sixty_fps = 1.0f / 59.0f;
 
+        protected int _frameLoops = 0;
+        protected float _maxDeltaTime = 0.25f;
+        protected float _accumulator = 0;
         protected override void Update(GameTime gameTime)
         {
             RawDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             DeltaTime = RawDeltaTime * TimeRate;
 
-            SceneManager.Update(gameTime);
+            if (DeltaTime > _maxDeltaTime)
+            {
+                DBG.LogWarning($"Passed the threshold for max deltaTime, deltaTime is {DeltaTime}");
+                DeltaTime = _maxDeltaTime;
+            }
+            _accumulator += DeltaTime;
+
+            while (_accumulator >= 1.0f / 59.0f)
+            {
+                SceneManager.Update(gameTime);
+
+                _accumulator -= 1.0f / 60.0f;
+
+                _frameLoops++;
+            }
 
 
             base.Update(gameTime);
