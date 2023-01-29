@@ -180,12 +180,14 @@ namespace Dewdrop.Audio
             {
 
                 NativeSound.release();
+                _nativeChannel.dispo
                 // free the streamed memory!
                 if (_buffer != null)
                 {
                     _bufferHandle.Free();
                 }
-
+                _buffer = null;
+                
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 _hasDisposed = true;

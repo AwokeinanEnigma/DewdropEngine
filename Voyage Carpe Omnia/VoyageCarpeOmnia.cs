@@ -78,6 +78,7 @@ namespace VCO
                 StreamedSound.Play();
             }
 
+
             if (ImGui.Button("pause sound!"))
             {
                 StreamedSound.Paused = true;
@@ -98,6 +99,16 @@ namespace VCO
                 StreamedSound.Looping = false;
             }
 
+            if (ImGui.Button("Destroy sound!"))
+            {
+                StreamedSound.Dispose();
+            }
+
+            if (ImGui.Button("GC.Collect"))
+            {
+                GC.Collect();
+            };
+            ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
         }
         private StreamedSound StreamedSound;
 
