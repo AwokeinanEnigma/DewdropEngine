@@ -7,10 +7,10 @@ namespace Dewdrop.StateMachines
     /// </summary>
     public class StateMachine
     {
-        public State currentState;
-        public State nextState;
+        public State CurrentState;
+        public State NextState;
 
-        private State _initialState;
+        private readonly State _initialState;
 
         /// <summary>
         /// The name of the state machine.
@@ -20,13 +20,13 @@ namespace Dewdrop.StateMachines
         /// <summary>
         /// Creates a new state machine with the given initial state and machine name
         /// </summary>
-        /// <param name="currentState">The initial state of the machine. When Initialize() is called, this will be the state that it's set to.</param>
+        /// <param name="CurrentState">The initial state of the machine. When Initialize() is called, this will be the state that it's set to.</param>
         /// <param name="machineName">The name of the machine</param>
-        public StateMachine(State currentState, string machineName)
+        public StateMachine(State CurrentState, string machineName)
         {
-            _initialState = currentState;
+            _initialState = CurrentState;
             this.machineName = machineName;
-            this.currentState = new EmptyState();
+            this.CurrentState = new EmptyState();
         }
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace Dewdrop.StateMachines
         /// </summary>
         public void Initialize()
         {
-            if (this.nextState != null)
+            if (this.NextState != null)
             {
-                this.SetState(this.nextState);
+                this.SetState(this.NextState);
                 return;
             }
 
-            if (currentState is EmptyState && _initialState != null && _initialState.GetType().IsSubclassOf(typeof(State)))
+            if (CurrentState is EmptyState && _initialState != null && _initialState.GetType().IsSubclassOf(typeof(State)))
             {
                 this.SetState(_initialState);
             }
@@ -52,7 +52,7 @@ namespace Dewdrop.StateMachines
         /// <returns>If true, the state machine has a next state, if false, it doesn't.</returns>
         public bool HasNextState()
         {
-            return nextState != null;
+            return NextState != null;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Dewdrop.StateMachines
         /// <param name="state">The state to set the next state to.</param>
         public void SetNextState(State state)
         {
-            nextState = state;
+            NextState = state;
         }
 
         /// <summary>
@@ -72,12 +72,12 @@ namespace Dewdrop.StateMachines
         {
             if (newState != null)
             {
-                nextState = null;
-                newState.stateMachine = this;
+                NextState = null;
+                newState.StateMachine = this;
 
-                currentState.OnExit();
-                currentState = newState;
-                currentState.OnEnter();
+                CurrentState.OnExit();
+                CurrentState = newState;
+                CurrentState.OnEnter();
             }
             else
             {
@@ -93,14 +93,14 @@ namespace Dewdrop.StateMachines
         /// <param name="newState">The new state to set the state machine to.</param>
         public void SetStateInterrupt(State newState)
         {
-            if (currentState.CanBeInterrupted() && newState != null)
+            if (CurrentState.CanBeInterrupted() && newState != null)
             {
-                nextState = null;
-                newState.stateMachine = this;
+                NextState = null;
+                newState.StateMachine = this;
 
-                currentState.OnExit();
-                currentState = newState;
-                currentState.OnEnter();
+                CurrentState.OnExit();
+                CurrentState = newState;
+                CurrentState.OnEnter();
             }
             else
             {
@@ -113,7 +113,7 @@ namespace Dewdrop.StateMachines
         /// </summary>
         public void SetEmpty()
         {
-            nextState = new EmptyState();
+            NextState = new EmptyState();
         }
 
         /// <summary>
@@ -121,11 +121,11 @@ namespace Dewdrop.StateMachines
         /// </summary>
         public void Update()
         {
-            if (nextState != null)
+            if (NextState != null)
             {
-                SetState(nextState);
+                SetState(NextState);
             }
-            currentState.Update();
+            CurrentState.Update();
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace Dewdrop.StateMachines
         /// </summary>
         private void Remove()
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.OnExit();
-                currentState = null;
-                nextState = null;
+                CurrentState.OnExit();
+                CurrentState = null;
+                NextState = null;
             }
         }
     }

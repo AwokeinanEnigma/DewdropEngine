@@ -12,7 +12,7 @@ namespace Dewdrop.Debugging
     {
         private static LogLevel Verbosity = LogLevel.Debug;
 
-        private static List<string> log = new List<string>();
+        private static readonly List<string> log = new List<string>();
 
         public enum LogLevel
         {
@@ -26,7 +26,7 @@ namespace Dewdrop.Debugging
             Trace,
         }
 
-        private static Dictionary<LogLevel, ConsoleColor> logColors = new Dictionary<LogLevel, ConsoleColor>
+        private static readonly Dictionary<LogLevel, ConsoleColor> logColors = new Dictionary<LogLevel, ConsoleColor>
         {
             [LogLevel.System] = ConsoleColor.White,
             [LogLevel.Assert] = ConsoleColor.DarkRed,
@@ -165,7 +165,7 @@ namespace Dewdrop.Debugging
             Verbosity = level;
         }
 
-            /// <summary>
+        /// <summary>
         /// This logs the message with an unique color and identifier. This bypasses verbosity completely.
         /// </summary>
         /// <param name="logIdentifier">The identifier of the message.</param>
@@ -179,8 +179,8 @@ namespace Dewdrop.Debugging
         object message,
         [CallerFilePath] string callerFilePath = "",
         [CallerLineNumber] int callerLineNumber = 0)
-        { 
-            LogInternalUnique(logIdentifier, color, message, callerFilePath, callerLineNumber); 
+        {
+            LogInternalUnique(logIdentifier, color, message, callerFilePath, callerLineNumber);
         }
 
         private static void LogInternal(LogLevel logLevel, object message, string callerFilePath, int callerLineNumber)

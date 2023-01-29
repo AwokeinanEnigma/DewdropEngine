@@ -1,11 +1,7 @@
-﻿using Dewdrop.Debugging;
-using Dewdrop.Scenes.Transitions;
+﻿using Dewdrop.Scenes.Transitions;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dewdrop.Scenes
 {
@@ -17,7 +13,8 @@ namespace Dewdrop.Scenes
         /// <summary>
         /// This exception is thrown when the scene manager is empty and does not have any scenes.
         /// </summary>
-        public class EmptySceneStackException : Exception {
+        public class EmptySceneStackException : Exception
+        {
 
             public EmptySceneStackException() : base($"The scene stack is empty!") { }
         }
@@ -27,7 +24,7 @@ namespace Dewdrop.Scenes
         /// </summary>
         private class SceneStack
         {
-            private List<Scene> list;
+            private readonly List<Scene> list;
 
             public Scene this[int i]
             {
@@ -188,7 +185,7 @@ namespace Dewdrop.Scenes
 
         private State state;
 
-        private SceneStack scenes;
+        private readonly SceneStack scenes;
 
         private Scene previousScene;
 
@@ -281,7 +278,7 @@ namespace Dewdrop.Scenes
                 return result;
             }
             // if our scene list is empty, throw an exception
-           throw new EmptySceneStackException();
+            throw new EmptySceneStackException();
         }
 
         private void SetupTransition()
@@ -301,7 +298,7 @@ namespace Dewdrop.Scenes
             {
                 return this.scenes.Peek();
             }
-           throw new EmptySceneStackException();
+            throw new EmptySceneStackException();
         }
 
         /// <summary>
@@ -343,7 +340,7 @@ namespace Dewdrop.Scenes
                 }
                 return;
             }
-           throw new EmptySceneStackException();
+            throw new EmptySceneStackException();
         }
 
         private void UpdateTransition(GameTime time)
@@ -378,7 +375,7 @@ namespace Dewdrop.Scenes
                 {
                     scene.Unpause();
                 }
-                else 
+                else
                 {
                     scene.Load();
                     scene.hasDisplayed = true;
@@ -456,7 +453,7 @@ namespace Dewdrop.Scenes
                 this.newSceneShown = false;
 
                 //InputManager.Instance.Enabled = true;
-                 
+
                 this.cleanupFlag = false;
             }
         }
@@ -487,7 +484,8 @@ namespace Dewdrop.Scenes
         }
 
 
-        public void PreRender() {
+        public void PreRender()
+        {
             if (this.scenes.Count > 0)
             {
                 if (this.transition.ShowNewScene)
@@ -505,7 +503,7 @@ namespace Dewdrop.Scenes
                 }
             }
         }
-    
+
 
         public void Render()
         {

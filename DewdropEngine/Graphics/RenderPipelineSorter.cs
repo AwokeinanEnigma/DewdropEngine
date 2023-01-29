@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Dewdrop.Graphics
 {
@@ -11,17 +7,17 @@ namespace Dewdrop.Graphics
     /// </summary>
     public class RenderPipelineSorter
     {
-        private List<RenderPipeline> _renderPipelines;
-        private Dictionary<RenderPipeline, int> _pipelineIds;
+        private readonly List<RenderPipeline> _renderPipelines;
+        private readonly Dictionary<RenderPipeline, int> _pipelineIds;
 
-        private PipelineComparer _comparer;
+        private readonly PipelineComparer _comparer;
 
         private int pipelineCount;
         private bool _sort;
         private class PipelineComparer : IComparer<RenderPipeline>
         {
             //used for uids
-            private RenderPipelineSorter pipeline;
+            private readonly RenderPipelineSorter pipeline;
 
             /// <summary>
             /// Creates a new renderable comparer using a renderpipeline

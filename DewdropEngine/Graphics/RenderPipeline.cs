@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Dewdrop.Graphics
 {
@@ -15,7 +14,7 @@ namespace Dewdrop.Graphics
         private class RenderableComparer : IComparer<Renderable>
         {
             //used for uids
-            private RenderPipeline pipeline;
+            private readonly RenderPipeline pipeline;
 
             /// <summary>
             /// Creates a new renderable comparer using a renderpipeline
@@ -51,7 +50,8 @@ namespace Dewdrop.Graphics
             }
         }
 
-        public int PipelineDepth {
+        public int PipelineDepth
+        {
             get => _depth;
             set => _depth = value;
         }
@@ -61,23 +61,23 @@ namespace Dewdrop.Graphics
         private int _depth;
 
         // the sprite batch to draw to. this what every renderable is drawing to
-        private SpriteBatch _target;
+        private readonly SpriteBatch _target;
 
         // the renderables in this mothafuckin' pipeline!
-        private List<Renderable> _renderables;
+        private readonly List<Renderable> _renderables;
 
         // stacks to determine what renderables to add and remove
-        private Stack<Renderable> _renderablesToAdd;
-        private Stack<Renderable> _renderablesToRemove;
+        private readonly Stack<Renderable> _renderablesToAdd;
+        private readonly Stack<Renderable> _renderablesToRemove;
 
         // called through Update(), if true then we need to use RenderableComparer to sort our list of renderables
         private bool _needToSort;
 
         // compares renderables
-        private RenderableComparer _depthComparer;
+        private readonly RenderableComparer _depthComparer;
 
         // when we can't sort by depth, we sort by renderable ids. this is determined when a renderable is added
-        private Dictionary<Renderable, int> _renderableIds;
+        private readonly Dictionary<Renderable, int> _renderableIds;
 
         // how many renderables this pipeline is rendering rendering 
         private int _renderableCount;
@@ -200,7 +200,7 @@ namespace Dewdrop.Graphics
         /// <param name="forEachFunc">The function to execute for each renderable. The renderable is passed as a parameter to the function.</param>
         public virtual void ForEach(Action<Renderable> forEachFunc)
         {
-            _renderables.ForEach(x => forEachFunc(x));
+            _renderables.ForEach(forEachFunc);
         }
 
 
@@ -244,7 +244,8 @@ namespace Dewdrop.Graphics
         /// </summary>
         /// <param name="renderable">The renderable to check.</param>
         /// <returns>If true, the renderable is in view. If false, it isn't.</returns>
-        protected virtual bool IsRenderableInView(Renderable renderable) {
+        protected virtual bool IsRenderableInView(Renderable renderable)
+        {
             // if the renderable is visible and it's in the view of the camera
             return renderable.Visible && Camera.Instance.Viewport.Bounds.Intersects(renderable.RenderableRectangle);
         }

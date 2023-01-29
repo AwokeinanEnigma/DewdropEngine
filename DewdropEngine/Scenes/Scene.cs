@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dewdrop.Scenes
 {
@@ -19,7 +15,7 @@ namespace Dewdrop.Scenes
         public bool hasDisplayed;
         private bool drawBehind;
 
-        protected bool hasDisposed;
+        protected bool _hasDisposed;
 
         /// <summary>
         /// Called when the scene is first loaded.
@@ -36,13 +32,13 @@ namespace Dewdrop.Scenes
         /// </summary>
         /// <param name="gameTime"></param>
         public virtual void PreUpdate(GameTime gameTime) { }
-        
+
         /// <summary>
         /// This is the update method, which is called every frame, like every other update function. However, it's best to do things that run every frame here.
         /// </summary>
         /// <param name="gameTime"></param>
         public abstract void Update(GameTime gameTime);
-        
+
         /// <summary>
         /// Called after the update method, do any cleanup you need to do here.
         /// </summary>
@@ -53,7 +49,7 @@ namespace Dewdrop.Scenes
         /// Called before the render method, if you need to do any effects, set them up here
         /// </summary>
         public virtual void PreRender() { }
-        
+
         /// <summary>
         /// This is the render method, draw stuff here.
         /// </summary>
@@ -82,7 +78,7 @@ namespace Dewdrop.Scenes
         // }
         protected virtual void Dispose(bool disposing)
         {
-            if (!hasDisposed)
+            if (!_hasDisposed)
             {
                 if (disposing)
                 {
@@ -91,7 +87,7 @@ namespace Dewdrop.Scenes
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
-                hasDisposed = true;
+                _hasDisposed = true;
             }
         }
 

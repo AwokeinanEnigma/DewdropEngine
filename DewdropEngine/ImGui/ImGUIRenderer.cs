@@ -166,7 +166,6 @@ public class ImGuiRenderer
 
     private void DrawPrimitives(int vertexOffset, int indexOffset, ImDrawListPtr commandList, ImDrawCmdPtr drawCommand)
     {
-#pragma warning disable CS0618
 
 #pragma warning disable CS0618
 
