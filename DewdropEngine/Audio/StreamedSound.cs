@@ -180,7 +180,6 @@ namespace Dewdrop.Audio
             {
 
                 NativeSound.release();
-                _nativeChannel.dispo
                 // free the streamed memory!
                 if (_buffer != null)
                 {
