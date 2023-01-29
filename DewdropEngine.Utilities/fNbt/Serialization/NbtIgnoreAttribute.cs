@@ -1,4 +1,4 @@
-namespace Dewdrop.Utilities.fNbt.Serialization; 
+namespace Dewdrop.Utilities.fNbt.Serialization;
 
 public class NbtIgnoreAttribute : Attribute
 {

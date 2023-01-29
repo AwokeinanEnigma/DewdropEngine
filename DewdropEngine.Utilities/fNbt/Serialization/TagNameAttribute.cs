@@ -1,4 +1,4 @@
-namespace Dewdrop.Utilities.fNbt.Serialization; 
+namespace Dewdrop.Utilities.fNbt.Serialization;
 
 /// <summary>
 ///     Decorates the given property or field with the specified NBT tag name.
