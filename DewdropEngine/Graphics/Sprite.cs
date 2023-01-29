@@ -229,7 +229,7 @@ namespace Dewdrop.Graphics
             // before i forget
             // i think i'm misunderstanding the system
             // if i change this._currentFrame = (this._currentFrame + frameSpeed) % _currentFrame ;
-            // 
+            // i'm fucking with the wrong code here, i need to change UpdateAnimation.
 
             _frameTimer += Engine.DeltaTime * frameSpeed;
             if (_frameTimer >= frameSpeed)
@@ -242,9 +242,8 @@ namespace Dewdrop.Graphics
                         break;
 
                     case SpriteAnimationMode.ZeroTwoOneThree:
-                        //  this._betaFrame = (this._betaFrame) % 4f;
-                        this._currentFrame = _currentFrame + 1;
-                        //this._currentFrame = MODE_ONE_FRAMES[(int)this._betaFrame];
+                        this._betaFrame = (this._betaFrame) % 4f;
+                        this._currentFrame = MODE_ONE_FRAMES[(int)this._betaFrame];
                         break;
                 }
             }
