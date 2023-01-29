@@ -97,7 +97,7 @@ namespace VCO
 
             if (ImGui.Button("deloop sound!"))
             {
-                StreamedSound.Looping = false;
+            StreamedSound.Looping = false;
             }
 
             if (ImGui.Button("Destroy sound!"))

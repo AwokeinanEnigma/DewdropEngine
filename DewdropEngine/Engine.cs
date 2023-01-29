@@ -39,7 +39,7 @@ namespace Dewdrop
         public static float RawDeltaTime { get; private set; }
 
 
-        public static float TimeRate = 1;
+        public static float TimeRate = 1f;
 
         public static Engine instance { get; private set; }
 
@@ -90,13 +90,13 @@ namespace Dewdrop
             Width = pixelWidth;
             Height = pixelHeight;
 
+            IsFixedTimeStep = true;
 
             GraphicsManager = new GraphicsDeviceManager(this);
 
             // subscribe to events so we can resize the window when needed
             GraphicsManager.DeviceCreated += UpdateView;
             GraphicsManager.DeviceReset += UpdateView;
-
 
             //GraphicsManager.SynchronizeWithVerticalRetrace = true;
             GraphicsManager.PreferMultiSampling = false;
@@ -105,10 +105,8 @@ namespace Dewdrop
             GraphicsManager.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
             GraphicsManager.PreferredBackBufferWidth = Width * screenScale;
             GraphicsManager.PreferredBackBufferHeight = Height * screenScale;
-            GraphicsManager.SynchronizeWithVerticalRetrace = true;
+            GraphicsManager.SynchronizeWithVerticalRetrace = false;
             GraphicsManager.ApplyChanges();
-
-            IsFixedTimeStep = false;
 
             Window.AllowUserResizing = allowResizing;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -160,33 +158,12 @@ namespace Dewdrop
         {
         }
 
-        protected float _sixty_fps = 1.0f / 60.0f;
-        protected float _technically_sixty_fps = 1.0f / 59.0f;
-
-        protected int _frameLoops = 0;
-        protected float _maxDeltaTime = 0.25f;
-        protected float _accumulator = 0;
         protected override void Update(GameTime gameTime)
         {
             RawDeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            DeltaTime = RawDeltaTime * TimeRate;
+            DeltaTime = RawDeltaTime * TimeRate; // 0.0166667f ;
 
-            if (DeltaTime > _maxDeltaTime)
-            {
-                DBG.LogWarning($"Passed the threshold for max deltaTime, deltaTime is {DeltaTime}");
-                DeltaTime = _maxDeltaTime;
-            }
-            _accumulator += DeltaTime;
-
-            while (_accumulator >= 1.0f / 59.0f)
-            {
-                SceneManager.Update(gameTime);
-
-                _accumulator -= 1.0f / 60.0f;
-
-                _frameLoops++;
-            }
-
+            SceneManager.Update(gameTime);
 
             base.Update(gameTime);
         }

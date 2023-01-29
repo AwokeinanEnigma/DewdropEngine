@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
+using Dewdrop.Audio.Raw_FMOD;
 using static Dewdrop.Graphics.SpriteDefinition;
 
 namespace Dewdrop.Graphics
@@ -217,22 +218,36 @@ namespace Dewdrop.Graphics
             this.IncrementFrame();
         }
 
+        private float _frameTimer;
+
         protected virtual void IncrementFrame()
         {
             float frameSpeed = GetFrameSpeed();
 
-            switch (_animationMMode)
+            // going to bed
+            // buuuuut!
+            // before i forget
+            // i think i'm misunderstanding the system
+            // if i change this._currentFrame = (this._currentFrame + frameSpeed) % _currentFrame ;
+            // 
+
+            _frameTimer += Engine.DeltaTime * frameSpeed;
+            if (_frameTimer >= frameSpeed)
             {
-                case SpriteAnimationMode.Continous:
-                    this._currentFrame = (this._currentFrame + frameSpeed) % _currentFrame;
-                    break;
+                _frameTimer = 0;
+                switch (_animationMMode)
+                {
+                    case SpriteAnimationMode.Continous:
+                        this._currentFrame = _currentFrame + 1;
+                        break;
 
-                case SpriteAnimationMode.ZeroTwoOneThree:
-                    this._betaFrame = (this._betaFrame + frameSpeed) % 4f;
-                    this._currentFrame = MODE_ONE_FRAMES[(int)this._betaFrame];
-                    break;
+                    case SpriteAnimationMode.ZeroTwoOneThree:
+                        //  this._betaFrame = (this._betaFrame) % 4f;
+                        this._currentFrame = _currentFrame + 1;
+                        //this._currentFrame = MODE_ONE_FRAMES[(int)this._betaFrame];
+                        break;
+                }
             }
-
             _speedIndex = (int)this._currentFrame % this._speeds.Length;
         }
 
