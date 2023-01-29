@@ -176,26 +176,19 @@ namespace Dewdrop.Audio
         #region Disposing methods
         public void Dispose()
         {
-            if (!_hasDisposed)
+
+            NativeSound.release();
+            // free the streamed memory!
+            if (_buffer != null)
             {
-
-                NativeSound.release();
-                // free the streamed memory!
-                if (_buffer != null)
-                {
-                    _bufferHandle.Free();
-                }
-                _buffer = null;
-                
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                _hasDisposed = true;
+                _bufferHandle.Free();
             }
-        }
+            _buffer = null;
 
-        ~StreamedSound()
-        { 
-                Dispose();
+            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+            // TODO: set large fields to null
+            _hasDisposed = true;
+
         }
 
 

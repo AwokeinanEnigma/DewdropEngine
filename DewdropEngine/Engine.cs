@@ -179,11 +179,12 @@ namespace Dewdrop
 
             base.Draw(gameTime);
 
+#if DEBUG
             imGuiRenderer.BeginLayout(gameTime);
             //she was young once, girl of the bohemian kind
             RenderDebugUI?.Invoke(imGuiRenderer);
-           
             imGuiRenderer.EndLayout();
+#endif
         }
 
 
