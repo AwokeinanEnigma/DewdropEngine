@@ -90,10 +90,10 @@ namespace Dewdrop.Audio
             }
             else {
                 throw new Exception($"FMOD couldn't be loaded! "
-                    + Environment.NewLine +
-                    $"FMOD ERROR: {sysCheck}"
-                    + Environment.NewLine +
-                    $"FMOD ERROR TO STRING: {Error.String(sysCheck)}");
+                                    + Environment.NewLine +
+                                    $"FMOD ERROR: {sysCheck}"
+                                    + Environment.NewLine +
+                                    $"FMOD ERROR TO STRING: {Error.String(sysCheck)}");
             }
         }
 
@@ -146,7 +146,40 @@ namespace Dewdrop.Audio
             return new StreamedSound(newSound, buffer, handle);
         }
 
-        public unsafe void InitiateFMODSystem() => _system.init(64, INITFLAGS.NORMAL, (IntPtr)(void*)null);
+        /// <summary>
+        /// Loads sound from file.
+        /// Use this function to load short sound effects.
+        /// </summary>
+        public SampleSound LoadSampleSound(string path)
+        {
+            var buffer = LoadFileAsBuffer(path);
 
+            var info = new CREATESOUNDEXINFO();
+            info.length = (uint)buffer.Length;
+            info.cbsize = Marshal.SizeOf(info);
+
+            _system.createSound(
+                buffer,
+                MODE.OPENMEMORY | MODE.CREATESAMPLE,
+                ref info,
+                out Sound newSound
+            );
+
+            return new SampleSound(newSound);
+        }
+
+        public unsafe void InitiateFMODSystem()
+        {
+            RESULT res = _system.init(64, INITFLAGS.NORMAL, (IntPtr)(void*)null);
+            if (res != RESULT.OK)
+            {
+                throw new Exception($"FMOD system couldn't be initiated! "
+                                    + Environment.NewLine +
+                                    $"FMOD ERROR: {res}"
+                                    + Environment.NewLine +
+                                    $"FMOD ERROR TO STRING: {Error.String(res)}");
+            }
+        }
     }
 }
+

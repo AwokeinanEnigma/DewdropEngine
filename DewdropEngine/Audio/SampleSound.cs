@@ -5,30 +5,14 @@ using System.Runtime.InteropServices;
 namespace Dewdrop.Audio
 {
     /// <summary>
-    /// Acts as a wrapper for FMOD sounds that uses an open stream for sounds to prevent them from being collected by the GC.
-    /// Use this for long forms of audio such as background music and such.
+    /// Acts as a wrapper for FMOD sounds that are short, and can be disposed of by the GC.
     /// </summary>
-    public class StreamedSound : IDisposable
+    public class SampleSound : IDisposable
     {
         // these fields are private because we don't want any interaction with the low level fmod sound systems 
         // the engine is supposed to handle the low level stuff
         private Sound _nativeSound;
         private Channel _nativeChannel;
-
-        /// <summary>
-        /// Sound buffer. Used for streamed sounds, which point to this memory.
-        /// In other words, we need to just reference it somewhere to prevent
-        /// garbage collector from collecting it.
-        /// This memory is also pinned, so GC won't move it anywhere.
-        /// 
-        /// If any unexpected crashes emerge, this is the first suspect.
-        /// </summary>
-        private byte[] _buffer;
-
-        /// <summary>
-        /// Buffer's handle.
-        /// </summary>
-        private GCHandle _bufferHandle;
 
         // always good to have this in any disposable class to prevent double dispose situations 
         private bool _hasDisposed;
@@ -214,11 +198,9 @@ namespace Dewdrop.Audio
         #endregion
 
 
-        internal StreamedSound(Sound sound, byte[] buffer, GCHandle bufferHandle)
+        internal SampleSound(Sound sound)
         {
             _nativeSound = sound;
-            _buffer = buffer;
-            _bufferHandle = bufferHandle;
         }
 
         #region Playing methods
@@ -245,13 +227,6 @@ namespace Dewdrop.Audio
             if (!_hasDisposed)
             {
                 _nativeSound.release();
-                // free the streamed memory!
-                if (_buffer != null)
-                {
-                    _bufferHandle.Free();
-                }
-
-                _buffer = null;
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
