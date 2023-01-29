@@ -169,6 +169,8 @@ namespace Dewdrop
 
         protected override void Draw(GameTime gameTime)
         {
+            //SuppressDraw();
+            
             SceneManager.PreRender();
 
             GraphicsDevice.SetRenderTarget(null);

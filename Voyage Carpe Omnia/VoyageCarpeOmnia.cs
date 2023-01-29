@@ -102,6 +102,7 @@ namespace VCO
             if (ImGui.Button("Destroy sound!"))
             {
                 StreamedSound.Dispose();
+                StreamedSound = null;
             }
 
             if (ImGui.Button("GC.Collect"))

@@ -1,4 +1,3 @@
-// ReSharper disable All 
 /* ======================================================================================== */
 /* FMOD Core API - DSP header file.                                                         */
 /* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2022.                               */
@@ -712,7 +711,7 @@ namespace Dewdrop.Audio.Raw_FMOD
         SURROUND_SPEAKER_MODE,
         _2D_HEIGHT_BLEND,
         ATTENUATION_RANGE,
-        _RANGE
+        OVERRIDE_RANGE
     }
 
     public enum DSP_THREE_EQ_CROSSOVERSLOPE_TYPE : int
@@ -893,6 +892,6 @@ namespace Dewdrop.Audio.Raw_FMOD
         OVERALL_GAIN,
         OUTPUTGAIN,
         ATTENUATION_RANGE,
-        _RANGE
+        OVERRIDE_RANGE
     }
 }
