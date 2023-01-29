@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework.Content.Pipeline;
-using System.Collections.Generic;
-using Dewdrop.Utilities.fNbt;
+﻿using Dewdrop.Utilities.fNbt;
 using Dewdrop.Utilities.fNbt.Tags;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content.Pipeline;
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace Dewdrop.PipelineExtensions.GDat
 {

@@ -1,6 +1,6 @@
 ﻿using Dewdrop.Utilities.fNbt;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Dewdrop.PipelineExtensions.NBT
 {

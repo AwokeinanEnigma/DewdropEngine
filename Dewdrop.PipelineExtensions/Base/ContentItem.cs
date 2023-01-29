@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Content.Pipeline;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace Dewdrop.PipelineExtensions.Base
 {

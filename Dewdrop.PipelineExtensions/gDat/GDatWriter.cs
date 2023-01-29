@@ -1,9 +1,5 @@
-﻿using Dewdrop.Utilities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
+﻿using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using System.IO;
-using System.IO.Compression;
 
 namespace Dewdrop.PipelineExtensions.GDat
 {

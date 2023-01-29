@@ -1,5 +1,4 @@
-﻿using Dewdrop.Utilities;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace Dewdrop.PipelineExtensions.GDat
@@ -19,7 +18,7 @@ namespace Dewdrop.PipelineExtensions.GDat
         public int height;
         public int width;
         public byte[] img;
-        private int[] paletteColors;
+        private readonly int[] paletteColors;
         public PipelineIndexedTexture(int cWidth, int[][] palettes, byte[] image, List<PipelineSpriteDefinition> definitions, PipelineSpriteDefinition defaultDefinition)
         {
             totalPals = palettes.Length;
@@ -41,7 +40,7 @@ namespace Dewdrop.PipelineExtensions.GDat
                 uint num3 = 0;
                 while (num3 < palettes[allPalettes].Length)
                 {
-                    palette[allPalettes *this.palSize + num3] = palettes[allPalettes][num3];
+                    palette[allPalettes * this.palSize + num3] = palettes[allPalettes][num3];
                     num3++;
                 }
             }
