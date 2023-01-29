@@ -1,21 +1,34 @@
 ﻿using Dewdrop.Audio.Raw_FMOD;
-using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dewdrop.Audio
 {
     /// <summary>
-    /// 
+    /// Acts as a wrapper for FMOD sounds that uses an open stream for sounds to prevent them from being collected by the GC.
+    /// Use this for long forms of audio such as background music and such!
     /// </summary>
     public class StreamedSound : IDisposable
     {
-        public readonly Sound NativeSound;
+        // these fields are private because we don't want any interaction with the low level fmod sound systems 
+        // the engine is supposed to handle the low level stuff
+        private Sound _nativeSound;
         private Channel _nativeChannel;
+
+        /// <summary>
+        /// Sound buffer. Used for streamed sounds, which point to this memory.
+        /// In other words, we need to just reference it somewhere to prevent
+        /// garbage collector from collecting it.
+        /// This memory is also pinned, so GC won't move it anywhere.
+        /// 
+        /// If any unexpected crashes emerge, this is the first suspect.
+        /// </summary>
+        private byte[] _buffer;
+
+        /// <summary>
+        /// Buffer's handle.
+        /// </summary>
+        private GCHandle _bufferHandle;
 
         private bool _hasDisposed;
 
@@ -63,7 +76,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                NativeSound.getLength(out var length, TIMEUNIT.MS);
+                _nativeSound.getLength(out var length, TIMEUNIT.MS);
                 return length;
             }
         }
@@ -78,9 +91,6 @@ namespace Dewdrop.Audio
         {
             get
             {
-                // Do you have some lööps, bröther?
-                // NO, I DON'T 
-                // FUCK YOU
                 _nativeChannel.getLoopCount(out var loops);
                 return loops;
             }
@@ -131,25 +141,9 @@ namespace Dewdrop.Audio
         #endregion
 
 
-        /// <summary>
-        /// Sound buffer. Used for streamed sounds, which point to this memory.
-        /// In other words, we need to just reference it somewhere to prevent
-        /// garbage collector from collecting it.
-        /// This memory is also pinned, so GC won't move it anywhere.
-        /// 
-        /// If any unexpected crashes emerge, this is the first suspect.
-        /// </summary>
-        private byte[] _buffer;
-
-        /// <summary>
-        /// Buffer's handle.
-        /// </summary>
-        private GCHandle _bufferHandle;
-
-
-        internal StreamedSound(Raw_FMOD.Sound sound, byte[] buffer, GCHandle bufferHandle)
+        internal StreamedSound(Sound sound, byte[] buffer, GCHandle bufferHandle)
         {
-            NativeSound = sound;
+            _nativeSound = sound;
             _buffer = buffer;
             _bufferHandle = bufferHandle;
         }
@@ -161,7 +155,7 @@ namespace Dewdrop.Audio
         /// <param name="group">The group to play the sound in</param>
         public void Play(ChannelGroup group)
         {
-            Engine.AudioManager.System.playSound(NativeSound, group, false, out _nativeChannel);
+            Engine.AudioManager.System.playSound(_nativeSound, group, false, out _nativeChannel);
         }
 
         /// <summary>
@@ -169,27 +163,27 @@ namespace Dewdrop.Audio
         /// </summary>
         public void Play()
         {
-            Engine.AudioManager.System.playSound(NativeSound, default, false, out _nativeChannel);
+            Engine.AudioManager.System.playSound(_nativeSound, default, false, out _nativeChannel);
         }
         #endregion
 
-        #region Disposing methods
         public void Dispose()
         {
-            NativeSound.release();
-            // free the streamed memory!
-            if (_buffer != null)
+            if (!_hasDisposed)
             {
-                _bufferHandle.Free();
+                _nativeSound.release();
+                // free the streamed memory!
+                if (_buffer != null)
+                {
+                    _bufferHandle.Free();
+                }
+
+                _buffer = null;
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _hasDisposed = true;
             }
-            _buffer = null;
-
-            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-            // TODO: set large fields to null
-            _hasDisposed = true;
         }
-
-
-        #endregion
     }
 }
