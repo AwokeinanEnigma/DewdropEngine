@@ -56,13 +56,13 @@ namespace Dewdrop.Audio
         }
 
         /// <summary>
-        /// Sound length milliseconds
+        /// Sound length in milliseconds
         /// </summary>
         public uint Length
         {
             get
             {
-                _nativeSound.getLength(out var length, TIMEUNIT.MS);
+                _nativeSound.getLength(out uint length, TIMEUNIT.MS);
                 return length;
             }
         }
@@ -77,7 +77,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.getLoopCount(out var loops);
+                _nativeChannel.getLoopCount(out int loops);
                 return loops;
             }
             set
@@ -132,7 +132,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.isPlaying(out var isPlaying);
+                _nativeChannel.isPlaying(out bool isPlaying);
                 return isPlaying;
             }
         }
@@ -147,7 +147,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.getPitch(out var pitch);
+                _nativeChannel.getPitch(out float pitch);
                 return pitch;
             }
             set => _nativeChannel.setPitch(value);
@@ -162,7 +162,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.getVolume(out var volume);
+                _nativeChannel.getVolume(out float volume);
                 return volume;
             }
             set => _nativeChannel.setVolume(value);
@@ -177,7 +177,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.getLowPassGain(out var lowPassGain);
+                _nativeChannel.getLowPassGain(out float lowPassGain);
                 return lowPassGain;
             }
             set => _nativeChannel.setLowPassGain(value);
@@ -190,7 +190,7 @@ namespace Dewdrop.Audio
         {
             get
             {
-                _nativeChannel.getMute(out var mute);
+                _nativeChannel.getMute(out bool mute);
                 return mute;
             }
             set => _nativeChannel.setMute(value);

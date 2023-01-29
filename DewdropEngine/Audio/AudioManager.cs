@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using DewdropEngine.Utilities;
 
 namespace Dewdrop.Audio
 {
@@ -97,29 +98,7 @@ namespace Dewdrop.Audio
             }
         }
 
-        public static byte[] LoadFileAsBuffer(string path)
-        {
-            // NOTE: Use this method to load audio files from memory 
-            // instead of built-in methods which load files directly.
-            // They will not work on some platforms.
 
-            // TitleContainer is cross-platform Monogame file loader.
-            var stream = TitleContainer.OpenStream(Path.Combine("Content", path));
-
-            // File is opened as a stream, so we need to read it to the end.
-            var buffer = new byte[16 * 1024];
-            byte[] bufferRes;
-            using (var ms = new MemoryStream())
-            {
-                int read;
-                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                bufferRes = ms.ToArray();
-            }
-            return bufferRes;
-        }
 
         /// <summary>
         /// Loads streamed sound stream from file.
@@ -127,12 +106,12 @@ namespace Dewdrop.Audio
         /// </summary>
         public StreamedSound LoadStreamedSound(string path)
         {
-            var buffer = LoadFileAsBuffer(path);
+            byte[] buffer = FileHelper.LoadFileAsBuffer(path);
 
             // Internal FMOD pointer points to this memory, so we don't want it to go anywhere.
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
-            var info = new CREATESOUNDEXINFO();
+            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
             info.length = (uint)buffer.Length;
             info.cbsize = Marshal.SizeOf(info);
 
@@ -152,9 +131,9 @@ namespace Dewdrop.Audio
         /// </summary>
         public SampleSound LoadSampleSound(string path)
         {
-            var buffer = LoadFileAsBuffer(path);
+            byte[] buffer = FileHelper.LoadFileAsBuffer(path);
 
-            var info = new CREATESOUNDEXINFO();
+            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
             info.length = (uint)buffer.Length;
             info.cbsize = Marshal.SizeOf(info);
 
