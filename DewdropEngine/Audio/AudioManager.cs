@@ -1,10 +1,8 @@
 ﻿using Dewdrop.Audio.Raw_FMOD;
 using Dewdrop.Debugging;
-using Microsoft.Xna.Framework;
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using DewdropEngine.Utilities;
+using System;
+using System.Runtime.InteropServices;
 
 namespace Dewdrop.Audio
 {
@@ -13,22 +11,24 @@ namespace Dewdrop.Audio
         /// <summary>
         /// The low level FMOD sound system.
         /// </summary>
-        public Raw_FMOD.System System {
-            get 
+        public Raw_FMOD.System System
+        {
+            get
             {
                 return _system;
             }
-                
+
         }
 
         private Raw_FMOD.System _system;
-        private FMODInfo _info;
-        private struct FMODInfo
+        private FmodInfo _info;
+        private struct FmodInfo
         {
             public int numberOfDrivers;
             public uint fmodVersion;
 
-            public FMODInfo(Raw_FMOD.System sys) {
+            public FmodInfo(Raw_FMOD.System sys)
+            {
                 sys.getNumDrivers(out numberOfDrivers);
                 sys.getVersion(out fmodVersion);
             }
@@ -44,21 +44,21 @@ namespace Dewdrop.Audio
             return $"Result: {result} - FMOD Description: {Error.String(result)}";
         }
 
-        public AudioManager() {
+        public AudioManager()
+        {
 
             // first check if FMOD can actually be used
             RESULT sysCheck = Factory.System_Create(out _system);
             if (sysCheck == RESULT.OK)
             {
                 // this is going to be passed around so instead of making three RESULT variables i can just make one and reuse it
-                RESULT misc =  RESULT.OK;
+                RESULT misc = RESULT.OK;
 
-                _info = new FMODInfo(_system);
+                _info = new FmodInfo(_system);
 
                 // for some reason this wants System.Guid instead of FMOD's own GUID 
                 // it is what it is
-                Guid driverInfo = new Guid();
-                misc = _system.getDriverInfo(0, out string driverName, 256, out driverInfo, out int systemRate, out SPEAKERMODE speakerMode, out int channelNumber);
+                misc = _system.getDriverInfo(0, out string driverName, 256, out Guid driverInfo, out int systemRate, out SPEAKERMODE speakerMode, out int channelNumber);
                 DBG.LogUnique("FMOD Audio",
                     ConsoleColor.Cyan,
                     $"Current driver info:"
@@ -72,8 +72,9 @@ namespace Dewdrop.Audio
                     $"Speaker Mode: {speakerMode}"
                     + Environment.NewLine +
                     $"Number of channels: {channelNumber}");
-                
-                if (misc != RESULT.OK) {
+
+                if (misc != RESULT.OK)
+                {
                     DBG.LogError($"Error while trying to get driver info. {ConvertResultToString(misc)}", null);
                 }
 
@@ -86,10 +87,11 @@ namespace Dewdrop.Audio
                     DBG.LogError($"The user's computer does not have an audio driver!", null);
                 }
 
-                InitiateFMODSystem();
+                InitiateFmodSystem();
 
             }
-            else {
+            else
+            {
                 throw new Exception($"FMOD couldn't be loaded! "
                                     + Environment.NewLine +
                                     $"FMOD ERROR: {sysCheck}"
@@ -111,8 +113,10 @@ namespace Dewdrop.Audio
             // Internal FMOD pointer points to this memory, so we don't want it to go anywhere.
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
-            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
-            info.length = (uint)buffer.Length;
+            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO
+            {
+                length = (uint)buffer.Length
+            };
             info.cbsize = Marshal.SizeOf(info);
 
             _system.createStream(
@@ -133,8 +137,10 @@ namespace Dewdrop.Audio
         {
             byte[] buffer = FileHelper.LoadFileAsBuffer(path);
 
-            CREATESOUNDEXINFO info = new CREATESOUNDEXINFO();
-            info.length = (uint)buffer.Length;
+            CREATESOUNDEXINFO info = new()
+            {
+                length = (uint)buffer.Length
+            };
             info.cbsize = Marshal.SizeOf(info);
 
             _system.createSound(
@@ -147,9 +153,9 @@ namespace Dewdrop.Audio
             return new SampleSound(newSound);
         }
 
-        public unsafe void InitiateFMODSystem()
+        public unsafe void InitiateFmodSystem()
         {
-            RESULT res = _system.init(64, INITFLAGS.NORMAL, (IntPtr)(void*)null);
+            RESULT res = _system.init(64, INITFLAGS.NORMAL, (IntPtr)null);
             if (res != RESULT.OK)
             {
                 throw new Exception($"FMOD system couldn't be initiated! "

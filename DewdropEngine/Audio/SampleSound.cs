@@ -1,6 +1,5 @@
 ﻿using Dewdrop.Audio.Raw_FMOD;
 using System;
-using System.Runtime.InteropServices;
 
 namespace Dewdrop.Audio
 {
@@ -82,14 +81,7 @@ namespace Dewdrop.Audio
             }
             set
             {
-                if (value == 0)
-                {
-                    Mode = MODE.LOOP_OFF;
-                }
-                else
-                {
-                    Mode = MODE.LOOP_NORMAL;
-                }
+                Mode = value == 0 ? MODE.LOOP_OFF : MODE.LOOP_NORMAL;
 
                 _nativeChannel.setLoopCount(value);
             }

@@ -22,9 +22,11 @@ namespace Dewdrop.Graphics
 
         public Camera()
         {
-            Viewport = new Viewport();
-            Viewport.Width = Engine.Width;
-            Viewport.Height = Engine.Height;
+            Viewport = new Viewport
+            {
+                Width = Engine.Width,
+                Height = Engine.Height
+            };
             UpdateMatrices();
 
             Instance = this;
@@ -32,9 +34,11 @@ namespace Dewdrop.Graphics
 
         public Camera(int width, int height)
         {
-            Viewport = new Viewport();
-            Viewport.Width = width;
-            Viewport.Height = height;
+            Viewport = new Viewport
+            {
+                Width = width,
+                Height = height
+            };
             UpdateMatrices();
 
             Instance = this;

@@ -1,6 +1,6 @@
 ﻿using Dewdrop.Utilities.fNbt.Tags;
 
-namespace Dewdrop.Utilities.fNbt.Serialization; 
+namespace Dewdrop.Utilities.fNbt.Serialization;
 
 public interface INbtSerializable
 {

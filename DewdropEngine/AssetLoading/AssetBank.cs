@@ -27,7 +27,7 @@ namespace Dewdrop.AssetLoading
             }
         }
 
-        private Dictionary<string, T> _assets;
+        private readonly Dictionary<string, T> _assets;
 
         /// <summary>
         /// Creates a new asset bank. The asset bank loads assets of type T from the specified directory and its subdirectories (if specified)
@@ -75,9 +75,8 @@ namespace Dewdrop.AssetLoading
         /// <returns>The asset of type T, if found.</returns>
         /// <exception cref="AssetLoadException">Thrown when the asset with the provided name is not found. The exception contains the asset name and type as arguments.</exception>
         public T GetAssetByName(string name)
-        {
-            T asset = default;
-            if (!_assets.TryGetValue(name, out asset))
+        { 
+            if (!_assets.TryGetValue(name, out T asset))
             {
                 DBG.LogError($"Couldn't load '{name}'", new AssetLoadException(name, typeof(T).Name));
             }

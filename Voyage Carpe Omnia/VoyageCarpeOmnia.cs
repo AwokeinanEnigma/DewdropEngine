@@ -35,7 +35,7 @@ namespace VCO
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Engine.RenderDebugUI += Engine_RenderDebugUI;
+            Engine.RenderDebugUi += Engine_RenderDebugUI;
             Camera a = new Camera(Width, Height);
 
             machine.Initialize();

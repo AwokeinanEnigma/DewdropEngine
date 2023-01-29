@@ -16,7 +16,7 @@ namespace Dewdrop
     public class Engine : Game
     {
         public static GraphicsDeviceManager GraphicsManager;
-        
+
         public ContentManager ContentManager
         {
             get => Content;
@@ -35,10 +35,10 @@ namespace Dewdrop
         /// Time since the last frame, unadjusted.
         /// </summary>
         public static float RawDeltaTime { get; private set; }
-        
+
 
         public static int TimeRate;
-        
+
         public static Engine instance { get; private set; }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace Dewdrop
         /// <summary>
         /// Subscribe to this event to render Imgui UI
         /// </summary>
-        public static event RenderImGui RenderDebugUI;
+        public static event RenderImGui RenderDebugUi;
 
-        public ImGuiRenderer imGuiRenderer;
+        private ImGuiRenderer _imGuiRenderer;
 
         public static Viewport Viewport { get; private set; }
 
@@ -94,7 +94,7 @@ namespace Dewdrop
             // subscribe to events so we can resize the window when needed
             GraphicsManager.DeviceCreated += UpdateView;
             GraphicsManager.DeviceReset += UpdateView;
-            
+
 
             //GraphicsManager.SynchronizeWithVerticalRetrace = true;
             GraphicsManager.PreferMultiSampling = false;
@@ -105,7 +105,7 @@ namespace Dewdrop
             GraphicsManager.PreferredBackBufferHeight = Height * screenScale;
             GraphicsManager.ApplyChanges();
 
-            Window.AllowUserResizing= allowResizing;
+            Window.AllowUserResizing = allowResizing;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
 
             //SetWindowed(pixelWidth, pixelHeight);
@@ -129,7 +129,7 @@ namespace Dewdrop
         }
 
         private static bool resizing;
-        
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -140,8 +140,8 @@ namespace Dewdrop
 
             // initialize 
             AudioManager = new AudioManager();
-            imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
-            ImGuiStylePtr ptr =  ImGui.GetStyle();
+            _imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
+            ImGuiStylePtr ptr = ImGui.GetStyle();
 
             //autistic style charges to imgui
             ptr.ChildRounding = 100;
@@ -180,10 +180,10 @@ namespace Dewdrop
             base.Draw(gameTime);
 
 #if DEBUG
-            imGuiRenderer.BeginLayout(gameTime);
+            _imGuiRenderer.BeginLayout(gameTime);
             //she was young once, girl of the bohemian kind
-            RenderDebugUI?.Invoke(imGuiRenderer);
-            imGuiRenderer.EndLayout();
+            RenderDebugUi?.Invoke(_imGuiRenderer);
+            _imGuiRenderer.EndLayout();
 #endif
         }
 

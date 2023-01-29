@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.IO.Compression;
-using Dewdrop.Utilities.fNbt.Exceptions;
+﻿using Dewdrop.Utilities.fNbt.Exceptions;
 using Dewdrop.Utilities.fNbt.Tags;
+using System.Diagnostics;
+using System.IO.Compression;
 
 namespace Dewdrop.Utilities.fNbt;
 
@@ -884,7 +884,7 @@ public sealed class NbtFile
                 RootTag.WriteTag(writer);
                 break;
 
-            // Can't be AutoDetect or unknown: parameter is already validated
+                // Can't be AutoDetect or unknown: parameter is already validated
         }
 
         if (stream.CanSeek)

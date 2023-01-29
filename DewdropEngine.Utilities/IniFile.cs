@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Dewdrop.Utilities
 {
@@ -15,7 +10,7 @@ namespace Dewdrop.Utilities
         private static bool TryParseInt(string text, out int value)
         {
             int res;
-            if (Int32.TryParse(text,
+            if (int.TryParse(text,
                 System.Globalization.NumberStyles.Integer,
                 System.Globalization.CultureInfo.InvariantCulture,
                 out res))
@@ -30,7 +25,7 @@ namespace Dewdrop.Utilities
         private static bool TryParseDouble(string text, out double value)
         {
             double res;
-            if (Double.TryParse(text,
+            if (double.TryParse(text,
                 System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture,
                 out res))
@@ -38,7 +33,7 @@ namespace Dewdrop.Utilities
                 value = res;
                 return true;
             }
-            value = Double.NaN;
+            value = double.NaN;
             return false;
         }
 
@@ -76,7 +71,7 @@ namespace Dewdrop.Utilities
         {
             if (Value == null)
             {
-                result = default(bool);
+                result = default;
                 return false;
             }
             var boolStr = Value.Trim().ToLowerInvariant();
@@ -90,7 +85,7 @@ namespace Dewdrop.Utilities
                 result = false;
                 return true;
             }
-            result = default(bool);
+            result = default;
             return false;
         }
 
@@ -118,7 +113,7 @@ namespace Dewdrop.Utilities
         {
             if (Value == null)
             {
-                result = default(int);
+                result = default;
                 return false;
             }
             if (TryParseInt(Value.Trim(), out result))
@@ -142,7 +137,7 @@ namespace Dewdrop.Utilities
         {
             if (Value == null)
             {
-                result = default(double);
+                result = default;
                 return false; ;
             }
             if (TryParseDouble(Value.Trim(), out result))
@@ -244,7 +239,7 @@ namespace Dewdrop.Utilities
     /// </summary>
     public class IniFile : IEnumerable<KeyValuePair<string, IniSection>>, IDictionary<string, IniSection>
     {
-        private Dictionary<string, IniSection> sections;
+        private readonly Dictionary<string, IniSection> sections;
         public IEqualityComparer<string> StringComparer;
 
         public bool SaveEmptySections;
@@ -512,7 +507,7 @@ namespace Dewdrop.Utilities
         {
             public bool Equals(string? x, string? y)
             {
-                return String.Compare(x, y, true) == 0;
+                return string.Compare(x, y, true) == 0;
             }
 
             public int GetHashCode(string obj)
@@ -542,7 +537,7 @@ namespace Dewdrop.Utilities
 
     public class IniSection : IEnumerable<KeyValuePair<string, IniValue>>, IDictionary<string, IniValue>
     {
-        private Dictionary<string, IniValue> values;
+        private readonly Dictionary<string, IniValue> values;
 
         #region Ordered
         private List<string> orderedKeys;
@@ -853,7 +848,7 @@ namespace Dewdrop.Utilities
         /// </summary>
         public ICollection<string> Keys
         {
-            get { return Ordered ? (ICollection<string>)orderedKeys : values.Keys; }
+            get { return Ordered ? orderedKeys : values.Keys; }
         }
 
         public bool Remove(string key)

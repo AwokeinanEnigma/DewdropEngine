@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using Dewdrop.Utilities.fNbt.Exceptions;
+using System.Collections;
 using System.Text;
-using Dewdrop.Utilities.fNbt.Exceptions;
 
 namespace Dewdrop.Utilities.fNbt.Tags;
 

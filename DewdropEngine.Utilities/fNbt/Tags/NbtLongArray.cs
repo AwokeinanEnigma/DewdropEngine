@@ -1,5 +1,5 @@
-using System.Text;
 using Dewdrop.Utilities.fNbt.Exceptions;
+using System.Text;
 
 namespace Dewdrop.Utilities.fNbt.Tags;
 

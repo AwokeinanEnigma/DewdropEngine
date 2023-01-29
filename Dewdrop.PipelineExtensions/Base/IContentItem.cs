@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework.Content.Pipeline;
+﻿using Microsoft.Xna.Framework.Content.Pipeline;
+using System;
 
 namespace Dewdrop.PipelineExtensions.Base
 {

@@ -47,7 +47,7 @@ namespace Dewdrop.Graphics
         /// </summary>
         public float CurrentPaletteFloat
         {
-            get => (float)this._currentPal / (float)this._totalPals;
+            get => _currentPal / (float)this._totalPals;
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace Dewdrop.Graphics
 
         #endregion
 
-        private SpriteDefinition _defaultDefinition;
-        private Dictionary<int, SpriteDefinition> _definitions;
+        private readonly SpriteDefinition _defaultDefinition;
+        private readonly Dictionary<int, SpriteDefinition> _definitions;
 
         private Texture2D _paletteTex;
         private Texture2D _spritesheetTex;
 
         private int _currentPal;
-        private int _totalPals;
-        private int _palSize;
+        private readonly int _totalPals;
+        private readonly int _palSize;
         private bool _disposedValue;
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace Dewdrop.Graphics
             this._palSize = paletteSize;
             this._totalPals = totalPalettes;
 
-            this._paletteTex = new Texture2D(Engine.instance.GraphicsDevice, (int)this._palSize, (int)this._totalPals);
-            this._spritesheetTex = new Texture2D(Engine.instance.GraphicsDevice, (int)spritesheetWidth, (int)spritesheetHeight);
+            this._paletteTex = new Texture2D(Engine.instance.GraphicsDevice, _palSize, _totalPals);
+            this._spritesheetTex = new Texture2D(Engine.instance.GraphicsDevice, spritesheetWidth, spritesheetHeight);
 
             this._paletteTex.SetData(palette);
             this._spritesheetTex.SetData(spritesheet);

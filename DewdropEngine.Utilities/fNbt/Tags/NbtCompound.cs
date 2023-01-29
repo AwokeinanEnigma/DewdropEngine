@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using Dewdrop.Utilities.fNbt.Exceptions;
+using System.Collections;
 using System.Diagnostics;
 using System.Text;
-using Dewdrop.Utilities.fNbt.Exceptions;
 
 namespace Dewdrop.Utilities.fNbt.Tags;
 
@@ -92,7 +92,8 @@ public sealed class NbtCompound : NbtTag, ICollection<NbtTag>, ICollection
     /// </exception>
     public override NbtTag this[[NotNull] string tagName]
     {
-        [CanBeNull] get => Get<NbtTag>(tagName);
+        [CanBeNull]
+        get => Get<NbtTag>(tagName);
         set
         {
             if (tagName == null)

@@ -54,14 +54,14 @@ namespace Dewdrop.Graphics
 
 
         public override Rectangle RenderableRectangle
-        { 
-            get => new Rectangle((int)_position.X, (int)_position.Y, _spriteRect.Width, _spriteRect.Height);         
+        {
+            get => new Rectangle((int)_position.X, (int)_position.Y, _spriteRect.Width, _spriteRect.Height);
         }
 
         private Rectangle _spriteRect;
         private Rectangle _texReact;
         private SpriteSheetTexture _texture;
-        private Effect _shader;
+        private readonly Effect _shader;
 
         private int _paletteIndex;
 
@@ -73,7 +73,7 @@ namespace Dewdrop.Graphics
         private SpriteAnimationMode _animationMMode;
 
         private float _betaFrame;
-        
+
         private static readonly int[] MODE_ONE_FRAMES = new int[] {
             0,
             1,
@@ -105,7 +105,7 @@ namespace Dewdrop.Graphics
 
             base.name = name;
 
-           //Engine.RenderDebugUI += Engine_RenderDebugUI;
+            //Engine.RenderDebugUI += Engine_RenderDebugUI;
 
             SetSpriteDef(defaultSpriteName);
         }
@@ -201,9 +201,9 @@ namespace Dewdrop.Graphics
             //store the result of the multiplication in a variable to avoid recalculating it
             int currentFrameIndex = (int)this._currentFrame * (int)this._size.X;
             //calculate left position by taking the modulo of currentFrameIndex and the width of the texture
-            int frameLeftPosition = currentFrameIndex % (int)this._texture.Texture.Width;
+            int frameLeftPosition = currentFrameIndex % _texture.Texture.Width;
             //calculate top position by dividing currentFrameIndex by the width of the texture and multiplying by the height of each frame
-            int frameTopPosition = currentFrameIndex / (int)this._texture.Texture.Width * (int)this._size.Y;
+            int frameTopPosition = currentFrameIndex / _texture.Texture.Width * (int)this._size.Y;
 
             //create the rectangle for the sprite using the calculated frameLeftPosition and frameTopPosition and the width and height of each frame
             this._spriteRect = new Rectangle(frameLeftPosition, frameTopPosition, (int)this._size.X, (int)this._size.Y);
@@ -309,7 +309,8 @@ namespace Dewdrop.Graphics
                 // TODO: set large fields to null
                 hasDisposed = true;
             }
-            else {
+            else
+            {
                 throw new DisposedObjectException(this.name);
             }
         }

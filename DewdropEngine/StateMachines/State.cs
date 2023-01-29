@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dewdrop.StateMachines
+﻿namespace Dewdrop.StateMachines
 {
     /// <summary>
     /// An EntityState is the state part of the finite-state machine model.
@@ -10,7 +8,7 @@ namespace Dewdrop.StateMachines
         /// <summary>
         /// The state machine that is executing this state.
         /// </summary>
-        public StateMachine stateMachine;
+        public StateMachine StateMachine;
 
 
         /// <summary>
