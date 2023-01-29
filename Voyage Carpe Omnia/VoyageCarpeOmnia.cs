@@ -1,11 +1,13 @@
 ﻿using Dewdrop;
 using Dewdrop.AssetLoading;
+using Dewdrop.Audio;
 using Dewdrop.Graphics;
 using Dewdrop.Scenes;
 using Dewdrop.Scenes.Transitions;
 using Dewdrop.StateMachines;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -35,9 +37,11 @@ namespace VCO
             // TODO: Add your initialization logic here
             Engine.RenderDebugUI += Engine_RenderDebugUI;
             Camera a = new Camera(Width, Height);
+
             machine.Initialize();
            // a.Position = new Vector2(20, 20);
             base.Initialize();
+
         }
 
         private void Engine_RenderDebugUI(Dewdrop.DewGui.ImGuiRenderer renderer)
@@ -56,7 +60,7 @@ namespace VCO
             if (ImGui.Button("hehehe"))
             {
                 SceneManager.CompositeMode = false;
-                SceneManager.Push(new basic(_spriteBatch));
+                SceneManager.Push(new basic(_spriteBatch), true);
                 SceneManager.Transition = new InstantTransition();
             }
 
@@ -64,7 +68,49 @@ namespace VCO
             {
                 machine.SetStateInterrupt(new Stupido());
             }
+
+            if (ImGui.Button("play sound!"))
+            {
+                if (StreamedSound == null)
+                {
+                    StreamedSound = AudioManager.LoadStreamedSound("battleIntro.mp3");
+                }
+                StreamedSound.Play();
+            }
+
+
+            if (ImGui.Button("pause sound!"))
+            {
+                StreamedSound.Paused = true;
+            }
+
+            if (ImGui.Button("unpause sound!"))
+            {
+                StreamedSound.Paused = false;
+            }
+
+            if (ImGui.Button("loop sound!"))
+            {
+                StreamedSound.Looping = true;
+            }
+
+            if (ImGui.Button("deloop sound!"))
+            {
+                StreamedSound.Looping = false;
+            }
+
+            if (ImGui.Button("Destroy sound!"))
+            {
+                StreamedSound.Dispose();
+            }
+
+            if (ImGui.Button("GC.Collect"))
+            {
+                GC.Collect();
+            };
+            ImGui.Text($"gcmb: {GC.GetTotalMemory(false)}");
         }
+        private StreamedSound StreamedSound;
 
         public event Action OnContentLoaded;
 

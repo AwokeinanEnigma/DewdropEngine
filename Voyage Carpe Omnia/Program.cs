@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Dewdrop.Audio.Raw_FMOD;
+using Dewdrop.Debugging;
+using Microsoft.Xna.Framework.Audio;
+using System;
 
 namespace VCO
 {
@@ -13,9 +16,23 @@ namespace VCO
         [STAThread]
         static void Main()
         {
-            using (var game = new VoyageCarpeOmnia())
+            object a;
+            a = SoundState.Playing;
+
+            DBG.Log(a);
+
+            try
             {
-                game.Run();
+                using (var game = new VoyageCarpeOmnia())
+                {
+                    game.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                // avoiding the debug class because if an error occurred there then everything's screwed
+                DBG.LogError($"Encountered error: {ex}", null);
+                DBG.DumpLogs();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Dewdrop.Debugging;
+﻿using Dewdrop.Audio;
+using Dewdrop.Debugging;
 using Dewdrop.DewGui;
 using Dewdrop.Scenes;
 using ImGuiNET;
@@ -15,12 +16,15 @@ namespace Dewdrop
     public class Engine : Game
     {
         public static GraphicsDeviceManager GraphicsManager;
+        
         public ContentManager ContentManager
         {
             get => Content;
         }
 
         public static SceneManager SceneManager;
+
+        public static AudioManager AudioManager;
 
         /// <summary>
         /// Time since last frame. Adjusted by the time rate.
@@ -32,6 +36,7 @@ namespace Dewdrop
         /// </summary>
         public static float RawDeltaTime { get; private set; }
         
+
         public static int TimeRate;
         
         public static Engine instance { get; private set; }
@@ -62,6 +67,10 @@ namespace Dewdrop
 
 
         public delegate void RenderImGui(ImGuiRenderer renderer);
+
+        /// <summary>
+        /// Subscribe to this event to render Imgui UI
+        /// </summary>
         public static event RenderImGui RenderDebugUI;
 
         public ImGuiRenderer imGuiRenderer;
@@ -130,6 +139,7 @@ namespace Dewdrop
             DBG.Initialize();
 
             // initialize 
+            AudioManager = new AudioManager();
             imGuiRenderer = new ImGuiRenderer(this).Initialize().RebuildFontAtlas();
             ImGuiStylePtr ptr =  ImGui.GetStyle();
 
@@ -169,11 +179,12 @@ namespace Dewdrop
 
             base.Draw(gameTime);
 
+#if DEBUG
             imGuiRenderer.BeginLayout(gameTime);
             //she was young once, girl of the bohemian kind
             RenderDebugUI?.Invoke(imGuiRenderer);
-           
             imGuiRenderer.EndLayout();
+#endif
         }
 
 
@@ -197,7 +208,7 @@ namespace Dewdrop
             }
 
             // apply View Padding
-            var aspect = ViewHeight / (float)ViewWidth;
+            float aspect = ViewHeight / (float)ViewWidth;
             ViewWidth -= ViewPadding * 2;
             ViewHeight -= (int)(aspect * ViewPadding * 2);
 
